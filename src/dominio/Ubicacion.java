@@ -14,6 +14,7 @@ import estructuras.Punto;
 public class Ubicacion extends Punto{
 	
 	private DataCenter dc;
+	private Ciudad c;
 
     public DataCenter getDataCenter() {
         return dc;
@@ -23,10 +24,18 @@ public class Ubicacion extends Punto{
         this.dc = dataCenter;
     }
     
+	public Ciudad getCiudad() {
+        return dc;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.c = ciudad;
+    }
     
     public Ubicacion(Double coordX, Double coordY) {
         super(coordX, coordY);
         this.dc = null;
+		this.c = null;
     }
     
 }
