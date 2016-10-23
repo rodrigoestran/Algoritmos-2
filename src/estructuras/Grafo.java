@@ -1,11 +1,40 @@
 package estructuras;
 
 import interfaces.IGrafo;
+import estructuras.Lista;
 
 public class Grafo implements IGrafo{
 
+	private int size;
+	private int cantNodos;
+	Arco[][] matrizAdyacencia;
+	boolean[] nodosUsados;
+	
 	public Grafo(int size) {
-		// TODO Auto-generated constructor stub
+		this.size = size;
+		this.matrizAdyacencia = new Arco[cantNodos+1][cantNodos+1];
+		for (int i = 1; i<=cantNodos; i++)
+			for (int j = 1; j<=cantNodos; j++)
+			  this.matrizAdyacencia[i][j]= new Arco();
+				
+		this.nodosUsados = new boolean[cantNodos+1];
+
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public int getCantNodos() {
+		return cantNodos;
+	}
+
+	public void setCantNodos(int cantNodos) {
+		this.cantNodos = cantNodos;
 	}
 
 	public boolean hayLugar() {
@@ -14,6 +43,7 @@ public class Grafo implements IGrafo{
 	}
 
 	public void agregarVertice(int pos) {
+		cantNodos++;
 		// TODO Auto-generated method stub
 		
 	}
@@ -56,8 +86,13 @@ public class Grafo implements IGrafo{
 
 	@Override
 	public Lista obtenerVerticesAdyacentes(int v) {
-		// TODO Auto-generated method stub
-		return null;
+		Lista l = new Lista();
+		for(int i=1; i<=this.cantNodos; i++){
+			if(this.sonAdyacentes(v, i)){
+				l.insertarInicio(i);
+			}
+		}
+		return l;
 	}
 
 	@Override
