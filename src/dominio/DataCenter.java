@@ -6,22 +6,22 @@
 package dominio;
 
 import estructuras.Nodo;
+import estructuras.Punto;
 
 /**
  *
  * @author alumnoFI
  */
-public class DataCenter {
+public class DataCenter extends Punto{
 	
 	private String nombre; 
 	private	Empresa empresa;
 	private int capacidadCPUenHoras;
 	private int costoCPUporHora;
-	private Ubicacion ubicacion;
 	private int esfuerzoEnUso;
 	
 	
-	//GETTERS AND SETTERS
+	// GETTERS AND SETTERS //
 	public String getNombre() {
 		return nombre;
 	}
@@ -46,13 +46,6 @@ public class DataCenter {
 	public void setCostoCPUporHora(int costoCPUporHora) {
 		this.costoCPUporHora = costoCPUporHora;
 	}	
-
-	public Ubicacion getUbicacion() {
-		return ubicacion;
-	}
-	public void setUbicacion(Ubicacion ubicacion) {
-		this.ubicacion = ubicacion;
-	}
 	
 	public int getEsfuerzoEnUso() {
 		return esfuerzoEnUso;
@@ -62,19 +55,18 @@ public class DataCenter {
 	}
 	
 	
-	//CONSTRUCTORS
-	public DataCenter(String n,Empresa emp, int capCPRHoras, int costCPUHora)
+	// CONSTRUCTOR //
+	public DataCenter(String n,Empresa emp, int capCPRHoras, int costCPUHora, Double coordX, Double coordY)
 	{
+		super(coordX, coordY);
 		this.nombre = n;
 		this.empresa = emp;
 		this.capacidadCPUenHoras = capCPRHoras;
 		this.costoCPUporHora = costCPUHora;
-		this.ubicacion = null;
 		
 	}
 	
-	
-	//compare to
+	// compare to //
 	 public int compareTo(Nodo o) {
 	        DataCenter nuevo = o.getDato();
 	        return this.nombre.compareTo(nuevo.getNombre());
@@ -82,11 +74,7 @@ public class DataCenter {
 	 
 	 @Override
 	    public String toString() {
-	        if(this.ubicacion!=null){
-	            return this.nombre+";"+this.empresa+";"+this.ubicacion.getCoordX()+";"+this.ubicacion.getCoordY();
-	        }else{
-	            return  this.nombre+";"+this.empresa;
-	        }
+            return this.nombre+";"+this.empresa+";"+ super.getCoordX()+";"+ super.getCoordY();
 	    }   
     
 }

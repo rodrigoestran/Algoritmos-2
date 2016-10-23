@@ -2,11 +2,9 @@ package estructuras;
 
 public class Arco {
 	
-	private Integer distancia;
-	private Double coordXi;
-	private Double coordYi;
-	private Double coordXf;
-	private Double coordYf;
+	private Integer distancia; // será el peso?
+	private Punto inicio;
+	private Punto fin;
 	private boolean existe;
 	
 	public Integer getDistancia() {
@@ -29,47 +27,30 @@ public class Arco {
 		this.existe = false;
 	}
 	
-	public Arco(Integer dist, Double coordXi, Double coordYi, Double coordXf, Double coordYf){
+	public Arco(Integer dist, Punto inicio, Punto fin){
 		this.distancia = dist;
-		this.coordXi = coordXi;
-		this.coordYi = coordYi;
-		this.coordXf = coordXf;
-		this.coordYf = coordYf;
+		this.inicio = inicio;
+		this.fin = fin;
 		this.existe = true;
+	}
+
+	public Punto getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Punto inicio) {
+		this.inicio = inicio;
+	}
+
+	public Punto getFin() {
+		return fin;
+	}
+
+	public void setFin(Punto fin) {
+		this.fin = fin;
 	}
 
 	
 
-	public Double getCoordXi() {
-		return coordXi;
-	}
-
-	public void setCoordXi(Double coordXi) {
-		this.coordXi = coordXi;
-	}
-
-	public Double getCoordYi() {
-		return coordYi;
-	}
-
-	public void setCoordYi(Double coordYi) {
-		this.coordYi = coordYi;
-	}
-
-	public Double getCoordXf() {
-		return coordXf;
-	}
-
-	public void setCoordXf(Double coordXf) {
-		this.coordXf = coordXf;
-	}
-
-	public Double getCoordYf() {
-		return coordYf;
-	}
-
-	public void setCoordYf(Double coordYf) {
-		this.coordYf = coordYf;
-	}
 
 }

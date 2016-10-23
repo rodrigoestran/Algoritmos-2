@@ -6,17 +6,24 @@
 package dominio;
 
 import estructuras.Lista;
+import estructuras.Punto;
 
 /**
  *
  * @author alumnoFI
  */
-public class Ciudad {
+public class Ciudad extends Punto{
     
-	private Ubicacion ubicacion;
 	private Lista datacenters;
 	private String nombre;
 	
+	// Constructor //
+	public Ciudad(Double coordX, Double coordY, String nombre) {
+		super(coordX, coordY);
+		this.nombre = nombre;
+	}
+
+	// Getters y Setters //
 	public String getNombre() {
 		return nombre;
 	}
@@ -33,13 +40,6 @@ public class Ciudad {
 		this.datacenters = datacenters;
 	}
 
-	public Ubicacion getUbicacion() {
-		return ubicacion;
-	}
-
-	public void setUbicacion(Ubicacion ubicacion) {
-		this.ubicacion = ubicacion;
-	}
 	
 	
 }

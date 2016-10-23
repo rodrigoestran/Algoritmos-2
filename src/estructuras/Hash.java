@@ -1,6 +1,6 @@
 package estructuras;
 
-import dominio.Ubicacion;
+import estructuras.Punto;;
 
 public class Hash {
 
@@ -23,7 +23,7 @@ public class Hash {
 		return 0;
 	}
 
-	public Ubicacion devolverPuntoPorPosicion(int pos) {
+	public Punto devolverPuntoPorPosicion(int pos) {
 		// TODO Auto-generated method stub
 		return null;
 	}
