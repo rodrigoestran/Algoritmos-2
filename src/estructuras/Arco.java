@@ -2,7 +2,8 @@ package estructuras;
 
 public class Arco {
 	
-	private Integer distancia;
+	// me parece que arco, en vez de tener coords, tenga los DC, que ya son puntos
+	private Integer distancia; // será el peso?
 	private Double coordXi;
 	private Double coordYi;
 	private Double coordXf;

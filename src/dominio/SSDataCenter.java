@@ -23,7 +23,7 @@ import sistema.Retorno.Resultado;
  */
 public class SSDataCenter {
 	
-	private Hash ubicaciones;
+	private Hash puntos;
     private Grafo Mapa;
     private Lista dataCenterEnRadio;
 	private ABB arbolDataCenter;
@@ -32,7 +32,7 @@ public class SSDataCenter {
 	// constructor //
     public SSDataCenter(int size) {
         this.arbolDataCenter = new ABB();
-        this.ubicaciones = new Hash(size);
+        this.puntos = new Hash(size);
         this.Mapa = new Grafo(size);
         this.dataCenterEnRadio = new Lista();
     }
@@ -41,7 +41,7 @@ public class SSDataCenter {
     public void destruir() {
         this.arbolDataCenter = null;
         this.Mapa = null;
-        this.ubicaciones = null;
+        this.puntos = null;
         this.dataCenterEnRadio = null;
         this.informe = null;
     }
@@ -56,11 +56,11 @@ public class SSDataCenter {
     }
 
     public Hash getUbicaciones() {
-        return ubicaciones;
+        return puntos;
     }
 
     public void setUbicaciones(Hash u) {
-        this.ubicaciones = u;
+        this.puntos = u;
     }
 
     public Grafo getMapa() {
@@ -80,10 +80,11 @@ public class SSDataCenter {
     }
 
     // comportamiento
-    public Retorno registrarDataCenter(String nombre, String empresa, int capCPRHoras, int costCPUHora) {
+    public Retorno registrarDataCenter(String nombre, Empresa empresa, int capCPRHoras, int costCPUHora, 
+    		Double coordX, Double coordY) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
         if (!this.arbolDataCenter.existeElemento(nombre)) {
-            DataCenter dc = new DataCenter(nombre, empresa, capCPRHoras, costCPUHora);
+            DataCenter dc = new DataCenter(nombre, empresa, capCPRHoras, costCPUHora, coordX, coordY);
             this.arbolDataCenter.insertar(dc);
             ret.setResultado(Resultado.OK);
         }
@@ -121,54 +122,55 @@ public class SSDataCenter {
         this.informe += s;
     }
 	
-    public boolean agregarUbicacion(double coordX, double coordY) {
-        boolean ret = false;
-        Punto p = new Ubicacion(coordX, coordY);
-        if (this.Mapa.hayLugar()) {
-            if (!this.ubicaciones.pertenece(coordX, coordY)) {
-                int pos = this.ubicaciones.insertar(p);
-                this.Mapa.agregarVertice(pos);
-                ret = true;
-            }
-        }
-        return ret;
-    }
+//    public boolean agregarUbicacion(double coordX, double coordY) {
+//        boolean ret = false;
+//        Punto p = new Ubicacion(coordX, coordY);
+//        if (this.Mapa.hayLugar()) {
+//            if (!this.ubicaciones.pertenece(coordX, coordY)) {
+//                int pos = this.ubicaciones.insertar(p);
+//                this.Mapa.agregarVertice(pos);
+//                ret = true;
+//            }
+//        }
+//        return ret;
+//    }
 
     public boolean existe(Double coordX, Double coordY) {
-        return this.ubicaciones.pertenece(coordX, coordY);
+        return this.puntos.pertenece(coordX, coordY);
     }
 
-    public Ubicacion buscar(Double coordX, Double coordY) {
-        Ubicacion u = null;
-        int pos = this.ubicaciones.devolverPosActual(coordX, coordY);
+    public Punto buscar(Double coordX, Double coordY) {
+        Punto p = null;
+        int pos = this.puntos.devolverPosActual(coordX, coordY);
         if (pos != -1) {
-            u = (Ubicacion) this.ubicaciones.devolverPuntoPorPosicion(pos);
+            p = (Punto) this.puntos.devolverPuntoPorPosicion(pos);
         }
-        return u;
+        return p;
     }
 
-    public boolean asignarDataCenter(DataCenter dc, double coordX, double coordY) {
-        boolean ret = false;
-        if (this.existe(coordX, coordY)) {
-            Ubicacion u = this.buscar(coordX, coordY);
-            if (u != null) {                
-                if (u.getDataCenter() == null) {
-                    u.setDataCenter(dc);
-                    dc.setUbicacion(u);
-                    ret = true;
-                }
-
-            }
-        }
-        return ret;
-    }
+    // Esto capaz puede servir para la Ciudad
+//    public boolean asignarDataCenter(DataCenter dc, double coordX, double coordY) {
+//        boolean ret = false;
+//        if (this.existe(coordX, coordY)) {
+//            Ubicacion u = this.buscar(coordX, coordY);
+//            if (u != null) {                
+//                if (u.getDataCenter() == null) {
+//                    u.setDataCenter(dc);
+//                    dc.setUbicacion(u);
+//                    ret = true;
+//                }
+//
+//            }
+//        }
+//        return ret;
+//    }
 
     public Retorno registrarTramo(Double coordXi, Double coordYi, Double coordXf, Double coordYf, int peso) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
         if (peso > 0) {
             ret.setResultado(Resultado.ERROR_2);
-            int posicionIni = this.ubicaciones.devolverPosActual(coordXi, coordYi);
-            int posicionFin = this.ubicaciones.devolverPosActual(coordXf, coordYf);
+            int posicionIni = this.puntos.devolverPosActual(coordXi, coordYi);
+            int posicionFin = this.puntos.devolverPosActual(coordXf, coordYf);
             if (posicionIni != -1 && posicionFin != -1) {
                 ret.setResultado(Resultado.ERROR_3);
                 boolean existe = this.Mapa.existeArista(posicionIni, posicionFin, coordXi, coordYi, coordXf, coordYf);
@@ -183,13 +185,13 @@ public class SSDataCenter {
 
     public Retorno eliminarUbicacion(Double coordX, Double coordY) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
-        int pos = this.ubicaciones.devolverPosActual(coordX, coordY);
+        int pos = this.puntos.devolverPosActual(coordX, coordY);
         if (pos != -1) {
             ret.setResultado(Resultado.ERROR_2);
-            Ubicacion u = (Ubicacion) this.ubicaciones.devolverPuntoPorPosicion(pos);
+            Ubicacion u = (Ubicacion) this.puntos.devolverPuntoPorPosicion(pos);
             if (u.getDataCenter() == null) {
                 this.Mapa.eliminarVertice(pos);
-                this.ubicaciones.eliminarPunto(pos);
+                this.puntos.eliminarPunto(pos);
                 ret.setResultado(Resultado.OK);
             }
         }
@@ -198,8 +200,8 @@ public class SSDataCenter {
 
     public Retorno eliminarTramo(Double coordXi, Double coordYi, Double coordXf, Double coordYf) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
-        int posicionIni = this.ubicaciones.devolverPosActual(coordXi, coordYi);
-        int posicionFin = this.ubicaciones.devolverPosActual(coordXf, coordYf);
+        int posicionIni = this.puntos.devolverPosActual(coordXi, coordYi);
+        int posicionFin = this.puntos.devolverPosActual(coordXf, coordYf);
         if (posicionIni != -1 && posicionFin != -1) {
             ret.setResultado(Resultado.ERROR_2);
             boolean existe = this.Mapa.existeArista(posicionIni, posicionFin, coordXi, coordYi, coordXf, coordYf);
@@ -213,14 +215,14 @@ public class SSDataCenter {
  
     public DataCenter dcMasProximo(Double coordX, Double coordY) {
         DataCenter dc = null;
-        int u = this.ubicaciones.devolverPosActual(coordX, coordY);
+        int u = this.puntos.devolverPosActual(coordX, coordY);
         if (u != -1) {
-            Punto punto = this.ubicaciones.devolverPuntoPorPosicion(u);
+            Punto punto = this.puntos.devolverPuntoPorPosicion(u);
             Ubicacion ubic = (Ubicacion) punto;
             dc = ubic.getDataCenter();
             if (dc == null) {
                 DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-                 dc = dDcMP.dijkstra(Mapa, ubicaciones, u);                
+                 dc = dDcMP.dijkstra(Mapa, puntos, u);                
             } 
         }        
         return dc;
