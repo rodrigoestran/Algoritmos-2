@@ -25,7 +25,7 @@ public class Ubicacion extends Punto{
     }
     
 	public Ciudad getCiudad() {
-        return dc;
+        return c;
     }
 
     public void setCiudad(Ciudad ciudad) {

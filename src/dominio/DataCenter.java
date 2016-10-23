@@ -14,10 +14,11 @@ import estructuras.Nodo;
 public class DataCenter {
 	
 	private String nombre; 
-	private	String empresa;
+	private	Empresa empresa;
 	private int capacidadCPUenHoras;
 	private int costoCPUporHora;
 	private Ubicacion ubicacion;
+	private int esfuerzoEnUso;
 	
 	
 	//GETTERS AND SETTERS
@@ -27,10 +28,10 @@ public class DataCenter {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}	
-	public String getEmpresa() {
+	public Empresa getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(String empresa) {
+	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
 	public int getCapacidadCPUenHoras() {
@@ -53,9 +54,16 @@ public class DataCenter {
 		this.ubicacion = ubicacion;
 	}
 	
-	//CONSTRUCTURS
+	public int getEsfuerzoEnUso() {
+		return esfuerzoEnUso;
+	}
+	public void setEsfuerzoEnUso(int esfuerzoEnUso) {
+		this.esfuerzoEnUso = esfuerzoEnUso;
+	}
 	
-	public DataCenter(String n,String emp, int capCPRHoras, int costCPUHora)
+	
+	//CONSTRUCTORS
+	public DataCenter(String n,Empresa emp, int capCPRHoras, int costCPUHora)
 	{
 		this.nombre = n;
 		this.empresa = emp;
@@ -67,12 +75,10 @@ public class DataCenter {
 	
 	
 	//compare to
-	
 	 public int compareTo(Nodo o) {
 	        DataCenter nuevo = o.getDato();
 	        return this.nombre.compareTo(nuevo.getNombre());
 	    }
-
 	 
 	 @Override
 	    public String toString() {
@@ -81,8 +87,6 @@ public class DataCenter {
 	        }else{
 	            return  this.nombre+";"+this.empresa;
 	        }
-	    }
-	   
-	   
+	    }   
     
 }

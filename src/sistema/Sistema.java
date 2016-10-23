@@ -1,21 +1,28 @@
 package sistema;
 
+import dominio.SSDataCenter;
 import interfaces.ISistema;
 import sistema.Retorno.Resultado;
 
 
 public class Sistema implements ISistema {
-
+	private int cantPuntos;
+	private SSDataCenter ssdc;
+	
 	@Override
 	public Retorno inicializarSistema(int cantPuntos) {
-		// TODO Auto-generated method stub
-		return new Retorno(Resultado.NO_IMPLEMENTADA);
+		if (cantPuntos > 0){
+			this.cantPuntos = cantPuntos;
+			ssdc = new SSDataCenter(this.cantPuntos);
+			return new Retorno(Resultado.OK);
+		}
+		return new Retorno(Resultado.ERROR_1);
 	}
 
 	@Override
 	public Retorno destruirSistema() {
-		// TODO Auto-generated method stub
-		return new Retorno(Resultado.NO_IMPLEMENTADA);
+		ssdc.destruir();
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
