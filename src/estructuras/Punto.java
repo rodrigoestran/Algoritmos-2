@@ -9,7 +9,7 @@ package estructuras;
  *
  * @author alumnoFI
  */
-public class Punto {
+public abstract class Punto {
 	private Double coordX;
     private Double coordY;
 
@@ -38,4 +38,7 @@ public class Punto {
     public String toString() {
         return coordX + ";" + coordY;
     }
+    
+    // la opcion es hacer esto asi, o que get nombre este en punto y tenga su atributo comun aca
+    public abstract String getNombre();
 }

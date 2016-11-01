@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import estructuras.NodoLista;
+
 /**
  *
  * @author alumnoFI
@@ -27,6 +29,8 @@ public interface ILista {
 	void borrarUnElem(Object elem);
 	
 	int largo();
+	
+	NodoLista getInicio();
 	
 	boolean existe(Object elem);
     

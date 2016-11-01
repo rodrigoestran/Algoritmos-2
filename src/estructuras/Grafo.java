@@ -1,6 +1,7 @@
 package estructuras;
 
 import interfaces.IGrafo;
+import interfaces.ILista;
 import estructuras.Lista;
 
 public class Grafo implements IGrafo{
@@ -85,7 +86,7 @@ public class Grafo implements IGrafo{
 	}
 
 	@Override
-	public Lista obtenerVerticesAdyacentes(int v) {
+	public ILista obtenerVerticesAdyacentes(int v) {
 		Lista l = new Lista();
 		for(int i=1; i<=this.cantNodos; i++){
 			if(this.sonAdyacentes(v, i)){

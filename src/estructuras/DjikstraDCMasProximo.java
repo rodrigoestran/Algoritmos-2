@@ -1,6 +1,7 @@
 package estructuras;
 
 import dominio.DataCenter;
+import interfaces.ILista;
 
 public class DjikstraDCMasProximo {
 	
@@ -179,7 +180,7 @@ public class DjikstraDCMasProximo {
 	        boolean notFound = true;
 	        DataCenter dc = null;
 	        //Busco vertices adyacentes del origen
-	        Lista l = obtenerAdyacentes(u);
+	        ILista l = obtenerAdyacentes(u);
 
 	        //vertice de menor distancia
 	        int vertMenorDist = obtenerVerticeMenorDistancia(l, u);
@@ -214,7 +215,7 @@ public class DjikstraDCMasProximo {
 		return null;
 	}
 
-	private int obtenerVerticeMenorDistancia(Lista l, int u) {
+	private int obtenerVerticeMenorDistancia(ILista l, int u) {
 		int verticeMenor = -1;
         int vertice = 0;
         int pesoaux = 0;
@@ -241,7 +242,7 @@ public class DjikstraDCMasProximo {
         return verticeMenor;
 	}
 
-	private Lista obtenerAdyacentes(int u) {
+	private ILista obtenerAdyacentes(int u) {
 		 return getGrafo().obtenerVerticesAdyacentes(u);
 	}
 

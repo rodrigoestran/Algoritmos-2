@@ -23,7 +23,7 @@ public interface IGrafo {
 
 	public void eliminarArista(int origen, int destino);
 
-	public Lista obtenerVerticesAdyacentes(int v);
+	public ILista obtenerVerticesAdyacentes(int v);
  
 	public boolean sonAdyacentes(int a, int b);
 

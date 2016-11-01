@@ -1,5 +1,10 @@
 package sistema;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import dominio.SSDataCenter;
 import interfaces.ISistema;
 import sistema.Retorno.Resultado;
@@ -67,8 +72,8 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno mapaEstado() {
-		// TODO Auto-generated method stub
-		return new Retorno(Resultado.NO_IMPLEMENTADA);
+		ssdc.crearMapa();
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
