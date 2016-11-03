@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import dominio.DataCenter;
+import dominio.Empresa;
 import estructuras.Nodo;
 
 /**
@@ -30,9 +30,9 @@ public interface IABB {
 
 	    Nodo getRaiz();
 
-	    void insertar(DataCenter dc);
+	    void insertar(Empresa e);
 
-	    void insertarElemento(DataCenter dc, Nodo nodo);
+	    void insertarElemento(Empresa e, Nodo nodo);
 
 	    void mostrarInOrder();
 

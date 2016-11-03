@@ -6,6 +6,7 @@
 package estructuras;
 
 import dominio.DataCenter;
+import dominio.Empresa;
 
 /**
  *
@@ -13,15 +14,15 @@ import dominio.DataCenter;
  */
 public class Nodo {
 	
-	 private DataCenter dato;
+	 private Empresa dato;
 	    private Nodo der ;
 	    private Nodo izq ;
 
-	    public DataCenter getDato() {
+	    public Empresa getDato() {
 	        return dato;
 	    }
 
-	    public void setDato(DataCenter dato) {
+	    public void setDato(Empresa dato) {
 	        this.dato = dato;
 	    }
 
@@ -41,7 +42,7 @@ public class Nodo {
 	        this.izq = izq;
 	    }
 
-	    public Nodo(DataCenter dato) {
+	    public Nodo(Empresa dato) {
 	        this.dato = dato;
 	    }
 
@@ -70,7 +71,7 @@ public class Nodo {
 
 	    }
 	    
-	     public DataCenter minValue() {
+	     public Empresa minValue() {
 	            if (izq == null)
 	                  return dato;
 	            else

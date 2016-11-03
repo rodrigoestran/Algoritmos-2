@@ -6,7 +6,6 @@
 package dominio;
 
 import estructuras.Lista;
-import estructuras.Punto;
 
 /**
  *

@@ -5,6 +5,8 @@
  */
 package obligatorio.aed2;
 
+import sistema.Sistema;
+
 /**
  *
  * @author alumnoFI
@@ -15,7 +17,9 @@ public class ObligatorioAED2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Sistema s = new Sistema();
+        s.inicializarSistema(15);
+        s.mapaEstado();
     }
     
 }

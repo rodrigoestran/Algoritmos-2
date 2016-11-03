@@ -6,7 +6,6 @@
 package dominio;
 
 import estructuras.Nodo;
-import estructuras.Punto;
 
 /**
  *
@@ -65,16 +64,10 @@ public class DataCenter extends Punto{
 		this.costoCPUporHora = costCPUHora;
 		
 	}
-	
-	// compare to //
-	 public int compareTo(Nodo o) {
-	        DataCenter nuevo = o.getDato();
-	        return this.nombre.compareTo(nuevo.getNombre());
-	    }
 	 
-	 @Override
-	    public String toString() {
-            return this.nombre+";"+this.empresa+";"+ super.getCoordX()+";"+ super.getCoordY();
-	    }   
+	@Override
+	public String toString() {
+	    return this.nombre+";"+this.empresa+";"+ super.getCoordX()+";"+ super.getCoordY();
+	}   
     
 }

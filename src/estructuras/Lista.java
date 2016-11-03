@@ -1,5 +1,7 @@
 package estructuras;
 
+import java.util.Iterator;
+
 import interfaces.ILista;
 
 public class Lista implements ILista {
@@ -61,6 +63,12 @@ public class Lista implements ILista {
 	public boolean existe(Object elem) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
