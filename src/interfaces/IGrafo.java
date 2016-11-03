@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import dominio.Punto;
+
 /**
  *
  * @author alumnoFI
@@ -15,13 +17,13 @@ public interface IGrafo {
 	
 	public boolean esConexo();
 	
-	public void agregarVertice(int v);
+	public void agregarVertice(int v, Punto p);
 
-	public void agregarArista(int origen, int destino, int peso, Double coordXi, Double coordYi, Double coordXf,         Double coordYf);
+	public void agregarArista(int peso, Punto inicio, Punto fin);
 
 	public void eliminarVertice(int v);
 
-	public void eliminarArista(int origen, int destino);
+	public void eliminarArista(Punto ini, Punto fin);
 
 	public ILista obtenerVerticesAdyacentes(int v);
  

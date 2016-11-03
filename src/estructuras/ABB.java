@@ -6,6 +6,7 @@
 package estructuras;
 
 import dominio.DataCenter;
+import dominio.Empresa;
 import interfaces.IABB;
 
 /**
@@ -56,7 +57,6 @@ public class ABB implements IABB{
     
     @Override
     public void devolverInforme(Nodo a) {
-        
         if (a != null) {
             devolverInforme(a.getIzq());
             this.informe+=a.getDato().toString() +  " | ";
@@ -93,10 +93,10 @@ public class ABB implements IABB{
     @Override
     public boolean existe(String e, Nodo a) {
         boolean existe;
-        String nombre = a.getDato().getNombre();
         if (a == null) {
             existe = false;
         } else {
+            String nombre = a.getDato().getNombre();
             if (e.equalsIgnoreCase(nombre)) {
                 existe = true;
             } else if (e.compareTo(nombre)<0) {
@@ -153,24 +153,24 @@ public class ABB implements IABB{
     }    
     
     @Override
-    public void insertarElemento(DataCenter dc, Nodo nodo) {
+    public void insertarElemento(Empresa e, Nodo nodo) {
         Nodo nuevo = null;
 
         if (this.esArbolVacio()) {
-            this.raiz = new Nodo(dc);
-        } else if (dc.compareTo(nodo) <0 ) {  
+            this.raiz = new Nodo(e);
+        } else if (e.compareTo(nodo) <0 ) {  
             if (nodo.getIzq() == null) {
-                nuevo = new Nodo(dc);
+                nuevo = new Nodo(e);
                 nodo.setIzq(nuevo);
             } else {
-                insertarElemento(dc, nodo.getIzq());
+                insertarElemento(e, nodo.getIzq());
             }
-        } else if (dc.compareTo(nodo) > 0) { 
+        } else if (e.compareTo(nodo) > 0) { 
             if (nodo.getDer() == null) {
-                nuevo = new Nodo(dc);
+                nuevo = new Nodo(e);
                 nodo.setDer(nuevo);
             } else {
-                insertarElemento(dc, nodo.getDer());
+                insertarElemento(e, nodo.getDer());
             }
         }
     }
@@ -205,17 +205,17 @@ public class ABB implements IABB{
     }
 
     @Override
-    public void insertar(DataCenter dc) {
-        raiz = insertar(dc, raiz);
+    public void insertar(Empresa e) {
+        raiz = insertar(e, raiz);
     }
 
-    private Nodo insertar(DataCenter dc, Nodo a) {
+    private Nodo insertar(Empresa e, Nodo a) {
         if (a == null) {
-            a = new Nodo(dc);
-        } else if (dc.compareTo(a) < 0) {
-            a.setIzq(insertar(dc, a.getIzq())); 
-        } else if (dc.compareTo(a) > 0) {
-            a.setDer(insertar(dc, a.getDer()));	
+            a = new Nodo(e);
+        } else if (e.compareTo(a) < 0) {
+            a.setIzq(insertar(e, a.getIzq())); 
+        } else if (e.compareTo(a) > 0) {
+            a.setDer(insertar(e, a.getDer()));	
         }
         return a;
     }
@@ -252,8 +252,8 @@ public class ABB implements IABB{
     public void eliminar(String s ) {
         raiz = eliminar(s, raiz );
     }
-    public void eliminar(DataCenter dc ) {
-        raiz = remove(dc, raiz );
+    public void eliminar(Empresa e) {
+        raiz = remove(e, raiz );
     }
     
     private Nodo eliminar( String s, Nodo a ) {
@@ -294,53 +294,74 @@ public class ABB implements IABB{
         }
   }
 
-private Nodo remove( DataCenter dc, Nodo n ){
-    if( n == null ){
-        return n;
-    }
-    int compareResult = dc.compareTo(n);
-    if( compareResult < 0 ){
-        n.setIzq(remove( dc, n.getIzq()) );
-    } else if( compareResult > 0 ){
-        n.setDer(remove( dc, n.getDer()) );
-    }else if( n.getIzq() != null && n.getDer() != null ){
-        n.setDato(Minimo(n.getDer()).getDato());
-        n.setDer(remove( n.getDato(), n.getDer()) );
-    }else{
-        n = ( n.getIzq() != null ) ? n.getIzq() : n.getDer();
-    }
-    return n;
-}
+	private Nodo remove( Empresa e, Nodo n ){
+	    if( n == null ){
+	        return n;
+	    }
+	    int compareResult = e.compareTo(n);
+	    if( compareResult < 0 ){
+	        n.setIzq(remove( e, n.getIzq()) );
+	    } else if( compareResult > 0 ){
+	        n.setDer(remove( e, n.getDer()) );
+	    }else if( n.getIzq() != null && n.getDer() != null ){
+	        n.setDato(Minimo(n.getDer()).getDato());
+	        n.setDer(remove( n.getDato(), n.getDer()) );
+	    }else{
+	        n = ( n.getIzq() != null ) ? n.getIzq() : n.getDer();
+	    }
+	    return n;
+	}
+	
+	private Nodo Minimo( Nodo nodo )
+	{
+	    if(nodo != null )
+	        while( nodo.getIzq() != null )
+	            nodo = nodo.getIzq();
+	    return nodo;
+	}
+	
+	private Nodo Maximo( Nodo nodo )
+	{
+	    if(nodo != null )
+	        while( nodo.getDer() != null )
+	            nodo = nodo.getDer();
+	    return nodo;
+	}
+	
+	@Override
+	public void mostrarInOrder() {
+	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+	
+	@Override
+	public void mostrarInOrder(Nodo a) {
+	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+	
+	public String getInforme() {
+	    this.devolverInforme();
+	    return this.informe;
+	}
+	
+	public Empresa pertenece(String x)
+	{
+		return perteneceRec(x, raiz);
+	}
 
-private Nodo Minimo( Nodo nodo )
-{
-    if(nodo != null )
-        while( nodo.getIzq() != null )
-            nodo = nodo.getIzq();
-    return nodo;
-}
-
-private Nodo Maximo( Nodo nodo )
-{
-    if(nodo != null )
-        while( nodo.getDer() != null )
-            nodo = nodo.getDer();
-    return nodo;
-}
-
-@Override
-public void mostrarInOrder() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-}
-
-@Override
-public void mostrarInOrder(Nodo a) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-}
-
-public String getInforme() {
-    this.devolverInforme();
-    return this.informe;
-}
-    
+	// Arreglar todo esto
+	private Empresa perteneceRec(String x, Nodo nodo) {
+		if(nodo == null)
+			return null;
+		else{
+			if(nodo.getDato().getNombre() == x)
+				return nodo.getDato();
+			else{
+				if(x.compareTo(nodo.getDato().getNombre()) == -1)
+					return perteneceRec(x, nodo.getIzq());
+				else
+					return perteneceRec(x, nodo.getDer());
+			}
+		}
+	}
+	    
 }

@@ -11,7 +11,7 @@ import estructuras.NodoLista;
  *
  * @author alumnoFI
  */
-public interface ILista {
+public interface ILista extends Iterable<Object>{
 
 
 	void insertarInicio(Object elem);
