@@ -17,7 +17,7 @@ public interface IGrafo {
 	
 	public boolean esConexo();
 	
-	public void agregarVertice(int v, Punto p);
+	public void agregarVertice(Punto p);
 
 	public void agregarArista(int peso, Punto inicio, Punto fin);
 

@@ -52,6 +52,10 @@ public class Arco {
 		this.fin = fin;
 	}
 
+	@Override
+	public String toString() {
+		return  this.inicio.getNombre() + ";" + this.fin.getNombre();
+	}
 	
 
 

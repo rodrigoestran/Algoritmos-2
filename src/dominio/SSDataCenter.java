@@ -15,9 +15,8 @@ import estructuras.ABB;
 import estructuras.Arco;
 import estructuras.DjikstraDCMasProximo;
 import estructuras.Grafo;
-import estructuras.GrafoLista;
 import estructuras.Hash;
-import estructuras.Lista;
+import estructuras.ListaSEIni;
 import estructuras.Nodo;
 import interfaces.ILista;
 import sistema.Retorno;
@@ -30,8 +29,8 @@ import sistema.Retorno.Resultado;
 public class SSDataCenter {
 	
     private Grafo mapa;
-    private Lista dataCenterEnRadio;
-	public String informe = "";
+    private ILista dataCenterEnRadio;
+	public String informe = ""; // ?
 
 	// datos de prueba //
 	Punto[] testPuntos = new Punto[]{ new DataCenter("CarmenDataCenters", new Empresa("Empower", "", "", "blue", "Unsure"), 100, 100, -24.90, -55.16),
@@ -51,40 +50,19 @@ public class SSDataCenter {
 	
 	// constructor //
     public SSDataCenter(int size) {
-        //this.arbolDataCenter = new ABB();
-        //this.puntos = new Hash(size);
         this.mapa = new Grafo(size);
-        this.dataCenterEnRadio = new Lista();
+        this.dataCenterEnRadio = new ListaSEIni();
     }
     
     // "destructor" //
     public void destruir() {
-        //this.arbolDataCenter = null;
         this.mapa = null;
-        //this.puntos = null;
         this.dataCenterEnRadio = null;
         this.informe = null;
     }
 	
     // getters y setters //
     
-    // se van
-//	public ABB getArbolDataCenter() {
-//        return arbolDataCenter;
-//    }
-
-//    public void setArbolDataCenter(ABB arbolDataCenter) {
-//        this.arbolDataCenter = arbolDataCenter;
-//    }
-
-//    public Hash getUbicaciones() {
-//        return puntos;
-//    }
-
-//    public void setUbicaciones(Hash u) {
-//        this.puntos = u;
-//    }
-
     public Grafo getMapa() {
         return mapa;
     }
@@ -93,31 +71,31 @@ public class SSDataCenter {
         this.mapa = m;
     }
 
-    public Lista getDataCenterEnRadio() {
+    public ILista getDataCenterEnRadio() {
         return dataCenterEnRadio;
     }
 
-    public void setDataCenterEnRadio(Lista dcEnRadio) {
+    public void setDataCenterEnRadio(ILista dcEnRadio) {
         this.dataCenterEnRadio = dcEnRadio;
     }
 
     // comportamiento
-    public Retorno registrarDataCenter(String nombre, Empresa empresa, int capCPRHoras, int costCPUHora, Double coordX, 
-    		Double coordY) {
-    	
-        Retorno ret = new Retorno(Resultado.ERROR_1);
-        // busca directamente en el hash sel grafo, por las coord del DC, que no se puede repetir
-        if (!this.mapa.estaVertice(coordX, coordY)) {
-            DataCenter dc = new DataCenter(nombre, empresa, capCPRHoras, costCPUHora, coordX, coordY);
-            // se fija si hay lugares disponibles (ya que hay un tope)
-            int posicionLibre = this.mapa.tieneLugarDisponible();
-            if (posicionLibre != -1){
-            	this.mapa.agregarVertice(posicionLibre, dc);
-	            ret.setResultado(Resultado.OK);
-            }
-        }
-        return ret;
-    }   
+//    public Retorno registrarDataCenter(String nombre, Empresa empresa, int capCPRHoras, int costCPUHora, Double coordX, 
+//    		Double coordY) {
+//    	
+//        Retorno ret = new Retorno(Resultado.ERROR_1);
+//        // busca directamente en el hash sel grafo, por las coord del DC, que no se puede repetir
+//        if (!this.mapa.estaVertice(coordX, coordY)) {
+//            DataCenter dc = new DataCenter(nombre, empresa, capCPRHoras, costCPUHora, coordX, coordY);
+//            // se fija si hay lugares disponibles (ya que hay un tope)
+//            int posicionLibre = this.mapa.tieneLugarDisponible();
+//            if (posicionLibre != -1){
+//            	this.mapa.agregarVertice(posicionLibre, dc);
+//	            ret.setResultado(Resultado.OK);
+//            }
+//        }
+//        return ret;
+//    }   
 
     public Punto buscar(Double x, Double y) {
         return this.mapa.buscarPunto(x, y);
@@ -138,7 +116,7 @@ public class SSDataCenter {
     // Para que es esto?
     public Retorno mostrarInOrden() {
         Retorno ret = new Retorno(Resultado.OK);	        
-        this.informe = this.mapa.getInforme();
+        //this.informe = this.mapa.getInforme();
         ret.valorString = this.informe;
         return ret;
     }
@@ -150,8 +128,7 @@ public class SSDataCenter {
     // el punto especifico se lo da el DC o Ciudad que correspondan desde Sistema
     public boolean agregarPunto(Punto p) {
         if (!mapa.getVertices().perteneceAHash(p.getCoordX(), p.getCoordY())) {
-            int pos = this.mapa.getVertices().insertarEnHash(p);
-            this.mapa.agregarVertice(pos, p);
+            this.mapa.agregarVertice(p);
             return true;
         }
         return false;
@@ -160,23 +137,6 @@ public class SSDataCenter {
     public boolean existe(Double coordX, Double coordY) {
         return mapa.existe(coordX, coordY);
     }
-
-    // creo que este se va
-//    public boolean asignarDataCenter(DataCenter dc, double coordX, double coordY) {
-//        boolean ret = false;
-//        if (this.existe(coordX, coordY)) {
-//            Ubicacion u = this.buscar(coordX, coordY);
-//            if (u != null) {                
-//                if (u.getDataCenter() == null) {
-//                    u.setDataCenter(dc);
-//                    dc.setUbicacion(u);
-//                    ret = true;
-//                }
-//
-//            }
-//        }
-//        return ret;
-//    }
 
     // no andaria como esta
     public Retorno registrarTramo(Double coordXi, Double coordYi, Double coordXf, Double coordYf, int peso) {
@@ -273,14 +233,15 @@ public class SSDataCenter {
     }
     
     public ILista obtenerRedMinima(){
-    	mapa.actualizarRedMinima();
-    	return mapa.transformaraListaTramos();
+    	return mapa.actualizarRedMinima();
     }
 
+    //?
     private int distanciaMasCorta(int[] costo, boolean[] visitado) {
 		return 0;
 	}
     
+    //?
     public void DepthFirstSearch(int v, boolean[] visitados, int radio) {
     	
     }
