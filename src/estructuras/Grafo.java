@@ -4,7 +4,7 @@ import interfaces.IGrafo;
 import interfaces.ILista;
 import dominio.DataCenter;
 import dominio.Punto;
-import estructuras.Lista;
+import estructuras.ListaSEIni;
 
 public class Grafo implements IGrafo{
 
@@ -12,6 +12,7 @@ public class Grafo implements IGrafo{
 	private int tope;
 	Arco[][] matrizAdyacencia;
 	boolean[] nodosUsados;
+	ILista informeRedMinima = new ListaSEIni();	
 	Hash vertices; // guarda los objetos DC. Es el unico lugar donde estan guardados
 	
 	public Grafo(int size) {
@@ -22,7 +23,6 @@ public class Grafo implements IGrafo{
 			  this.matrizAdyacencia[i][j]= new Arco();
 				
 		this.nodosUsados = new boolean[tope+1];
-
 	}
 
 	public int getSize() {
@@ -40,13 +40,10 @@ public class Grafo implements IGrafo{
 	public void setCantNodos(int cantNodos) {
 		this.tope = cantNodos;
 	}
-	
-	
 
-//	public boolean hayLugar() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
+	public void setInformeRedMinima(ILista informeRedMinima) {
+		this.informeRedMinima = informeRedMinima;
+	}
 
 	public Hash getVertices() {
 		return vertices;
@@ -75,11 +72,11 @@ public class Grafo implements IGrafo{
         return -1;
 	}
 	
-	public void agregarVertice(int pos, Punto p) {
+	public void agregarVertice(Punto p) {
 		this.cantVertices++;
+		int pos = this.vertices.insertarEnHash(p);
         this.nodosUsados[pos] = true;		
-        /// esto hay que arrglarlo porque no se como se obtiene luego la relacion con el hash 
-        this.vertices.insertarEnHash(p);
+        
 	}
 
 	public boolean existeArista(Punto ini, Punto fin) {
@@ -136,7 +133,7 @@ public class Grafo implements IGrafo{
 
 	@Override
 	public ILista obtenerVerticesAdyacentes(int v) {
-		Lista l = new Lista();
+		ListaSEIni l = new ListaSEIni();
 		for(int i=1; i<=this.tope; i++){
 			if(this.sonAdyacentes(v, i)){
 				l.insertarInicio(i);
@@ -167,14 +164,17 @@ public class Grafo implements IGrafo{
 	        }
 	        return 0;
 	}
-	
-	//moira
-	public void actualizarRedMinima(){
+		
+	// Pre: El grafo no está vacío y es no direccionado
+	// Pos: Objeto ILista con conjunto de Arcos unicos que tienen origen y destino para trazar tramos
+	public ILista actualizarRedMinima(){
+		
 		//Inicializacion
-		//va a usarlo para ir revisando en estas posiciones si ya pasó
+		informeRedMinima.vaciarLista();
 		boolean[] visitados = new boolean[tope]; 
 		visitados[0] = true; //por ejemplo
-		Arco[][] aux = new Arco[tope][tope]; //va a ser la nueva matriz
+		Arco[][] aux = new Arco[tope][tope]; // nueva matriz
+		
 		for (int i = 0; i < aux.length; i++) {
 			for (int j = 0; j < aux.length; j++) {
 				aux[i][j] = new Arco();
@@ -182,38 +182,39 @@ public class Grafo implements IGrafo{
 		}
 		//Proceso
 		//Inicializar valor maximo (MAX_VALUE), y coordenadas de arista candidata
+		int costo = Integer.MAX_VALUE;
+		int iCandidato = -1;
+		int jCandidato = -1;
+		
 		for (int k = 0; k < tope-1 ; k++) {
 			for (int i = 0; i < aux.length; i++) {
-				for (int j = 0; j < aux.length; j++) {
-					
+				for (int j = 0; j < aux.length; j++) 
 					// si es candidato (une visitado con no visitado)
-					// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
-				}
+					if (matrizAdyacencia[i][j].isExiste())
+						// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
+						if (costo > matrizAdyacencia[i][j].getDistancia() && 
+								!visitados[j]){
+							iCandidato = i;
+							jCandidato = j;
+						}
 			}
 			// agrego arista bidireccional a partir del valor minimo y las coordenadas
 			// y pongo como visitado a j
+			aux[iCandidato][jCandidato] = matrizAdyacencia[iCandidato][jCandidato] ;
+			aux[jCandidato][iCandidato] = matrizAdyacencia[jCandidato][iCandidato];
+			visitados[jCandidato] = true;
+			// preguntar si estará bien hacer esto
+			informeRedMinima.insertarInicio(aux[iCandidato][jCandidato]);
+			
 		}
 		matrizAdyacencia = aux;
 		
+		return informeRedMinima;
 	}
 	
-	public ILista transformaraListaTramos(){
-		ILista lista = new Lista();
-		for (int i=0; i<matrizAdyacencia.length; i++){
-			for (int j = 0; j < matrizAdyacencia.length; j++) {
-
-			}
-		}
-		return lista;
-	}
 	
 	public DataCenter buscarDC(String nombre){
 		this.vertices.buscar(nombre);
-		return null;
-	}
-
-	public String getInforme() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
