@@ -196,9 +196,9 @@ public class SSDataCenter {
             	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
             	{
             		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-            		DataCenter dcDestino = dDcMP.dijkstra(mapa, mapa.getVertices(), p);
-            		if(dcDestino.getCapacidadCPUenHoras()>=esfuerzoCPUrequeridoEnHoras)
-            		{
+            		DataCenter dcDestino = dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
+            		//if(dcDestino.getCapacidadCPUenHoras()>=esfuerzoCPUrequeridoEnHoras)
+            		//{
             			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
             			{
             				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
@@ -220,7 +220,7 @@ public class SSDataCenter {
             			}
             			
             			//si la capacidad del mas cercano no es suficiente aca llamaria de vuelta a Djikstra?
-            		}
+            		//}
             	}
             	else
             	{
