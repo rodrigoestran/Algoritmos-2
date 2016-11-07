@@ -184,19 +184,58 @@ public class SSDataCenter {
         return ret;
     }
  
-    public DataCenter dcMasProximo(Double coordX, Double coordY) {
-        DataCenter dc = null;
-        int u = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
-        if (u != -1) {
-            Punto punto = this.mapa.getVertices().puntoPorPosicion(u);
-            dc = (DataCenter) punto;
-            if (dc == null) {
-                DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-                 dc = dDcMP.dijkstra(mapa, mapa.getVertices(), u);                
-            } 
+    public String procesarInformación(Double coordX, Double coordY, int esfuerzoCPUrequeridoEnHoras) {
+        DataCenter dcOrigen = null;
+        String string = "";
+        int p = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
+        if (p != -1) {
+            Punto punto = this.mapa.getVertices().puntoPorPosicion(p);
+            dcOrigen = (DataCenter) punto;
+            if(dcOrigen!= null)
+            {
+            	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
+            	{
+            		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
+            		DataCenter dcDestino = dDcMP.dijkstra(mapa, mapa.getVertices(), p);
+            		if(dcDestino.getCapacidadCPUenHoras()>=esfuerzoCPUrequeridoEnHoras)
+            		{
+            			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
+            			{
+            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
+            				int distancia = mapa.devolverDistancia(p, p2);
+            				int costo = distancia + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
+            				string = dcDestino.getNombre()+ "|" + costo;
+            				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+            				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+            				
+            			}
+            			else
+            			{
+            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
+            				int distancia = mapa.devolverDistancia(p, p2);            				
+            				string = dcDestino.getNombre()+ "|" + distancia;
+            				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+            				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+            				
+            			}
+            			
+            			//si la capacidad del mas cercano no es suficiente aca llamaria de vuelta a Djikstra?
+            		}
+            	}
+            	else
+            	{
+            		string = dcOrigen.getNombre() + "|" + "0";
+            		dcOrigen.setCapacidadCPUenHoras(dcOrigen.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+            		dcOrigen.setEsfuerzoEnUso(dcOrigen.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+            	}
+            }
+            
         }        
-        return dc;
+        return string;
     }
+    
+    
+    
 
     public void crearMapa() {
     	String mapaURL = "http://maps.googleapis.com/maps/api/staticmap?size=1200x600&maptype=roadmap&sensor=false";
@@ -223,9 +262,7 @@ public class SSDataCenter {
     	return mapString;
     }
     
-    public ArrayList<DataCenter> DataCentersEnRadio(double x, double y, int distancia){
-		return null;
-	}
+   
     
     public String listarRedMinima(){
     	ILista red = obtenerRedMinima();
@@ -236,10 +273,7 @@ public class SSDataCenter {
     	return mapa.actualizarRedMinima();
     }
 
-    //?
-    private int distanciaMasCorta(int[] costo, boolean[] visitado) {
-		return 0;
-	}
+  
     
     //?
     public void DepthFirstSearch(int v, boolean[] visitados, int radio) {

@@ -156,7 +156,7 @@ public class DjikstraDCMasProximo {
 	    }
         return dc;
 	 }
-
+//no se si esto asi va a funcionar...
 	 private DataCenter devolverDataCenter(Punto punto2) {
 		 return (DataCenter)punto2; // cambié esto
 	 }
@@ -192,5 +192,8 @@ public class DjikstraDCMasProximo {
 	private ILista obtenerAdyacentes(int u) {
 		 return getGrafo().obtenerVerticesAdyacentes(u);
 	}
+	
+	
+	
 
 }
