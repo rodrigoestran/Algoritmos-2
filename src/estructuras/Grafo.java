@@ -194,6 +194,7 @@ public class Grafo implements IGrafo{
 						// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
 						if (costo > matrizAdyacencia[i][j].getDistancia() && 
 								!visitados[j]){
+							costo = matrizAdyacencia[i][j].getDistancia();
 							iCandidato = i;
 							jCandidato = j;
 						}
