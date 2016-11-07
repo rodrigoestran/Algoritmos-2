@@ -92,11 +92,11 @@ public class DjikstraDCMasProximo {
         punto = aPunto;
     }
 
-    //El metodo difiere del de clase en que recibe el grafo(q aca lo uso para setear el grafo), lo uso despues para
+    //El metodo difiere del de clase en que recibe el grafo(q aca lo uso para setear el grafo)y saber donde buscar, lo uso despues para
     //utilizar metodos del grafo en el recursivo, en obtener ady, y en obtener vertice menor distancia. No reciben Hash 
-    //yo si, y reciben destino que yo no, esa parte no la entendí 
-	public DataCenter dijkstra(Grafo mapa, Hash ubicaciones, int origen) {
-		//caro el grafo
+    //yo si, y busco los dc en el hash, y reciben destino que yo no, esa parte no la entendí 
+	public DataCenter dijkstra(Grafo mapa, Hash ubicaciones, int origen, int esfuerzoCPUrequeridoEnHoras) {
+		//cargo el grafo
 	    setGrafo(mapa);
 	   
         setDistancia(new int[ubicaciones.getSizeTable()]); // la distancia mas corta partiendo del origen
@@ -119,12 +119,12 @@ public class DjikstraDCMasProximo {
         
         //llamo a recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
         //en clase devuelven un int que es la distancia a la posicion destino
-        DataCenter dc = dijkstra(origen);
+        DataCenter dc = dijkstra(origen, esfuerzoCPUrequeridoEnHoras);
         return dc;
 	
 	}
 	
-	public DataCenter dijkstra(int p) {
+	public DataCenter dijkstra(int p, int esfuerzoCPUrequeridoEnHoras) {
 	    boolean notFound = true;
 	    DataCenter dc = null;
 	    //Busco vertices adyacentes del origen
@@ -150,8 +150,8 @@ public class DjikstraDCMasProximo {
 	                dc = getDataCenter();         
 	        }
 		        
-	        if (notFound) {
-	            dijkstra(vertMenorDist);
+	        if (notFound || (dc.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras)) {
+	            dijkstra(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
 	        }
 	    }
         return dc;
