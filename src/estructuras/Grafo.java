@@ -56,7 +56,7 @@ public class Grafo implements IGrafo{
 	public void busquedaEnProdundidad(int v, boolean[] visitados) {
         visitados[v] = true;
         for (int i = 0; i < tope; i++) {
-            if (matrizAdyacencia[v][i].isExiste() && !visitados[i]) {
+            if (matrizAdyacencia[v][i].getExiste() && !visitados[i]) {
             	busquedaEnProdundidad(i, visitados);
             }
         }
@@ -101,7 +101,7 @@ public class Grafo implements IGrafo{
 	}
 	
 	private int obtenerPosicion(Punto p){
-		return vertices.posicionActual(p.getCoordX(), p.getCoordY());
+		return vertices.posicionPorCoord(p.getCoordX(), p.getCoordY());
 	}
 
 	@Override
@@ -144,8 +144,7 @@ public class Grafo implements IGrafo{
 
 	@Override
 	public boolean sonAdyacentes(int a, int b) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.matrizAdyacencia[a][b].getExiste();
 	}
 
 	@Override
@@ -190,7 +189,7 @@ public class Grafo implements IGrafo{
 			for (int i = 0; i < aux.length; i++) {
 				for (int j = 0; j < aux.length; j++) 
 					// si es candidato (une visitado con no visitado)
-					if (matrizAdyacencia[i][j].isExiste())
+					if (matrizAdyacencia[i][j].getExiste())
 						// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
 						if (costo > matrizAdyacencia[i][j].getDistancia() && 
 								!visitados[j]){
@@ -224,7 +223,7 @@ public class Grafo implements IGrafo{
 
 	public Punto buscarPunto(Double x, Double y) {
 		Punto p = null;
-		int pos = this.vertices.posicionActual(x, y);
+		int pos = this.vertices.posicionPorCoord(x, y);
 		if (pos != -1) {
 			p = this.vertices.puntoPorPosicion(pos);
 		}
@@ -236,7 +235,7 @@ public class Grafo implements IGrafo{
 	}
 
 	public Punto obtenerPunto(Double coordX, Double coordY) {
-		int posicion = vertices.posicionActual(coordX, coordY); 
+		int posicion = vertices.posicionPorCoord(coordX, coordY); 
 		if (posicion != -1)
 			return vertices.puntoPorPosicion(posicion);
 		return null;

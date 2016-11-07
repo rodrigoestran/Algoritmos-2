@@ -7,9 +7,13 @@ import interfaces.ILista;
 public class DjikstraDCMasProximo {
 	
 	private static Grafo grafo;
+	//array para guardar distancias visitadas
     private static int[] distancia;
+  //array para guardar puntos visitados
     private static int[] previo;
+  //array para guardar estado
     private static boolean[] visitado;
+    
     private static Hash hash;
     private static DataCenter dataCenter;
     private static Punto punto;
@@ -88,12 +92,17 @@ public class DjikstraDCMasProximo {
         punto = aPunto;
     }
 
-	public DataCenter dijkstra(Grafo mapa, Hash ubicaciones, int u) {
+    //El metodo difiere del de clase en que recibe el grafo(q aca lo uso para setear el grafo), lo uso despues para
+    //utilizar metodos del grafo en el recursivo, en obtener ady, y en obtener vertice menor distancia. No reciben Hash 
+    //yo si, y reciben destino que yo no, esa parte no la entendí 
+	public DataCenter dijkstra(Grafo mapa, Hash ubicaciones, int origen) {
+		//caro el grafo
 	    setGrafo(mapa);
-        setDistancia(new int[ubicaciones.getSizeTable()]); // la distancia mas corta partiendod el origen
+	   
+        setDistancia(new int[ubicaciones.getSizeTable()]); // la distancia mas corta partiendo del origen
         setPrevio(new int[ubicaciones.getSizeTable()]); // el nodo previo en el camino.
         setVisitado(new boolean[ubicaciones.getSizeTable()]); //nodos visitados.
-        setORIGEN(u);//el inicio
+        setORIGEN(origen);//el inicio
         DjikstraDCMasProximo.setHash(ubicaciones);
         setDataCenter(null);
 
@@ -105,31 +114,33 @@ public class DjikstraDCMasProximo {
             getVisitado()[i] = false;
         }
 
-        getDistancia()[u] = 0; //distancia 0 entre orig y orig.
-        getVisitado()[u] = true; //el origen queda como vistado
-
-        DataCenter dc = dijkstra(u);
+        getDistancia()[origen] = 0; //distancia 0 entre orig y orig.
+        getVisitado()[origen] = true; //el origen queda como vistado
+        
+        //llamo a recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
+        //en clase devuelven un int que es la distancia a la posicion destino
+        DataCenter dc = dijkstra(origen);
         return dc;
 	
 	}
 	
-	public DataCenter dijkstra(int u) {
+	public DataCenter dijkstra(int p) {
 	    boolean notFound = true;
 	    DataCenter dc = null;
 	    //Busco vertices adyacentes del origen
-	    ILista l = obtenerAdyacentes(u);
+	    ILista l = obtenerAdyacentes(p);
 	
-	    //punto de menor distancia
-	    int vertMenorDist = obtenerVerticeMenorDistancia(l, u);
+	    //aca saco el vert que esta a  menor distancia
+	    int vertMenorDist = obtenerVerticeMenorDistancia(l, p);
 	
 	    if (vertMenorDist != -1) {
-	        u = getPrevio()[vertMenorDist];
-	        int peso = getGrafo().devolverDistancia(vertMenorDist, u);
+	        p = getPrevio()[vertMenorDist];
+	        int peso = getGrafo().devolverDistancia(vertMenorDist, p);
 	
 	        //Modifico listas con el punto que selecciono
 	        getVisitado()[vertMenorDist] = true;
-	        getPrevio()[vertMenorDist] = u;
-	        getDistancia()[vertMenorDist] = getDistancia()[u] + peso;
+	        getPrevio()[vertMenorDist] = p;
+	        getDistancia()[vertMenorDist] = getDistancia()[p] + peso;
 	
 	        setPunto(getHash().puntoPorPosicion(vertMenorDist));
 	        setDataCenter(devolverDataCenter(getPunto()));
@@ -145,13 +156,13 @@ public class DjikstraDCMasProximo {
 	    }
         return dc;
 	 }
-
+//no se si esto asi va a funcionar...
 	 private DataCenter devolverDataCenter(Punto punto2) {
 		 return (DataCenter)punto2; // cambié esto
 	 }
 
 
-	private int obtenerVerticeMenorDistancia(ILista l, int u) {
+	private int obtenerVerticeMenorDistancia(ILista l, int p) {
 		int verticeMenor = -1;
 		int vertice = 0;
      	int pesoaux = 0;
@@ -161,10 +172,10 @@ public class DjikstraDCMasProximo {
      	while (aux != null) {
      		vertice = (Integer) aux.getDato();
      		if (!getVisitado()[vertice]) {
-     			pesoaux = getGrafo().devolverDistancia(vertice, u);
-     			if (getDistancia()[u] + pesoaux < getDistancia()[vertice]) {
-     				getPrevio()[vertice] = u;
-     				getDistancia()[vertice] = getDistancia()[u] + pesoaux;
+     			pesoaux = getGrafo().devolverDistancia(vertice, p);
+     			if (getDistancia()[p] + pesoaux < getDistancia()[vertice]) {
+     				getPrevio()[vertice] = p;
+     				getDistancia()[vertice] = getDistancia()[p] + pesoaux;
      			}            
      		} 
      		aux = aux.getSig();
@@ -181,5 +192,8 @@ public class DjikstraDCMasProximo {
 	private ILista obtenerAdyacentes(int u) {
 		 return getGrafo().obtenerVerticesAdyacentes(u);
 	}
+	
+	
+	
 
 }
