@@ -159,7 +159,7 @@ public class SSDataCenter {
 
     public Retorno eliminarPunto(Double coordX, Double coordY) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
-        int pos = mapa.getVertices().posicionActual(coordX, coordY);
+        int pos = mapa.getVertices().posicionPorCoord(coordX, coordY);
         if (pos != -1) {
             Punto p = this.mapa.getVertices().puntoPorPosicion(pos);
             this.mapa.eliminarVertice(pos);
@@ -186,7 +186,7 @@ public class SSDataCenter {
  
     public DataCenter dcMasProximo(Double coordX, Double coordY) {
         DataCenter dc = null;
-        int u = this.mapa.getVertices().posicionActual(coordX, coordY);
+        int u = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
         if (u != -1) {
             Punto punto = this.mapa.getVertices().puntoPorPosicion(u);
             dc = (DataCenter) punto;
