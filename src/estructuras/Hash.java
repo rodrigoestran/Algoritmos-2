@@ -1,42 +1,143 @@
 package estructuras;
 
-import estructuras.Punto;;
+import dominio.Punto;
 
 public class Hash {
 
-	public Hash(int size) {
-		// TODO Auto-generated constructor stub
+	// hash de DC capaz?
+	private Punto[] table;
+    private int sizeTable;
+
+    public Punto[] getTable() {
+        return table;
+    }
+
+    public void setTable(Punto[] tabla) {
+        this.table = tabla;
+    }
+
+    public int getSizeTable() {
+        return sizeTable;
+    }
+
+    public void setSizeTable(int tamanioTabla) {
+        this.sizeTable = tamanioTabla;
+    }
+
+    /*
+     * Constructor
+     */
+    public Hash(int t) {
+        this.sizeTable = t;
+        this.table = new Punto[t];
+    }
+
+    public int hashCode(double coordX, double coordY) {
+        String tostring = String.valueOf(coordX) + String.valueOf(coordY);
+        int num = 0;
+        for (int i = 0; i < tostring.length(); i++) {
+        	num += (int) tostring.charAt(i);
+        }
+        return num;
+         //return num % sizeTable;
+    }
+    
+	public boolean perteneceAHash(double x, double y) {
+		int posicion = hashCode(x, y);
+        boolean aux = true;
+        int contador = 0;
+        while (aux) {
+            if (contador < table.length) {
+            	contador += 1;
+                if (table[posicion] != null) {
+                    if (!(table[posicion].getCoordX().equals(0.0) && table[posicion].getCoordY().equals(0.0))) {
+                        if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) {
+                            return true;
+                        } else {
+                        	posicion += 1;
+                            if (posicion == table.length) {
+                            	posicion = 0;
+                            }
+                        }
+                    } else {
+                    	posicion += 1;
+                        if (posicion == table.length) {
+                        	posicion = 0;
+                        }
+                    }
+                } else {
+                	aux = false;
+                }
+            } else {
+            	aux = false;
+            }
+        }
+        return false;
 	}
 
-	public boolean pertenece(double coordX, double coordY) {
-		// TODO Auto-generated method stub
-		return false;
+	public int insertarEnHash(Punto v) {
+		int posicion = hashCode(v.getCoordX(), v.getCoordY());
+        boolean aux = true;
+        while (aux) {
+            if (table[posicion] != null) {
+                if (!(table[posicion].getCoordX().equals(0.0) && table[posicion].getCoordY().equals(0.0))) {
+                	posicion += 1;
+                    if (posicion == table.length) {
+                    	posicion = 0;
+                    }
+                } else {
+                	aux = false;
+                }
+            } else {
+            	aux = false;
+            }
+        }
+        table[posicion] = v;
+        return posicion;
 	}
 
-	public int insertar(Punto p) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int posicionActual(Double x, Double y) {
+		int posicion = hashCode(x, y);
+		boolean aux = true;
+		int contador = 0;
+		while (aux) {
+			if (contador < table.length) {
+				contador += 1;
+				if (table[posicion] != null) {
+					if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) {
+						return posicion;
+					} else {
+						posicion += 1;
+						if (posicion == table.length) {
+							posicion = 0;
+						}
+					}
+				} 
+				else 
+				{
+					aux = false;
+				}
+			} 
+			else 
+			{
+				aux = false;
+			}
+		}
+		return -1;
 	}
 
-	public int devolverPosActual(Double coordX, Double coordY) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Punto devolverPuntoPorPosicion(int pos) {
-		// TODO Auto-generated method stub
+	public Punto puntoPorPosicion(int posicion) {
 		return null;
 	}
 
-	public void eliminarPunto(int pos) {
-		// TODO Auto-generated method stub
+	public void eliminarPunto(int posicion) {
+		this.table[posicion] = null;
 		
 	}
 
-	
-	public int getSizeTabla() {
+	public void buscar(String nombre) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 }

@@ -5,8 +5,7 @@
  */
 package dominio;
 
-import estructuras.Lista;
-import estructuras.Punto;
+import estructuras.ListaSEIni;
 
 /**
  *
@@ -14,7 +13,6 @@ import estructuras.Punto;
  */
 public class Ciudad extends Punto{
     
-	private Lista datacenters;
 	private String nombre;
 	
 	// Constructor //
@@ -30,14 +28,6 @@ public class Ciudad extends Punto{
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public Lista getDatacenters() {
-		return datacenters;
-	}
-
-	public void setDatacenters(Lista datacenters) {
-		this.datacenters = datacenters;
 	}
 
 	

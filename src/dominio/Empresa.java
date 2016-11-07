@@ -5,6 +5,7 @@
  */
 package dominio;
 
+import estructuras.Nodo;
 import utilidades.EmailValidator;
 
 /**
@@ -69,6 +70,22 @@ public class Empresa {
 		EmailValidator validator = new EmailValidator();
 		return validator.validate(this.email);
 		
+	}
+	
+	@Override
+	public String toString() {
+		return nombre + ";" + email;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Empresa other = (Empresa) obj;
+		return other.getNombre().equals(this.nombre);
+	}
+
+	public int compareTo(Nodo n) {
+        Empresa nuevo = n.getDato();
+        return this.nombre.compareTo(nuevo.getNombre());
 	}
 	
 	

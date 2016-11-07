@@ -1,8 +1,10 @@
 package estructuras;
 
+import dominio.Punto;
+
 public class Arco {
 	
-	private Integer distancia; // será el peso?
+	private Integer distancia; 
 	private Punto inicio;
 	private Punto fin;
 	private boolean existe;
@@ -50,6 +52,10 @@ public class Arco {
 		this.fin = fin;
 	}
 
+	@Override
+	public String toString() {
+		return  this.inicio.getNombre() + ";" + this.fin.getNombre();
+	}
 	
 
 
