@@ -23,21 +23,19 @@ public class ObligatorioAED2 {
     public static void main(String[] args) {
         Sistema s = new Sistema();
         s.inicializarSistema(15);
-        Punto[] testPuntos = new Punto[]{ new DataCenter("CarmenDataCenters", new Empresa("Empower", "", "", "blue", "Unsure"), 100, 100, -24.90, -55.16),
-        		new DataCenter("DCStores", new Empresa("Empower", "", "", "blue", "Unsure"), 100, 100, -34.90, -53.16),
-        		new DataCenter("DreamCastleDC", new Empresa("Crrrawl", "", "", "green", "Unsure"), 100, 100, -20.90, -50.16),
-        		new DataCenter("DallasCoasters", new Empresa("ClassyCat", "", "", "red", "Unsure"), 100, 100, -25.90, -55.16),
-        		new DataCenter("DogoCat", new Empresa("ZazzyPants", "", "", "purple", "Unsure"), 100, 100, 47.0, -122.0),
-        		new Ciudad(47.606210, -122.332071, "Seattle"),
-        		new Ciudad(37.774930, -122.419416, "San_Francisco"),
-        		new Ciudad(16.853109, -99.823653, "Acapulco"),
-        		new Ciudad(-34.603684, -58.381559, "Buenos_Aires"),
-        		new Ciudad(-0.180653, -78.467838, "Quito")
-        		};		
+        s.registrarEmpresa("ClassyCat", "", "", "email@email.com", "red");
+        s.registrarEmpresa("ZazzyPants", "", "", "empresa@gmail.com", "purple");
         s.registrarCiudad("Chicago", 41.878114, -87.629798);
-        
-        
-        s.mapaEstado();
+        s.registrarCiudad("Seattle", 47.606210, -122.332071);
+		s.registrarCiudad( "San_Francisco", 37.774930, -122.419416);
+		s.registrarCiudad("Acapulco", 16.853109, -99.823653);
+		s.registrarCiudad("Buenos_Aires", -34.603684, -58.381559);
+		s.registrarCiudad("Quito", -0.180653, -78.467838);
+		s.registrarDC("DogoCat", 47.0, -122.0, "ZazzyPants", 100, 100);
+		s.registrarDC("DallasCoasters", -25.90, -55.16, "ClassyCat", 100, 100);
+		s.registrarDC("DreamCastleDC", -20.90, -50.16, "ClassyCat", 100, 100);
+        //s.mapaEstado();
+        s.listadoEmpresas();
     }
     
 }

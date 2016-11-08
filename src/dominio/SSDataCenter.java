@@ -5,19 +5,11 @@
  */
 package dominio;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 
-import estructuras.ABB;
-import estructuras.Arco;
+import java.util.ArrayList;
 import estructuras.DjikstraDCMasProximo;
 import estructuras.Grafo;
-import estructuras.Hash;
 import estructuras.ListaSEIni;
-import estructuras.Nodo;
 import interfaces.ILista;
 import sistema.Retorno;
 import sistema.Retorno.Resultado;
