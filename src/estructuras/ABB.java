@@ -49,8 +49,9 @@ public class ABB implements IABB{
 
    
     @Override
-    public void devolverInforme() {
+    public String devolverInforme() {
         devolverInforme(this.raiz);
+        return informe;
     }
 
   

@@ -187,12 +187,14 @@ public class Grafo implements IGrafo{
 		
 		for (int k = 0; k < tope-1 ; k++) {
 			for (int i = 0; i < aux.length; i++) {
+				//VISITADO
 				for (int j = 0; j < aux.length; j++) 
 					// si es candidato (une visitado con no visitado)
 					if (matrizAdyacencia[i][j].getExiste())
 						// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
 						if (costo > matrizAdyacencia[i][j].getDistancia() && 
 								!visitados[j]){
+							costo = matrizAdyacencia[i][j].getDistancia();
 							iCandidato = i;
 							jCandidato = j;
 						}

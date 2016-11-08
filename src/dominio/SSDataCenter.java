@@ -5,19 +5,11 @@
  */
 package dominio;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 
-import estructuras.ABB;
-import estructuras.Arco;
+import java.util.ArrayList;
 import estructuras.DjikstraDCMasProximo;
 import estructuras.Grafo;
-import estructuras.Hash;
 import estructuras.ListaSEIni;
-import estructuras.Nodo;
 import interfaces.ILista;
 import sistema.Retorno;
 import sistema.Retorno.Resultado;
@@ -32,22 +24,6 @@ public class SSDataCenter {
     private ILista dataCenterEnRadio;
 	public String informe = ""; // ?
 
-	// datos de prueba //
-	Punto[] testPuntos = new Punto[]{ new DataCenter("CarmenDataCenters", new Empresa("Empower", "", "", "blue", "Unsure"), 100, 100, -24.90, -55.16),
-		new DataCenter("DCStores", new Empresa("Empower", "", "", "blue", "Unsure"), 100, 100, -34.90, -53.16),
-		new DataCenter("DreamCastleDC", new Empresa("Crrrawl", "", "", "green", "Unsure"), 100, 100, -20.90, -50.16),
-		new DataCenter("DallasCoasters", new Empresa("ClassyCat", "", "", "red", "Unsure"), 100, 100, -25.90, -55.16),
-		new DataCenter("DogoCat", new Empresa("ZazzyPants", "", "", "purple", "Unsure"), 100, 100, 47.0, -122.0),
-		new Ciudad(41.878114, -87.629798, "Chicago"),
-		new Ciudad(47.606210, -122.332071, "Seattle"),
-		new Ciudad(37.774930, -122.419416, "San_Francisco"),
-		new Ciudad(16.853109, -99.823653, "Acapulco"),
-		new Ciudad(-34.603684, -58.381559, "Buenos_Aires"),
-		new Ciudad(-0.180653, -78.467838, "Quito")
-		};		
-	// Eliminar luego
-	
-	
 	// constructor //
     public SSDataCenter(int size) {
         this.mapa = new Grafo(size);
@@ -138,7 +114,7 @@ public class SSDataCenter {
         return mapa.existe(coordX, coordY);
     }
 
-    // no andaria como esta
+
     public Retorno registrarTramo(Double coordXi, Double coordYi, Double coordXf, Double coordYf, int peso) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
         if (peso > 0) {
@@ -237,30 +213,30 @@ public class SSDataCenter {
     
     
 
-    public void crearMapa() {
-    	String mapaURL = "http://maps.googleapis.com/maps/api/staticmap?size=1200x600&maptype=roadmap&sensor=false";
-		mapaURL += buildMapString();
-		try {
-			Desktop.getDesktop().browse(new URI(mapaURL));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-    }
+//    public void crearMapa() {
+//    	String mapaURL = "http://maps.googleapis.com/maps/api/staticmap?size=1200x600&maptype=roadmap&sensor=false";
+//		mapaURL += buildMapString();
+//		try {
+//			Desktop.getDesktop().browse(new URI(mapaURL));
+//		} catch (IOException | URISyntaxException e) {
+//			e.printStackTrace();
+//		}
+//    }
     
-    public String buildMapString(){
-    	String mapString = "";
-    	for (int i=0; i<testPuntos.length; i++){
-    		if (testPuntos[i] instanceof Ciudad)	
-    			mapString += "&markers=color:yellow";
-    		else     			
-    			mapString += "&markers=color:" + ((DataCenter)testPuntos[i]).getEmpresa().getColor();
-    		
-    		mapString += "%7Clabel:" + testPuntos[i].getNombre() + 
-    					 "%7C" + testPuntos[i].getCoordX() + "," + testPuntos[i].getCoordY() ;
-    		
-    	}
-    	return mapString;
-    }
+//    public String buildMapString(){
+//    	String mapString = "";
+//    	for (int i=0; i<testPuntos.length; i++){
+//    		if (testPuntos[i] instanceof Ciudad)	
+//    			mapString += "&markers=color:yellow";
+//    		else     			
+//    			mapString += "&markers=color:" + ((DataCenter)testPuntos[i]).getEmpresa().getColor();
+//    		
+//    		mapString += "%7Clabel:" + testPuntos[i].getNombre() + 
+//    					 "%7C" + testPuntos[i].getCoordX() + "," + testPuntos[i].getCoordY() ;
+//    		
+//    	}
+//    	return mapString;
+//    }
     
    
     
