@@ -49,8 +49,9 @@ public class ABB implements IABB{
 
    
     @Override
-    public void devolverInforme() {
+    public String devolverInforme() {
         devolverInforme(this.raiz);
+        return informe;
     }
 
   
@@ -353,10 +354,10 @@ public class ABB implements IABB{
 		if(nodo == null)
 			return null;
 		else{
-			if(nodo.getDato().getNombre() == x)
+			if(nodo.getDato().getNombre().equals(x))
 				return nodo.getDato();
 			else{
-				if(x.compareTo(nodo.getDato().getNombre()) == -1)
+				if(x.compareTo(nodo.getDato().getNombre()) < 0)
 					return perteneceRec(x, nodo.getIzq());
 				else
 					return perteneceRec(x, nodo.getDer());

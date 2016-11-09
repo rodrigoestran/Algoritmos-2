@@ -13,7 +13,7 @@ import sistema.Retorno.Resultado;
 public class Sistema implements ISistema {
 	private int cantPuntos;
 	private SSDataCenter ssdc;
-	private ABB empresas; // las empresas son un arbol
+	private ABB empresas = new ABB(); // las empresas son un arbol
 	
 	@Override
 	public Retorno inicializarSistema(int cantPuntos) {
@@ -35,7 +35,7 @@ public class Sistema implements ISistema {
 	public Retorno registrarEmpresa(String nombre, String direccion,
 			String pais, String email_contacto, String color) {
 		Empresa newEmp = new Empresa(nombre, direccion, email_contacto, color, pais);
-		if (buscarEmpresa(nombre) != null){
+		if (buscarEmpresa(nombre) == null){
 			if (newEmp.validar()) {
 				this.empresas.insertar(newEmp);
 				return new Retorno(Resultado.OK);
@@ -62,7 +62,7 @@ public class Sistema implements ISistema {
 			String empresa, int capacidadCPUenHoras, int costoCPUporHora) {
 		if (ssdc.getMapa().tieneLugarDisponible() != -1){
 			if (capacidadCPUenHoras > 0){
-				Empresa e = buscarEmpresa(nombre);
+				Empresa e = buscarEmpresa(empresa);
 				if (e != null){
 					DataCenter p = new DataCenter(nombre, e, capacidadCPUenHoras, costoCPUporHora, coordX, coordY);
 					boolean r = ssdc.agregarPunto(p);
@@ -114,7 +114,7 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno listadoEmpresas() {
-		// TODO Auto-generated method stub
+		System.out.println(empresas.devolverInforme());
 		return new Retorno(Resultado.NO_IMPLEMENTADA);
 	}
 

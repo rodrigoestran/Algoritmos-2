@@ -17,7 +17,7 @@ public class Arco {
 		this.distancia = distancia;
 	}
 	
-	public boolean isExiste() {
+	public boolean getExiste() {
 		return existe;
 	}
 

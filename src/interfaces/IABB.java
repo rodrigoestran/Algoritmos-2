@@ -49,7 +49,7 @@ public interface IABB {
 	    Nodo obtenerElemento(String s, Nodo nodo);
 
 	    int obtenerPeso(Nodo nodo);
-	    void devolverInforme();
+	    String devolverInforme();
 	    void devolverInforme(Nodo a) ;
     
 }

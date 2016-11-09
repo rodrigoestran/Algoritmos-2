@@ -5,6 +5,7 @@ import dominio.Punto;
 public class Hash {
 
 	// hash de DC capaz?
+	//si no vamos a guardar las ciudades en el hash si, me parece mas generico que sean puntos.
 	private Punto[] table;
     private int sizeTable;
 
@@ -24,6 +25,8 @@ public class Hash {
         this.sizeTable = tamanioTabla;
     }
 
+    
+    
     /*
      * Constructor
      */
@@ -31,15 +34,15 @@ public class Hash {
         this.sizeTable = t;
         this.table = new Punto[t];
     }
-
+//Esto hay que verlo en clase
     public int hashCode(double coordX, double coordY) {
         String tostring = String.valueOf(coordX) + String.valueOf(coordY);
         int num = 0;
         for (int i = 0; i < tostring.length(); i++) {
         	num += (int) tostring.charAt(i);
         }
-        return num;
-         //return num % sizeTable;
+        //return num;
+        return num % sizeTable;
     }
     
 	public boolean perteneceAHash(double x, double y) {
@@ -93,10 +96,11 @@ public class Hash {
             }
         }
         table[posicion] = v;
+        System.out.println(posicion);
         return posicion;
 	}
 
-	public int posicionActual(Double x, Double y) {
+	public int posicionPorCoord(Double x, Double y) {
 		int posicion = hashCode(x, y);
 		boolean aux = true;
 		int contador = 0;
@@ -125,9 +129,15 @@ public class Hash {
 		}
 		return -1;
 	}
+	
+	//no estoy seguro del if acá.
 
 	public Punto puntoPorPosicion(int posicion) {
-		return null;
+		 if (table[posicion] != null && !(table[posicion].getCoordX() == 0.0 && table[posicion].getCoordY() == 0.0)) {
+	            return table[posicion];
+	        } else {
+	            return null;
+	        }
 	}
 
 	public void eliminarPunto(int posicion) {
