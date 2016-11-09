@@ -25,6 +25,8 @@ public class Hash {
         this.sizeTable = tamanioTabla;
     }
 
+    
+    
     /*
      * Constructor
      */
@@ -39,8 +41,8 @@ public class Hash {
         for (int i = 0; i < tostring.length(); i++) {
         	num += (int) tostring.charAt(i);
         }
-        return num;
-         //return num % sizeTable;
+        //return num;
+        return num % sizeTable;
     }
     
 	public boolean perteneceAHash(double x, double y) {
@@ -94,6 +96,7 @@ public class Hash {
             }
         }
         table[posicion] = v;
+        System.out.println(posicion);
         return posicion;
 	}
 

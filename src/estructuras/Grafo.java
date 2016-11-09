@@ -16,8 +16,10 @@ public class Grafo implements IGrafo{
 	Hash vertices; // guarda los objetos DC. Es el unico lugar donde estan guardados
 	
 	public Grafo(int size) {
-		this.cantVertices = size;
+		this.cantVertices = 0;
+		this.tope = size;
 		this.matrizAdyacencia = new Arco[tope+1][tope+1];
+		this.vertices = new Hash(tope);
 		for (int i = 1; i<=tope; i++)
 			for (int j = 1; j<=tope; j++)
 			  this.matrizAdyacencia[i][j]= new Arco();
@@ -75,7 +77,12 @@ public class Grafo implements IGrafo{
 	public void agregarVertice(Punto p) {
 		this.cantVertices++;
 		int pos = this.vertices.insertarEnHash(p);
-        this.nodosUsados[pos] = true;		
+        this.nodosUsados[pos] = true;	
+        
+        for (int i = 0; i < vertices.getSizeTable(); i++) {
+        	if (vertices.getTable()[i] != null)
+        		System.out.println(vertices.getTable()[i].getNombre());
+		}
         
 	}
 

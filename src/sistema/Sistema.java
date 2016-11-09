@@ -62,7 +62,7 @@ public class Sistema implements ISistema {
 			String empresa, int capacidadCPUenHoras, int costoCPUporHora) {
 		if (ssdc.getMapa().tieneLugarDisponible() != -1){
 			if (capacidadCPUenHoras > 0){
-				Empresa e = buscarEmpresa(nombre);
+				Empresa e = buscarEmpresa(empresa);
 				if (e != null){
 					DataCenter p = new DataCenter(nombre, e, capacidadCPUenHoras, costoCPUporHora, coordX, coordY);
 					boolean r = ssdc.agregarPunto(p);
