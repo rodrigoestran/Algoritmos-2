@@ -79,10 +79,10 @@ public class Grafo implements IGrafo{
 		int pos = this.vertices.insertarEnHash(p);
         this.nodosUsados[pos] = true;	
         
-        for (int i = 0; i < vertices.getSizeTable(); i++) {
-        	if (vertices.getTable()[i] != null)
-        		System.out.println(vertices.getTable()[i].getNombre());
-		}
+//        for (int i = 0; i < vertices.getSizeTable(); i++) {
+//        	if (vertices.getTable()[i] != null)
+//        		System.out.println(vertices.getTable()[i].getNombre());
+//		}
         
 	}
 
