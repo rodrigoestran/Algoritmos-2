@@ -96,7 +96,7 @@ public class Hash {
             }
         }
         table[posicion] = v;
-        System.out.println(posicion);
+        //System.out.println(posicion);
         return posicion;
 	}
 
