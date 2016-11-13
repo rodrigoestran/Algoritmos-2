@@ -13,25 +13,33 @@ import sistema.Retorno.Resultado;
 public class Sistema implements ISistema {
 	private int cantPuntos;
 	private SSDataCenter ssdc;
-	private ABB empresas = new ABB(); // las empresas son un arbol
+	private ABB empresas; // las empresas son un arbol
 	
 	@Override
+	// PRE: ?
+	// POS: sistema inicializado con cantPuntos nodos máximos en mapa
 	public Retorno inicializarSistema(int cantPuntos) {
 		if (cantPuntos > 0){
 			this.cantPuntos = cantPuntos;
 			ssdc = new SSDataCenter(this.cantPuntos);
+			empresas = new ABB();
 			return new Retorno(Resultado.OK);
 		}
 		return new Retorno(Resultado.ERROR_1);
 	}
 
 	@Override
+	// PRE: El sistema esta inicializado 
+	// POS: Sistema queda sin datos
 	public Retorno destruirSistema() {
 		ssdc.destruir();
+		empresas = null;
 		return new Retorno(Resultado.OK);
 	}
 
 	@Override
+	// PRE: lista de empresas ya fue inicializada.
+	// POS: Se agregó una nueva instancia de empresa en la lista de empresas
 	public Retorno registrarEmpresa(String nombre, String direccion,
 			String pais, String email_contacto, String color) {
 		Empresa newEmp = new Empresa(nombre, direccion, email_contacto, color, pais);
@@ -47,6 +55,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ??
+	// POS: Se ingresa una ciudad como punto del mapa
 	public Retorno registrarCiudad(String nombre, Double coordX, Double coordY) {
 		if (ssdc.getMapa().tieneLugarDisponible() != -1){
 			Ciudad p = new Ciudad(coordX, coordY, nombre);
@@ -58,6 +68,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ??
+	// POS: Se ingresa un Data Center como punto del mapa
 	public Retorno registrarDC(String nombre, Double coordX, Double coordY,
 			String empresa, int capacidadCPUenHoras, int costoCPUporHora) {
 		if (ssdc.getMapa().tieneLugarDisponible() != -1){
