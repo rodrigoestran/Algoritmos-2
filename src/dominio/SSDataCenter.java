@@ -105,6 +105,7 @@ public class SSDataCenter {
     public boolean agregarPunto(Punto p) {
         if (!mapa.getVertices().perteneceAHash(p.getCoordX(), p.getCoordY())) {
             this.mapa.agregarVertice(p);
+           
             return true;
         }
         return false;
@@ -119,8 +120,8 @@ public class SSDataCenter {
         Retorno ret = new Retorno(Resultado.ERROR_1);
         if (peso > 0) {
             ret.setResultado(Resultado.ERROR_2);
-            Punto ini = mapa.obtenerPunto(coordXi, coordXf);
-            Punto fin = mapa.obtenerPunto(coordYi, coordYf);
+            Punto ini = mapa.obtenerPunto(coordXi, coordYi);
+            Punto fin = mapa.obtenerPunto(coordXf, coordYf);
             if (ini != null && fin != null) {
                 ret.setResultado(Resultado.ERROR_3);
                 boolean existe = this.mapa.existeArista(ini, fin);

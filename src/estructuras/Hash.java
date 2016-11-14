@@ -108,7 +108,7 @@ public class Hash {
 			if (contador < table.length) {
 				contador += 1;
 				if (table[posicion] != null) {
-					if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) {
+					if (table[posicion].getCoordX().equals(x) && table[posicion].getCoordY().equals(y)){
 						return posicion;
 					} else {
 						posicion += 1;

@@ -6,8 +6,8 @@ import sistema.*;
 import sistema.Retorno.Resultado;
 
 public class General {
-	Sistema s = new Sistema();
-	int puntos = 15;
+	static Sistema s = new Sistema();
+	static int puntos = 15;
 	
 	//////////// INICIALIZACION //////////// 
 	
@@ -16,6 +16,34 @@ public class General {
 		Resultado r = s.inicializarSistema(puntos).resultado;
 		assertEquals(Resultado.OK, r);
 	}
+
+	/*public static void main(String[] args) {
+		s.inicializarSistema(puntos);
+		s.registrarEmpresa("ZazzyPants", "", "", "empresa@gmail.com", "purple");
+		s.registrarEmpresa("ClassyCat", "", "", "email@email.com", "red");
+		
+		s.registrarCiudad("Chicago", 41.878114, -87.629798);
+		s.registrarCiudad("Seattle", 47.606210, -122.332071);
+		s.registrarCiudad( "San_Francisco", 37.774930, -122.419416);
+		
+		s.registrarDC("A", 47.0, -122.0, "ZazzyPants", 100, 100);
+    	s.registrarDC("B", -25.90, -55.16, "ClassyCat", 100, 100);
+    	s.registrarDC("C", -20.90, -50.16, "ZazzyPants", 100, 100);
+    	s.registrarDC("D", -25.93, -55.11, "ClassyCat", 100, 100);
+    	
+    	s.registrarTramo(47.0,-122.0,-25.90,-55.16, 25); // A -- B
+    	s.registrarTramo(47.0, -122.0, -25.93, -55.11, 25); // A -- D
+    	s.registrarTramo(47.0, -122.0,  41.878114, -87.629798, 20); // A -- Chicago
+    	s.registrarTramo(-20.90, -50.16,  41.878114, -87.629798, 9); // C -- Chicago
+    	
+    	
+    	
+
+    }*/
+    
+	
+	
+	
 	
 	@Test
 	// Cantidad de puntos <= 0
