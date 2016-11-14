@@ -205,8 +205,25 @@ public class General {
 	
 	@Test
 	public void eliminarTramoOK(){
-		
+		registrarTramoOK();
+		assertEquals(Resultado.OK,s.eliminarTramo(-20.90, -50.16,  41.878114, -87.629798).resultado);
 	}
+	
+	@Test
+	// No existen algunos de los puntos coordI o coordF
+	public void eliminarTramoError1(){
+		registrarTramoOK();
+		assertEquals(Resultado.ERROR_1,s.eliminarTramo(-20.90, -51.16,  41.878114, -87.629798).resultado);
+		assertEquals(Resultado.ERROR_1,s.eliminarTramo(-20.90, -50.16,  41.88810, -87.629798).resultado); 
+	}
+	
+	@Test
+	// No existe un tramo registrado desde los puntos inicio a fin
+	public void eliminarTramoError2(){
+		registrarTramoOK();
+		assertEquals(Resultado.ERROR_2,s.eliminarTramo(47.0, -122.0, 47.606210, -122.332071).resultado); // A -- Seattle
+	}
+	
 	
 	//////////// PUNTOS //////////// 
 
@@ -216,7 +233,12 @@ public class General {
 		assertEquals(Resultado.OK, s.eliminarPunto(47.0, -122.0).resultado); 
 	}
 
-	
+	@Test
+	public void eliminarPuntoError1(){
+		registrarDCOK();
+		assertEquals(Resultado.ERROR_1, s.eliminarPunto(43.0, -162.0).resultado); 
+	}
+		
     //s.mapaEstado();
     //s.listadoEmpresas();
 }

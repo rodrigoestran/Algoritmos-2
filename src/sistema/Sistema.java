@@ -98,6 +98,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ???
+	// POS: Vacía un Arco desde inicio a fin, de forma de eliminar su conexión
 	public Retorno eliminarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf) {
 		return ssdc.eliminarTramo(coordXi, coordYi, coordXf, coordYf);
