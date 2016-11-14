@@ -105,6 +105,7 @@ public class SSDataCenter {
     public boolean agregarPunto(Punto p) {
         if (!mapa.getVertices().perteneceAHash(p.getCoordX(), p.getCoordY())) {
             this.mapa.agregarVertice(p);
+           
             return true;
         }
         return false;
@@ -119,8 +120,8 @@ public class SSDataCenter {
         Retorno ret = new Retorno(Resultado.ERROR_1);
         if (peso > 0) {
             ret.setResultado(Resultado.ERROR_2);
-            Punto ini = mapa.obtenerPunto(coordXi, coordXf);
-            Punto fin = mapa.obtenerPunto(coordYi, coordYf);
+            Punto ini = mapa.obtenerPunto(coordXi, coordYi);
+            Punto fin = mapa.obtenerPunto(coordXf, coordYf);
             if (ini != null && fin != null) {
                 ret.setResultado(Resultado.ERROR_3);
                 boolean existe = this.mapa.existeArista(ini, fin);
@@ -164,6 +165,7 @@ public class SSDataCenter {
         DataCenter dcOrigen = null;
         String string = "";
         int p = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
+        int distanciaTotal = 0;
         if (p != -1) {
             Punto punto = this.mapa.getVertices().puntoPorPosicion(p);
             dcOrigen = (DataCenter) punto;
@@ -172,14 +174,13 @@ public class SSDataCenter {
             	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
             	{
             		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-            		DataCenter dcDestino = dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
-            		//if(dcDestino.getCapacidadCPUenHoras()>=esfuerzoCPUrequeridoEnHoras)
-            		//{
+            		dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
+            		DataCenter dcDestino = dDcMP.getDataCenter();
+            		distanciaTotal = dDcMP.generarInformeDistanciaTotal();
             			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
             			{
-            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
-            				int distancia = mapa.devolverDistancia(p, p2);
-            				int costo = distancia + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
+            				
+            				int costo = distanciaTotal + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
             				string = dcDestino.getNombre()+ "|" + costo;
             				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
             				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
@@ -187,9 +188,8 @@ public class SSDataCenter {
             			}
             			else
             			{
-            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
-            				int distancia = mapa.devolverDistancia(p, p2);            				
-            				string = dcDestino.getNombre()+ "|" + distancia;
+            				           				
+            				string = dcDestino.getNombre()+ "|" + distanciaTotal;
             				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
             				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
             				

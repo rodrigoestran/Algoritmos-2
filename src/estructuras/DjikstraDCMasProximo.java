@@ -95,7 +95,7 @@ public class DjikstraDCMasProximo {
     //El metodo difiere del de clase en que recibe el grafo(q aca lo uso para setear el grafo)y saber donde buscar, lo uso despues para
     //utilizar metodos del grafo en el recursivo, en obtener ady, y en obtener vertice menor distancia. No reciben Hash 
     //yo si, y busco los dc en el hash, y reciben destino que yo no, esa parte no la entendí 
-	public DataCenter dijkstra(Grafo mapa, Hash ubicaciones, int origen, int esfuerzoCPUrequeridoEnHoras) {
+	public void dijkstra(Grafo mapa, Hash ubicaciones, int origen, int esfuerzoCPUrequeridoEnHoras) {
 		//cargo el grafo
 	    setGrafo(mapa);
 	   
@@ -119,14 +119,14 @@ public class DjikstraDCMasProximo {
         
         //llamo a recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
         //en clase devuelven un int que es la distancia a la posicion destino
-        DataCenter dc = dijkstra(origen, esfuerzoCPUrequeridoEnHoras);
-        return dc;
+        //DataCenter dc = dijkstra(origen, esfuerzoCPUrequeridoEnHoras);
+        //return dc;
 	
 	}
 	
-	public DataCenter dijkstra(int p, int esfuerzoCPUrequeridoEnHoras) {
+	public void dijkstra(int p, int esfuerzoCPUrequeridoEnHoras) {
 	    boolean notFound = true;
-	    DataCenter dc = null;
+	    //DataCenter dc = null;
 	    //Busco vertices adyacentes del origen
 	    ILista l = obtenerAdyacentes(p);
 	
@@ -147,15 +147,29 @@ public class DjikstraDCMasProximo {
 	
 	        if (getDataCenter() != null) {	                
 	                notFound = false;
-	                dc = getDataCenter();         
+	                dataCenter = getDataCenter();
+	                
 	        }
 		        
-	        if (notFound || (dc.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras)) {
+	        if (notFound || (dataCenter.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras)) {
 	            dijkstra(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
 	        }
 	    }
-        return dc;
+        //return dc;
 	 }
+	
+	
+	public int generarInformeDistanciaTotal()
+	{
+		int distanciaTotal= 0;
+		for(int i=0; i<distancia.length; i++)
+		{
+			distanciaTotal+=distancia[i];
+		}
+		
+		return distanciaTotal;
+	}
+	
 //no se si esto asi va a funcionar...
 	 private DataCenter devolverDataCenter(Punto punto2) {
 		 return (DataCenter)punto2; // cambié esto
