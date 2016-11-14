@@ -164,6 +164,7 @@ public class SSDataCenter {
         DataCenter dcOrigen = null;
         String string = "";
         int p = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
+        int distanciaTotal = 0;
         if (p != -1) {
             Punto punto = this.mapa.getVertices().puntoPorPosicion(p);
             dcOrigen = (DataCenter) punto;
@@ -172,14 +173,13 @@ public class SSDataCenter {
             	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
             	{
             		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-            		DataCenter dcDestino = dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
-            		//if(dcDestino.getCapacidadCPUenHoras()>=esfuerzoCPUrequeridoEnHoras)
-            		//{
+            		dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
+            		DataCenter dcDestino = dDcMP.getDataCenter();
+            		distanciaTotal = dDcMP.generarInformeDistanciaTotal();
             			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
             			{
-            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
-            				int distancia = mapa.devolverDistancia(p, p2);
-            				int costo = distancia + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
+            				
+            				int costo = distanciaTotal + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
             				string = dcDestino.getNombre()+ "|" + costo;
             				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
             				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
@@ -187,9 +187,8 @@ public class SSDataCenter {
             			}
             			else
             			{
-            				int p2 = this.mapa.getVertices().posicionPorCoord(dcDestino.getCoordX(), dcDestino.getCoordX());
-            				int distancia = mapa.devolverDistancia(p, p2);            				
-            				string = dcDestino.getNombre()+ "|" + distancia;
+            				           				
+            				string = dcDestino.getNombre()+ "|" + distanciaTotal;
             				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
             				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
             				
