@@ -240,7 +240,35 @@ public class General {
 	}
 	
 	
-	///////////
+	///////////PROCESAR INFORMACION///////////
+	
+	
+	 @Test
+     public void procesarInformacionOK() {
+         
+         registrarTramoOK();
+         Retorno ret = this.s.procesarInformacion(47.0, -122.0, 40);
+         assertEquals(Retorno.Resultado.OK, ret.resultado);
+     }
+	 
+	 
+	 @Test
+     public void procesarInformacionError1() {
+         
+         registrarTramoOK();
+         Retorno ret = this.s.procesarInformacion(467.0, 232.65, 100);
+         assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+     }
+	
+	 @Test
+     public void procesarInformacionError2() {
+         
+         registrarTramoOK();
+         Retorno ret = this.s.procesarInformacion(47.0, -122.0, 140);
+         assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+     }
+	
+	
 	///////////LISTADO EMPRESAS///////////////
 	
 	

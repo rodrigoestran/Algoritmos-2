@@ -7,7 +7,7 @@ package dominio;
 
 
 import java.util.ArrayList;
-import estructuras.DjikstraDCMasProximo;
+import estructuras.Dijkstra;
 import estructuras.Grafo;
 import estructuras.ListaSEIni;
 import interfaces.ILista;
@@ -174,7 +174,7 @@ public class SSDataCenter {
 		        {
 		        	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
 		        	{
-		        		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
+		        		Dijkstra dDcMP = new Dijkstra();                
 		        		dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
 		        		DataCenter dcDestino = dDcMP.getDataCenter();
 		        		distanciaTotal = dDcMP.generarInformeDistanciaTotal();

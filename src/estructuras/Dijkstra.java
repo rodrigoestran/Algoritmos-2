@@ -4,7 +4,7 @@ import dominio.DataCenter;
 import dominio.Punto;
 import interfaces.ILista;
 
-public class DjikstraDCMasProximo {
+public class Dijkstra {
 	
 	private static Grafo grafo;
 	//array para guardar distancias visitadas
@@ -103,7 +103,7 @@ public class DjikstraDCMasProximo {
         setPrevio(new int[ubicaciones.getSizeTable()]); // el nodo previo en el camino.
         setVisitado(new boolean[ubicaciones.getSizeTable()]); //nodos visitados.
         setORIGEN(origen);//el inicio
-        DjikstraDCMasProximo.setHash(ubicaciones);
+        Dijkstra.setHash(ubicaciones);
         setDataCenter(null);
 
         //aca se inicializa
