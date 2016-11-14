@@ -89,6 +89,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ???
+	// POS: Agrega un Arco que conecta inicio a fin en el mapa
 	public Retorno registrarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf, int peso) {
 		return ssdc.registrarTramo(coordXi, coordYi, coordXf, coordYf, peso);
