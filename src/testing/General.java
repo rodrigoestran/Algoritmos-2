@@ -171,7 +171,6 @@ public class General {
 	@Test
     public void registrarTramoOK(){
     	registrarDCOK();
-    	
     	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 25).resultado); // A -- B
     	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.93, -55.11, 25).resultado); // A -- D
     	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0,  41.878114, -87.629798, 20).resultado); // A -- Chicago
@@ -180,19 +179,66 @@ public class General {
     	assertEquals(Resultado.OK,s.registrarTramo(-25.93, -55.11,  47.606210, -122.332071, 10).resultado); // D -- Seattle
     	assertEquals(Resultado.OK,s.registrarTramo(-20.90, -50.16,  47.606210, -122.332071, 9).resultado); // Seattle -- C
     	assertEquals(Resultado.OK,s.registrarTramo(41.878114, -87.629798,  47.606210, -122.332071, 5).resultado); // Seattle -- Chicago
-    	
     }
+	
+	@Test
+	// Peso es <= 0
+	public void registrarTramoError1(){
+		registrarDCOK();
+		assertEquals(Resultado.ERROR_1,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 0).resultado); // A -- B
+    	assertEquals(Resultado.ERROR_1,s.registrarTramo(47.0, -122.0, -25.93, -55.11, -10).resultado); // A -- D
+	}
 
+	@Test
+	// coordenada X o Y no existe
+	public void registrarTramoError2(){
+		assertEquals(Resultado.ERROR_2,s.registrarTramo(47.0, -122.0, -25.10, -55.16, 20).resultado); // A -- B
+    	assertEquals(Resultado.ERROR_2,s.registrarTramo(47.0, -122.0, -25.93, -25.11, 10).resultado); // A -- D
+	}
+	
+	@Test
+	// ya existe un tramo que va de X a Y
+	public void registrarTramoError3(){
+		assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 25).resultado); // A -- B
+    	assertEquals(Resultado.ERROR_3,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 25).resultado); // A -- D
+	}
+	
+	@Test
+	public void eliminarTramoOK(){
+		registrarTramoOK();
+		assertEquals(Resultado.OK,s.eliminarTramo(-20.90, -50.16,  41.878114, -87.629798).resultado);
+	}
+	
+	@Test
+	// No existen algunos de los puntos coordI o coordF
+	public void eliminarTramoError1(){
+		registrarTramoOK();
+		assertEquals(Resultado.ERROR_1,s.eliminarTramo(-20.90, -51.16,  41.878114, -87.629798).resultado);
+		assertEquals(Resultado.ERROR_1,s.eliminarTramo(-20.90, -50.16,  41.88810, -87.629798).resultado); 
+	}
+	
+	@Test
+	// No existe un tramo registrado desde los puntos inicio a fin
+	public void eliminarTramoError2(){
+		registrarTramoOK();
+		assertEquals(Resultado.ERROR_2,s.eliminarTramo(47.0, -122.0, 47.606210, -122.332071).resultado); // A -- Seattle
+	}
+	
+	
 	//////////// PUNTOS //////////// 
 
 	@Test
 	public void eliminarPuntoOK(){
 		registrarDCOK();
-		assertEquals(Resultado.OK, s.eliminarPunto(47.0, -122.0).resultado); // esta dando error esto tambien, por las mismas razones
-
+		assertEquals(Resultado.OK, s.eliminarPunto(47.0, -122.0).resultado); 
 	}
 
-	
+	@Test
+	public void eliminarPuntoError1(){
+		registrarDCOK();
+		assertEquals(Resultado.ERROR_1, s.eliminarPunto(43.0, -162.0).resultado); 
+	}
+		
     //s.mapaEstado();
     //s.listadoEmpresas();
 }

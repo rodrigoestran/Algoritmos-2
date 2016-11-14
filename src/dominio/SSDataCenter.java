@@ -148,8 +148,8 @@ public class SSDataCenter {
 
     public Retorno eliminarTramo(Double coordXi, Double coordYi, Double coordXf, Double coordYf) {
         Retorno ret = new Retorno(Resultado.ERROR_1);
-        Punto ini = mapa.obtenerPunto(coordXi, coordXf);
-        Punto fin = mapa.obtenerPunto(coordYi, coordYf);
+        Punto ini = mapa.obtenerPunto(coordXi, coordYi);
+        Punto fin = mapa.obtenerPunto(coordXf, coordYf);
         if (ini != null && fin != null) {
             ret.setResultado(Resultado.ERROR_2);
             boolean existe = this.mapa.existeArista(ini, fin);

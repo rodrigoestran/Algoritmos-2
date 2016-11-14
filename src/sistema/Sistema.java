@@ -89,6 +89,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ???
+	// POS: Agrega un Arco que conecta inicio a fin en el mapa
 	public Retorno registrarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf, int peso) {
 		return ssdc.registrarTramo(coordXi, coordYi, coordXf, coordYf, peso);
@@ -96,6 +98,8 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
+	// PRE: ???
+	// POS: Vacía un Arco desde inicio a fin, de forma de eliminar su conexión
 	public Retorno eliminarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf) {
 		return ssdc.eliminarTramo(coordXi, coordYi, coordXf, coordYf);
