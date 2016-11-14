@@ -161,53 +161,65 @@ public class SSDataCenter {
         return ret;
     }
  
-    public String procesarInformación(Double coordX, Double coordY, int esfuerzoCPUrequeridoEnHoras) {
+    public Retorno procesarInformación(Double coordX, Double coordY, int esfuerzoCPUrequeridoEnHoras) {
+    	Retorno ret = new Retorno(Resultado.ERROR_1);
         DataCenter dcOrigen = null;
         String string = "";
-        int p = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
-        int distanciaTotal = 0;
-        if (p != -1) {
-            Punto punto = this.mapa.getVertices().puntoPorPosicion(p);
-            dcOrigen = (DataCenter) punto;
-            if(dcOrigen!= null)
-            {
-            	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
-            	{
-            		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
-            		dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
-            		DataCenter dcDestino = dDcMP.getDataCenter();
-            		distanciaTotal = dDcMP.generarInformeDistanciaTotal();
-            			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
-            			{
-            				
-            				int costo = distanciaTotal + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
-            				string = dcDestino.getNombre()+ "|" + costo;
-            				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
-            				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
-            				
-            			}
-            			else
-            			{
-            				           				
-            				string = dcDestino.getNombre()+ "|" + distanciaTotal;
-            				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
-            				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
-            				
-            			}
-            			
-            			//si la capacidad del mas cercano no es suficiente aca llamaria de vuelta a Djikstra?
-            		//}
-            	}
-            	else
-            	{
-            		string = dcOrigen.getNombre() + "|" + "0";
-            		dcOrigen.setCapacidadCPUenHoras(dcOrigen.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
-            		dcOrigen.setEsfuerzoEnUso(dcOrigen.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
-            	}
-            }
-            
-        }        
-        return string;
+		    int p = this.mapa.getVertices().posicionPorCoord(coordX, coordY);
+		    int distanciaTotal = 0;
+		    if (p != -1) {
+		        Punto punto = this.mapa.getVertices().puntoPorPosicion(p);
+		        dcOrigen = (DataCenter) punto;
+		        if(dcOrigen!= null)
+		        {
+		        	if (dcOrigen.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras) 
+		        	{
+		        		DjikstraDCMasProximo dDcMP = new DjikstraDCMasProximo();                
+		        		dDcMP.dijkstra(mapa, mapa.getVertices(), p, esfuerzoCPUrequeridoEnHoras);
+		        		DataCenter dcDestino = dDcMP.getDataCenter();
+		        		distanciaTotal = dDcMP.generarInformeDistanciaTotal();
+		        		if(dcDestino != null)
+		        		{
+		        			if(!dcDestino.getEmpresa().equals(dcOrigen.getEmpresa()))
+		        			{
+		        				
+		        				int costo = distanciaTotal + (esfuerzoCPUrequeridoEnHoras * dcDestino.getCostoCPUporHora());
+		        				string = dcDestino.getNombre()+ "|" + costo;
+		        				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+		        				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+		        				ret.setResultado(Resultado.OK);
+		        				ret.valorString = string;
+		        			}
+		        			else
+		        			{
+		        				           				
+		        				string = dcDestino.getNombre()+ "|" + distanciaTotal;
+		        				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+		        				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+		        				ret.setResultado(Resultado.OK);
+		        				ret.valorString = string;
+		        			}
+		        		}
+		        		else
+		        		{
+		        			ret.setResultado(Resultado.ERROR_2);
+		        			
+		        		}		        			
+		        	
+		        	}
+		        	else
+		        	{
+		        		string = dcOrigen.getNombre() + "|" + "0";
+		        		dcOrigen.setCapacidadCPUenHoras(dcOrigen.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
+		        		dcOrigen.setEsfuerzoEnUso(dcOrigen.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+		        		ret.setResultado(Resultado.OK);
+		        		ret.valorString = string;
+		        	}
+		        }
+		        
+		    }
+		System.out.println(ret.valorString);
+        return ret;
     }
     
     

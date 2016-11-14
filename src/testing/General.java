@@ -238,6 +238,12 @@ public class General {
 		registrarDCOK();
 		assertEquals(Resultado.ERROR_1, s.eliminarPunto(43.0, -162.0).resultado); 
 	}
+	
+	
+	///////////
+	///////////LISTADO EMPRESAS///////////////
+	
+	
 		
     //s.mapaEstado();
     //s.listadoEmpresas();

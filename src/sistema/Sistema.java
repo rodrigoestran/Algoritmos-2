@@ -119,8 +119,7 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno procesarInformacion(Double coordX, Double coordY,
 			int esfuerzoCPUrequeridoEnHoras) {
-		// TODO Auto-generated method stub
-		return new Retorno(Resultado.NO_IMPLEMENTADA);
+		return this.ssdc.procesarInformación(coordX, coordY, esfuerzoCPUrequeridoEnHoras);
 	}
 
 	@Override
