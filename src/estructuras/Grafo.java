@@ -20,8 +20,8 @@ public class Grafo implements IGrafo{
 		this.tope = size;
 		this.matrizAdyacencia = new Arco[tope+1][tope+1];
 		this.vertices = new Hash(tope);
-		for (int i = 1; i<=tope; i++)
-			for (int j = 1; j<=tope; j++)
+		for (int i = 0; i<=tope; i++)
+			for (int j = 0; j<=tope; j++)
 			  this.matrizAdyacencia[i][j]= new Arco();
 				
 		this.nodosUsados = new boolean[tope+1];
@@ -139,9 +139,10 @@ public class Grafo implements IGrafo{
 	}
 
 	@Override
+	// devuelve una lista con los indices de los adyacentes a el objeto en el indice v
 	public ILista obtenerVerticesAdyacentes(int v) {
 		ListaSEIni l = new ListaSEIni();
-		for(int i=1; i<=this.tope; i++){
+		for(int i=0; i<=this.tope; i++){
 			if(this.sonAdyacentes(v, i)){
 				l.insertarInicio(i);
 			}
@@ -186,6 +187,27 @@ public class Grafo implements IGrafo{
 				aux[i][j] = new Arco();
 			}
 		}
+		
+		// De eugenia
+//		for (int k = 0; k < cantV-1; k++) {
+//			for (int i = 0; i < tope; i++) {
+//				if(vertices[i]!=null && visitado[i]){
+//					for(int j=i+1;j<tope;j++){
+//						//si es candidato une visitado con no visitado
+//						// si es mejor que mi anterior candidato lo sustituyo por mi mejor candidato
+//						
+//					}
+//				}
+//				
+//			}
+//			
+//			//agrego arista bidireccional a partir del valor minimo y las coordenadas
+//			//aux[imin][jmin]=aux[jmin][imin] = new Arco(min);
+//			//luego pongo como visitado a j
+//			//reseteo al valor minimo (MAX_VALUE)
+//		}
+//		matAdy = aux;
+		
 		//Proceso
 		//Inicializar valor maximo (MAX_VALUE), y coordenadas de arista candidata
 		int costo = Integer.MAX_VALUE;

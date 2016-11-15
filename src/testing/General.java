@@ -16,34 +16,6 @@ public class General {
 		Resultado r = s.inicializarSistema(puntos).resultado;
 		assertEquals(Resultado.OK, r);
 	}
-
-	/*public static void main(String[] args) {
-		s.inicializarSistema(puntos);
-		s.registrarEmpresa("ZazzyPants", "", "", "empresa@gmail.com", "purple");
-		s.registrarEmpresa("ClassyCat", "", "", "email@email.com", "red");
-		
-		s.registrarCiudad("Chicago", 41.878114, -87.629798);
-		s.registrarCiudad("Seattle", 47.606210, -122.332071);
-		s.registrarCiudad( "San_Francisco", 37.774930, -122.419416);
-		
-		s.registrarDC("A", 47.0, -122.0, "ZazzyPants", 100, 100);
-    	s.registrarDC("B", -25.90, -55.16, "ClassyCat", 100, 100);
-    	s.registrarDC("C", -20.90, -50.16, "ZazzyPants", 100, 100);
-    	s.registrarDC("D", -25.93, -55.11, "ClassyCat", 100, 100);
-    	
-    	s.registrarTramo(47.0,-122.0,-25.90,-55.16, 25); // A -- B
-    	s.registrarTramo(47.0, -122.0, -25.93, -55.11, 25); // A -- D
-    	s.registrarTramo(47.0, -122.0,  41.878114, -87.629798, 20); // A -- Chicago
-    	s.registrarTramo(-20.90, -50.16,  41.878114, -87.629798, 9); // C -- Chicago
-    	
-    	
-    	
-
-    }*/
-    
-	
-	
-	
 	
 	@Test
 	// Cantidad de puntos <= 0
@@ -122,9 +94,9 @@ public class General {
 	@Test
     public void registrarDCOK(){
     	registrarCiudadOK();
-    	assertEquals(Resultado.OK,s.registrarDC("A", 47.0, -122.0, "ZazzyPants", 100, 100).resultado);
-    	assertEquals(Resultado.OK,s.registrarDC("B", -25.90, -55.16, "ClassyCat", 100, 100).resultado);
-    	assertEquals(Resultado.OK,s.registrarDC("C", -20.90, -50.16, "ZazzyPants", 100, 100).resultado);
+    	assertEquals(Resultado.OK,s.registrarDC("A", 47.0, -122.0, "ZazzyPants", 40, 100).resultado);
+    	assertEquals(Resultado.OK,s.registrarDC("B", -25.90, -55.16, "ZazzyPants", 100, 100).resultado);
+    	assertEquals(Resultado.OK,s.registrarDC("C", -20.90, -50.16, "ClassyCat", 100, 3).resultado);
     	assertEquals(Resultado.OK,s.registrarDC("D", -25.93, -55.11, "ClassyCat", 100, 100).resultado);
     }
 	
@@ -171,10 +143,13 @@ public class General {
 	@Test
     public void registrarTramoOK(){
     	registrarDCOK();
-    	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 25).resultado); // A -- B
+    	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.90, -55.16, 270).resultado); // A -- B
     	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, -25.93, -55.11, 25).resultado); // A -- D
     	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0,  41.878114, -87.629798, 20).resultado); // A -- Chicago
     	assertEquals(Resultado.OK,s.registrarTramo(-20.90, -50.16,  41.878114, -87.629798, 9).resultado); // C -- Chicago
+    	assertEquals(Resultado.OK,s.registrarTramo(47.0, -122.0, 37.774930, -122.419416, 3).resultado); // A -- SF
+    	assertEquals(Resultado.OK,s.registrarTramo(-25.90, -55.16, 37.774930, -122.419416, 5).resultado); // B -- SF
+    	assertEquals(Resultado.OK,s.registrarTramo(37.774930, -122.419416, 41.878114, -87.629798, 2).resultado); // SF -- Chicago    	
     	assertEquals(Resultado.OK,s.registrarTramo(-20.90, -50.16,  -25.90, -55.16, 11).resultado); // C -- B
     	assertEquals(Resultado.OK,s.registrarTramo(-25.93, -55.11,  47.606210, -122.332071, 10).resultado); // D -- Seattle
     	assertEquals(Resultado.OK,s.registrarTramo(-20.90, -50.16,  47.606210, -122.332071, 9).resultado); // Seattle -- C
@@ -245,34 +220,35 @@ public class General {
 	
 	 @Test
      public void procesarInformacionOK() {
-         
          registrarTramoOK();
-         Retorno ret = this.s.procesarInformacion(47.0, -122.0, 40);
+         Retorno ret = s.procesarInformacion(47.0, -122.0, 40);
+         //System.out.println(ret.valorString);
          assertEquals(Retorno.Resultado.OK, ret.resultado);
+         ret = s.procesarInformacion(47.0, -122.0, 80);
+         assertEquals(Retorno.Resultado.OK, ret.resultado);
+         
      }
 	 
 	 
-	 @Test
-     public void procesarInformacionError1() {
-         
-         registrarTramoOK();
-         Retorno ret = this.s.procesarInformacion(467.0, 232.65, 100);
-         assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
-     }
-	
-	 @Test
-     public void procesarInformacionError2() {
-         
-         registrarTramoOK();
-         Retorno ret = this.s.procesarInformacion(47.0, -122.0, 140);
-         assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
-     }
-	
+//	 @Test
+//     public void procesarInformacionError1() {
+//         registrarTramoOK();
+//         Retorno ret = s.procesarInformacion(467.0, 232.65, 100);
+//         assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+//     }
+//	
+//	 @Test
+//	 // capacidad mayor que cualquiera
+//     public void procesarInformacionError2() {
+//         registrarTramoOK();
+//         Retorno ret = s.procesarInformacion(47.0, -122.0, 140);
+//         
+//         assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+//     }
+//	
 	
 	///////////LISTADO EMPRESAS///////////////
-	
-	
-		
+
     //s.mapaEstado();
     //s.listadoEmpresas();
 }

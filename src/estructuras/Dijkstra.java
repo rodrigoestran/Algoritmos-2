@@ -1,204 +1,186 @@
 package estructuras;
 
 import dominio.DataCenter;
+import dominio.Empresa;
 import dominio.Punto;
 import interfaces.ILista;
 
 public class Dijkstra {
 	
-	private static Grafo grafo;
+	private Grafo grafo;
 	//array para guardar distancias visitadas
-    private static int[] distancia;
-  //array para guardar puntos visitados
-    private static int[] previo;
-  //array para guardar estado
-    private static boolean[] visitado;
+    private int[] distancias;
+    //array para guardar puntos visitados
+    private int[] previos;
+    //array para guardar estado
+    private  boolean[] visitados;
     
-    private static Hash hash;
-    private static DataCenter dataCenter;
-    private static Punto punto;
-    private static int DESTINO;
-    private static int ORIGEN;
-   
-    public static int[] getDistancia() {
-        return distancia;
+    private int[] listaDCcapable;
+    
+    // Para ir recordando los mejores. Creo que no deberia necesitarse
+    private Hash hash;
+    private DataCenter dataCenter;
+    private Punto punto;
+    private int DESTINO;
+    private int origen;
+    private int costoActual;
+    // Getters y setters //
+    public int[] getDistancia() {
+        return distancias;
     }
    
-    public static void setDistancia(int[] d) {
-        distancia = d;
+    public void setDistancia(int[] d) {
+        distancias = d;
     }
    
-    public static int[] getPrevio() {
-        return previo;
+    public int[] getPrevio() {
+        return previos;
     }
    
-    public static void setPrevio(int[] p) {
-        previo = p;
+    public void setPrevio(int[] p) {
+        previos = p;
     }
    
-    public static boolean[] getVisitado() {
-        return visitado;
+    public boolean[] getVisitado() {
+        return visitados;
     }
     
-    public static void setVisitado(boolean[] aVisitado) {
-        visitado = aVisitado;
+    public void setVisitado(boolean[] aVisitado) {
+        visitados = aVisitado;
     }
     
-    public static int getDESTINO() {
+    public int getDESTINO() {
         return DESTINO;
     }
    
-    public static void setDESTINO(int d) {
+    public void setDESTINO(int d) {
         DESTINO = d;
     }
     
-    public static int getORIGEN() {
-        return ORIGEN;
+    public int getORIGEN() {
+        return origen;
     }
 
-    public static void setORIGEN(int o) {
-        ORIGEN = o;
+    public void setORIGEN(int o) {
+        origen = o;
     }
   
-    public static Grafo getGrafo() {
+    public Grafo getGrafo() {
         return grafo;
     }
    
-    public static void setGrafo(Grafo g) {
+    public void setGrafo(Grafo g) {
         grafo = g;
     }
 
-    public static Hash getHash() {
+    public Hash getHash() {
         return hash;
     }
    
-    public static void setHash(Hash h) {
+    public void setHash(Hash h) {
         hash = h;
     }
     
-    public static DataCenter getDataCenter() {
+    public  DataCenter getDataCenter() {
         return dataCenter;
     }
     
-    public static void setDataCenter(DataCenter dc) {
+    public void setDataCenter(DataCenter dc) {
         dataCenter = dc;
     }
     
-    public static Punto getPunto() {
+    public Punto getPunto() {
         return punto;
     }
    
-    public static void setPunto(Punto aPunto) {
+    public void setPunto(Punto aPunto) {
         punto = aPunto;
     }
+    
+	public int getCostoActual() {
+		return costoActual;
+	}
 
-    //El metodo difiere del de clase en que recibe el grafo(q aca lo uso para setear el grafo)y saber donde buscar, lo uso despues para
-    //utilizar metodos del grafo en el recursivo, en obtener ady, y en obtener vertice menor distancia. No reciben Hash 
-    //yo si, y busco los dc en el hash, y reciben destino que yo no, esa parte no la entendí 
+	public void setCostoActual(int costoActual) {
+		this.costoActual = costoActual;
+	}
+
 	public void dijkstra(Grafo mapa, Hash ubicaciones, int origen, int esfuerzoCPUrequeridoEnHoras) {
-		//cargo el grafo
-	    setGrafo(mapa);
-	   
-        setDistancia(new int[ubicaciones.getSizeTable()]); // la distancia mas corta partiendo del origen
-        setPrevio(new int[ubicaciones.getSizeTable()]); // el nodo previo en el camino.
-        setVisitado(new boolean[ubicaciones.getSizeTable()]); //nodos visitados.
-        setORIGEN(origen);//el inicio
-        Dijkstra.setHash(ubicaciones);
+		// Inicializo
+	    this.grafo = mapa;
+        this.distancias = new int[ubicaciones.getSizeTable()]; // la distancia mas corta partiendo del origen
+        this.previos = new int[ubicaciones.getSizeTable()]; // el nodo previo en el camino.
+        this.visitados = new boolean[ubicaciones.getSizeTable()]; //nodos visitados.
+        this.origen = origen;
+        this.hash = ubicaciones;
         setDataCenter(null);
 
-        //aca se inicializa
-        //se pone todas las distancias en max value
-        //se setea visitados a false.
+        // pongo todas las distancias en max value
+        // seteo visitados = false.
         for (int i = 0; i < getDistancia().length; i++) {
-            getDistancia()[i] = Integer.MAX_VALUE;
-            getVisitado()[i] = false;
+        	this.distancias[i] = Integer.MAX_VALUE;
+            this.visitados[i] = false;
+            this.previos[i] = -1;
         }
 
-        getDistancia()[origen] = 0; //distancia 0 entre orig y orig.
-        getVisitado()[origen] = true; //el origen queda como vistado
+        this.distancias[origen] = 0; //distancia 0 entre orig y orig.
+        this.visitados[origen] = true; //el origen queda como vistado
         
-        //llamo a recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
+        //llamo al recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
         //en clase devuelven un int que es la distancia a la posicion destino
-        //DataCenter dc = dijkstra(origen, esfuerzoCPUrequeridoEnHoras);
-        //return dc;
+        dijkstraREC(origen, esfuerzoCPUrequeridoEnHoras);
 	
 	}
 	
-	public void dijkstra(int p, int esfuerzoCPUrequeridoEnHoras) {
-	    boolean notFound = true;
-	    //DataCenter dc = null;
-	    //Busco vertices adyacentes del origen
+	public void dijkstraREC(int p, int esfuerzoCPUrequeridoEnHoras) {
+	    // Busco vertices adyacentes del origen
 	    ILista l = obtenerAdyacentes(p);
 	
-	    //aca saco el vert que esta a  menor distancia
+	    // saco el vertice que está a menor distancia
 	    int vertMenorDist = obtenerVerticeMenorDistancia(l, p);
+	    // si aun sigue existiendo un vertice no visitado, sino ahi es cuando da -1
+	    if (vertMenorDist != -1){
+	        p = this.previos[vertMenorDist]; // esto es redundante. Cuando llega aca ya estaba seteado
+	        int peso = grafo.devolverDistancia(vertMenorDist, p);
 	
-	    if (vertMenorDist != -1) {
-	        p = getPrevio()[vertMenorDist];
-	        int peso = getGrafo().devolverDistancia(vertMenorDist, p);
+	        //Modifico listas con el punto que seleccioné
+	        this.visitados[vertMenorDist] = true;
+	        this.previos[vertMenorDist] = p;
+	        this.distancias[vertMenorDist] = this.distancias[p] + peso; // redundante?
 	
-	        //Modifico listas con el punto que selecciono
-	        getVisitado()[vertMenorDist] = true;
-	        getPrevio()[vertMenorDist] = p;
-	        getDistancia()[vertMenorDist] = getDistancia()[p] + peso;
-	
-	        setPunto(getHash().puntoPorPosicion(vertMenorDist));
-	        setDataCenter(devolverDataCenter(getPunto()));
-	
-	        if (getDataCenter() != null) {	                
-	                notFound = false;
-	                dataCenter = getDataCenter();
-	                
-	        }
-		        
-	        if (notFound || (dataCenter.getCapacidadCPUenHoras()<esfuerzoCPUrequeridoEnHoras)) {
-	            dijkstra(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
-	        }
+	        punto = hash.puntoPorPosicion(vertMenorDist);
+	        dijkstraREC(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
 	    }
-        //return dc;
-	 }
-	
-	
-	public int generarInformeDistanciaTotal()
-	{
-		int distanciaTotal= 0;
-		for(int i=0; i<distancia.length; i++)
-		{
-			distanciaTotal+=distancia[i];
-		}
-		
-		return distanciaTotal;
-	}
-	
-//no se si esto asi va a funcionar...
-	 private DataCenter devolverDataCenter(Punto punto2) {
-		 return (DataCenter)punto2; // cambié esto
-	 }
 
+	}
 
 	private int obtenerVerticeMenorDistancia(ILista l, int p) {
 		int verticeMenor = -1;
-		int vertice = 0;
+		int verticeAux = 0;
      	int pesoaux = 0;
      	int pesoMenor = Integer.MAX_VALUE;
      	NodoLista aux = l.getInicio();
 	
+     	//recorro la lista de vertices adyacentes y seteo sus nuevas distancias y previos
      	while (aux != null) {
-     		vertice = (Integer) aux.getDato();
-     		if (!getVisitado()[vertice]) {
-     			pesoaux = getGrafo().devolverDistancia(vertice, p);
-     			if (getDistancia()[p] + pesoaux < getDistancia()[vertice]) {
-     				getPrevio()[vertice] = p;
-     				getDistancia()[vertice] = getDistancia()[p] + pesoaux;
-     			}            
+     		verticeAux = (Integer) aux.getDato();
+     		// si este vertice actual no fue ya visitado
+     		if (!this.visitados[verticeAux]) {
+     			// guardo la distancia entre el vertice actual y el punto p
+     			pesoaux = this.grafo.devolverDistancia(verticeAux, p);
+     			// si la distancia alcanzada hasta p más la distancia entre p y el vertice actual es 
+     			// menor que la distancia que habia hasta el momento en el vertice actual
+     			if (this.distancias[p] + pesoaux < this.distancias[verticeAux]) {
+     				this.previos[verticeAux] = p;
+     				this.distancias[verticeAux] = this.distancias[p] + pesoaux;
+     				if (this.distancias[verticeAux] < pesoMenor){
+     					pesoMenor = this.distancias[verticeAux];
+     					verticeMenor = verticeAux;
+     				}
+     				
+     			}           
      		} 
      		aux = aux.getSig();
-	     }
-	     for(int i = 0; i< getDistancia().length;i++){
-	         if(getDistancia()[i]<pesoMenor && !getVisitado()[i]){
-	             verticeMenor = i;
-	             pesoMenor = getDistancia()[i];
-	         }
 	     }
 	     return verticeMenor;
 	}
@@ -207,7 +189,58 @@ public class Dijkstra {
 		 return getGrafo().obtenerVerticesAdyacentes(u);
 	}
 	
+	// Hace la busqueda dentro de la lista de distancias. Considera las distancias sumadas al costoCPUhoras, si es de otra empresa,
+	// y se queda con el que tiene menor costo overal, pero solo dentro de los que pertenecen a una lista precreada solo con los DC
+	// que tienen la capacidad de procesamiento necesaria.
+	public DataCenter obtenerDCcapableConMenorDistancia(Empresa eOrigen, int esfRequeridoEnHs){
+		int cantDeCapable = obtenerDCsCapable(esfRequeridoEnHs);
+		int distMin = Integer.MAX_VALUE;
+		DataCenter dcTemp = null;
+		for (int i=0; i< this.distancias.length; i++){
+			boolean hayCapable = false;
+			for (int j = 0; j < cantDeCapable; j++){
+				if (i == listaDCcapable[j]) {
+					hayCapable = true;
+					break;
+				}
+			}
+			if (!hayCapable) continue;
+			int costo = distancias[i];
+			// Significa que no es el mismo origen, que cuesta 0 en distancia
+			if (costo != 0){
+				DataCenter candidato = (DataCenter)this.hash.getTable()[i];
+				if ( !candidato.getEmpresa().equals(eOrigen) ) costo += esfRequeridoEnHs*candidato.getCostoCPUporHora();
+				if( costo < distMin ) {
+					distMin = costo;
+					dcTemp = candidato;
+				}
+			}
+		}
+		this.dataCenter = dcTemp;
+		this.costoActual = distMin;
+		return dcTemp;
+	}
 	
-	
+	// guarda la lista como atributo, y devuelve el tamaño de este array
+	public int obtenerDCsCapable(int capMin){
+		//de todo el grafo, busco los DC con capacidad mayor a la que necesito y las guardo sus indices en una lista
+		listaDCcapable = new int[this.distancias.length];
+		// inicializo todas las posiciones en -1 para que no se confunda
+		for (int i = 0; i < distancias.length; i ++){
+			listaDCcapable[i] = -1;
+		}
+		int contador = -1;
+		for (int i = 0; i< hash.getSizeTable(); i++){
+			Punto puntoEnHash = hash.getTable()[i];
+			if (puntoEnHash instanceof DataCenter){
+				DataCenter dcEnHash = (DataCenter) puntoEnHash;
+				if (dcEnHash.getCapacidadCPUenHoras() > capMin) {
+					contador++;
+					listaDCcapable[contador] = i;
+				}
+			}
+		}
+		return contador;
+	}
 
 }
