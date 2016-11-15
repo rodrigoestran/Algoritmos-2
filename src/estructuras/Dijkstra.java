@@ -6,89 +6,89 @@ import interfaces.ILista;
 
 public class Dijkstra {
 	
-	private static Grafo grafo;
+	private  Grafo grafo;
 	//array para guardar distancias visitadas
-    private static int[] distancia;
+    private  int[] distancia;
   //array para guardar puntos visitados
-    private static int[] previo;
+    private  int[] previo;
   //array para guardar estado
-    private static boolean[] visitado;
+    private  boolean[] visitado;
     
-    private static Hash hash;
-    private static DataCenter dataCenter;
-    private static Punto punto;
-    private static int DESTINO;
-    private static int ORIGEN;
+    private  Hash hash;
+    private  DataCenter dataCenter;
+    private  Punto punto;
+    private  int DESTINO;
+    private  int ORIGEN;
    
-    public static int[] getDistancia() {
+    public  int[] getDistancia() {
         return distancia;
     }
    
-    public static void setDistancia(int[] d) {
+    public  void setDistancia(int[] d) {
         distancia = d;
     }
    
-    public static int[] getPrevio() {
+    public  int[] getPrevio() {
         return previo;
     }
    
-    public static void setPrevio(int[] p) {
+    public  void setPrevio(int[] p) {
         previo = p;
     }
    
-    public static boolean[] getVisitado() {
+    public  boolean[] getVisitado() {
         return visitado;
     }
     
-    public static void setVisitado(boolean[] aVisitado) {
+    public  void setVisitado(boolean[] aVisitado) {
         visitado = aVisitado;
     }
     
-    public static int getDESTINO() {
+    public  int getDESTINO() {
         return DESTINO;
     }
    
-    public static void setDESTINO(int d) {
+    public  void setDESTINO(int d) {
         DESTINO = d;
     }
     
-    public static int getORIGEN() {
+    public  int getORIGEN() {
         return ORIGEN;
     }
 
-    public static void setORIGEN(int o) {
+    public  void setORIGEN(int o) {
         ORIGEN = o;
     }
   
-    public static Grafo getGrafo() {
+    public  Grafo getGrafo() {
         return grafo;
     }
    
-    public static void setGrafo(Grafo g) {
+    public  void setGrafo(Grafo g) {
         grafo = g;
     }
 
-    public static Hash getHash() {
+    public  Hash getHash() {
         return hash;
     }
    
-    public static void setHash(Hash h) {
+    public  void setHash(Hash h) {
         hash = h;
     }
     
-    public static DataCenter getDataCenter() {
+    public  DataCenter getDataCenter() {
         return dataCenter;
     }
     
-    public static void setDataCenter(DataCenter dc) {
+    public  void setDataCenter(DataCenter dc) {
         dataCenter = dc;
     }
     
-    public static Punto getPunto() {
+    public  Punto getPunto() {
         return punto;
     }
    
-    public static void setPunto(Punto aPunto) {
+    public  void setPunto(Punto aPunto) {
         punto = aPunto;
     }
 
@@ -103,7 +103,7 @@ public class Dijkstra {
         setPrevio(new int[ubicaciones.getSizeTable()]); // el nodo previo en el camino.
         setVisitado(new boolean[ubicaciones.getSizeTable()]); //nodos visitados.
         setORIGEN(origen);//el inicio
-        Dijkstra.setHash(ubicaciones);
+        this.setHash(ubicaciones);
         setDataCenter(null);
 
         //aca se inicializa
@@ -116,6 +116,7 @@ public class Dijkstra {
 
         getDistancia()[origen] = 0; //distancia 0 entre orig y orig.
         getVisitado()[origen] = true; //el origen queda como vistado
+        dijkstra(origen, esfuerzoCPUrequeridoEnHoras);
         
         //llamo a recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
         //en clase devuelven un int que es la distancia a la posicion destino
@@ -185,23 +186,31 @@ public class Dijkstra {
 	
      	while (aux != null) {
      		vertice = (Integer) aux.getDato();
-     		if (!getVisitado()[vertice]) {
+     		if (!visitado[vertice] && grafo.sonAdyacentes(vertice, p)) {
      			pesoaux = getGrafo().devolverDistancia(vertice, p);
      			if (getDistancia()[p] + pesoaux < getDistancia()[vertice]) {
-     				getPrevio()[vertice] = p;
-     				getDistancia()[vertice] = getDistancia()[p] + pesoaux;
-     			}            
+     				previo[vertice] = p;
+     				distancia[vertice] = getDistancia()[p] + pesoaux;
+     				visitado[vertice] = true;
+     			}
+     			else
+     			{
+     				distancia[vertice] = Integer.MAX_VALUE; 
+     			}
      		} 
      		aux = aux.getSig();
 	     }
-	     for(int i = 0; i< getDistancia().length;i++){
-	         if(getDistancia()[i]<pesoMenor && !getVisitado()[i]){
+	     for(int i = 0; i< distancia.length;i++){
+	         if(distancia[i]<pesoMenor && !getVisitado()[i]){
 	             verticeMenor = i;
 	             pesoMenor = getDistancia()[i];
 	         }
 	     }
 	     return verticeMenor;
 	}
+	
+	
+	
 
 	private ILista obtenerAdyacentes(int u) {
 		 return getGrafo().obtenerVerticesAdyacentes(u);
