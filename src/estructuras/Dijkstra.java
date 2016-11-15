@@ -181,7 +181,7 @@ public class Dijkstra {
 		int verticeMenor = -1;
 		int vertice = 0;
      	int pesoaux = 0;
-     	int pesoMenor = Integer.MAX_VALUE;
+     	//int pesoMenor = Integer.MAX_VALUE;
      	NodoLista aux = l.getInicio();
 	
      	while (aux != null) {
@@ -200,13 +200,29 @@ public class Dijkstra {
      		} 
      		aux = aux.getSig();
 	     }
-	     for(int i = 0; i< distancia.length;i++){
+	     /*for(int i = 0; i< distancia.length;i++){
 	         if(distancia[i]<pesoMenor && !getVisitado()[i]){
 	             verticeMenor = i;
 	             pesoMenor = getDistancia()[i];
 	         }
-	     }
-	     return verticeMenor;
+	     }*/    	
+     	
+	     return verticeMenor = distanciaMasCorta();
+	}
+	
+	
+	public int distanciaMasCorta() {
+		int verticeMenor = -1;
+		int pesoMenor = Integer.MAX_VALUE;
+		for(int i = 1; i< visitado.length; i++){
+			if(!visitado[i]){
+				if(distancia[i] < pesoMenor){
+					pesoMenor = distancia[i];
+					verticeMenor = i;
+				}
+			}
+		}
+		return verticeMenor;
 	}
 	
 	
