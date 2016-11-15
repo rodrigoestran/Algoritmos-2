@@ -34,7 +34,7 @@ public class Hash {
         this.sizeTable = t;
         this.table = new Punto[t];
     }
-//Esto hay que verlo en clase
+    //Esto hay que verlo en clase
     public int hashCode(double coordX, double coordY) {
         String tostring = String.valueOf(coordX) + String.valueOf(coordY);
         int num = 0;

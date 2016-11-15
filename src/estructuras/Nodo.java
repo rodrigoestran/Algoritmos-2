@@ -5,7 +5,6 @@
  */
 package estructuras;
 
-import dominio.DataCenter;
 import dominio.Empresa;
 
 /**

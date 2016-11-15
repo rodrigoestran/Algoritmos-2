@@ -39,6 +39,5 @@ public abstract class Punto {
         return coordX + ";" + coordY;
     }
     
-    // la opcion es hacer esto asi, o que get nombre este en punto y tenga su atributo comun aca
     public abstract String getNombre();
 }
