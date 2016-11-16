@@ -6,6 +6,10 @@
 package dominio;
 
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import estructuras.Dijkstra;
 import estructuras.Grafo;
@@ -147,7 +151,6 @@ public class SSDataCenter {
     public Retorno procesarInformación(Double coordX, Double coordY, int esfuerzoCPUrequeridoEnHoras) {
     	Retorno ret = new Retorno(Resultado.ERROR_1);
         DataCenter dcOrigen = null;
-        String string = "";
 	    int ori = mapa.getVertices().posicionPorCoord(coordX, coordY);
 	    int costoTotal = 0;
 	    if (ori != -1) {
@@ -162,57 +165,37 @@ public class SSDataCenter {
         		costoTotal = dDcMP.getCostoActual();
         		if(dcDestino != null)
         		{
-    				string = dcDestino.getNombre()+ "|" + costoTotal;
-    				dcDestino.setCapacidadCPUenHoras(dcDestino.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
-    				dcDestino.setEsfuerzoEnUso(dcDestino.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+        			ret.valorString = modifDCyArmarRetorno(dcDestino, costoTotal, esfuerzoCPUrequeridoEnHoras);
     				ret.setResultado(Resultado.OK);
-    				ret.valorString = string;
         		}
         		else 
         			ret.setResultado(Resultado.ERROR_2);
         	}
         	else {
-        		string = dcOrigen.getNombre() + "|" + "0";
-        		dcOrigen.setCapacidadCPUenHoras(dcOrigen.getCapacidadCPUenHoras()-esfuerzoCPUrequeridoEnHoras);
-        		dcOrigen.setEsfuerzoEnUso(dcOrigen.getEsfuerzoEnUso()+esfuerzoCPUrequeridoEnHoras);
+        		ret.valorString = modifDCyArmarRetorno(dcOrigen, 0, esfuerzoCPUrequeridoEnHoras);
         		ret.setResultado(Resultado.OK);
-        		ret.valorString = string;
         	}	        
 	    }
-	    else System.out.println("No existen las coordenadas");
-		System.out.println(ret.valorString);
+	    else ret.valorString = "No existen las coordenadas";
         return ret;
     }
     
+    public String modifDCyArmarRetorno(DataCenter dc, int costo, int esfuerzo){
+    	dc.setCapacidadCPUenHoras(dc.getCapacidadCPUenHoras() - esfuerzo);
+		dc.setEsfuerzoEnUso(dc.getEsfuerzoEnUso() + esfuerzo);
+    	return dc.getNombre()+ "|" + costo;
+    }
     
     
-
-//    public void crearMapa() {
-//    	String mapaURL = "http://maps.googleapis.com/maps/api/staticmap?size=1200x600&maptype=roadmap&sensor=false";
-//		mapaURL += buildMapString();
-//		try {
-//			Desktop.getDesktop().browse(new URI(mapaURL));
-//		} catch (IOException | URISyntaxException e) {
-//			e.printStackTrace();
-//		}
-//    }
-    
-//    public String buildMapString(){
-//    	String mapString = "";
-//    	for (int i=0; i<testPuntos.length; i++){
-//    		if (testPuntos[i] instanceof Ciudad)	
-//    			mapString += "&markers=color:yellow";
-//    		else     			
-//    			mapString += "&markers=color:" + ((DataCenter)testPuntos[i]).getEmpresa().getColor();
-//    		
-//    		mapString += "%7Clabel:" + testPuntos[i].getNombre() + 
-//    					 "%7C" + testPuntos[i].getCoordX() + "," + testPuntos[i].getCoordY() ;
-//    		
-//    	}
-//    	return mapString;
-//    }
-    
-   
+    public void crearMapa() {
+    	String mapaURL = "http://maps.googleapis.com/maps/api/staticmap?size=1200x600&maptype=roadmap&sensor=false";
+		mapaURL += mapa.buildMapString();
+		try {
+			Desktop.getDesktop().browse(new URI(mapaURL));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+    }
     
     public String listarRedMinima(){
     	ILista red = obtenerRedMinima();

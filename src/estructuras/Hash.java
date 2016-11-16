@@ -4,8 +4,6 @@ import dominio.Punto;
 
 public class Hash {
 
-	// hash de DC capaz?
-	//si no vamos a guardar las ciudades en el hash si, me parece mas generico que sean puntos.
 	private Punto[] table;
     private int sizeTable;
 
@@ -25,8 +23,6 @@ public class Hash {
         this.sizeTable = tamanioTabla;
     }
 
-    
-    
     /*
      * Constructor
      */
@@ -34,14 +30,14 @@ public class Hash {
         this.sizeTable = t;
         this.table = new Punto[t];
     }
+    
     //Esto hay que verlo en clase
     public int hashCode(double coordX, double coordY) {
         String tostring = String.valueOf(coordX) + String.valueOf(coordY);
         int num = 0;
-        for (int i = 0; i < tostring.length(); i++) {
+        for (int i = 0; i < tostring.length(); i++) 
         	num += (int) tostring.charAt(i);
-        }
-        //return num;
+
         return num % sizeTable;
     }
     
@@ -54,26 +50,21 @@ public class Hash {
             	contador += 1;
                 if (table[posicion] != null) {
                     if (!(table[posicion].getCoordX().equals(0.0) && table[posicion].getCoordY().equals(0.0))) {
-                        if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) {
+                        if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) 
                             return true;
-                        } else {
-                        	posicion += 1;
-                            if (posicion == table.length) {
-                            	posicion = 0;
-                            }
+                        else {
+	                    	posicion += 1;
+	                        if (posicion == table.length) posicion = 0;
                         }
-                    } else {
+                    } 
+                    else {
                     	posicion += 1;
-                        if (posicion == table.length) {
-                        	posicion = 0;
-                        }
+                        if (posicion == table.length) posicion = 0;
                     }
-                } else {
-                	aux = false;
-                }
-            } else {
-            	aux = false;
-            }
+                } 
+                else aux = false;
+            } 
+            else aux = false;
         }
         return false;
 	}
@@ -85,18 +76,16 @@ public class Hash {
             if (table[posicion] != null) {
                 if (!(table[posicion].getCoordX().equals(0.0) && table[posicion].getCoordY().equals(0.0))) {
                 	posicion += 1;
-                    if (posicion == table.length) {
+                    if (posicion == table.length) 
                     	posicion = 0;
-                    }
-                } else {
+                } 
+                else 
                 	aux = false;
-                }
-            } else {
+            } 
+            else 
             	aux = false;
-            }
         }
         table[posicion] = v;
-        //System.out.println(posicion);
         return posicion;
 	}
 
@@ -108,46 +97,38 @@ public class Hash {
 			if (contador < table.length) {
 				contador += 1;
 				if (table[posicion] != null) {
-					if (table[posicion].getCoordX().equals(x) && table[posicion].getCoordY().equals(y)){
+					if (table[posicion].getCoordX().equals(x) && table[posicion].getCoordY().equals(y))
 						return posicion;
-					} else {
+					else {
 						posicion += 1;
-						if (posicion == table.length) {
+						if (posicion == table.length) 
 							posicion = 0;
-						}
 					}
 				} 
 				else 
-				{
 					aux = false;
-				}
 			} 
 			else 
-			{
 				aux = false;
-			}
 		}
 		return -1;
 	}
 	
 	//no estoy seguro del if acá.
-
 	public Punto puntoPorPosicion(int posicion) {
-		 if (table[posicion] != null && !(table[posicion].getCoordX() == 0.0 && table[posicion].getCoordY() == 0.0)) {
-	            return table[posicion];
-	        } else {
-	            return null;
-	        }
+		if (table[posicion] != null && !(table[posicion].getCoordX() == 0.0 
+			&& table[posicion].getCoordY() == 0.0)) {
+				return table[posicion];
+	    } else 
+	        return null;
 	}
 
 	public void eliminarPunto(int posicion) {
 		this.table[posicion] = null;
-		
 	}
 
 	public void buscar(String nombre) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

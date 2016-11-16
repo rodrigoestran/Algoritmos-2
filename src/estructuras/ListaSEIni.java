@@ -87,10 +87,10 @@ public class ListaSEIni implements ILista {
 	@Override
 	public String informe() {
 		NodoLista aux = inicio;
-		String informe = aux.toString();
+		String informe = aux.getDato().toString();
 		aux = aux.getSig();
 		while (aux != null){
-			informe += "|" + aux.toString();
+			informe += "|" + aux.getDato().toString();
 			aux = aux.getSig();
 		}
 		return informe;
