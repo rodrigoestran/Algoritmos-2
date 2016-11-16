@@ -112,7 +112,7 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno mapaEstado() {
-//		ssdc.crearMapa();
+		ssdc.crearMapa();
 		return new Retorno(Resultado.OK);
 	}
 

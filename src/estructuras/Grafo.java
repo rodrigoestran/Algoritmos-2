@@ -2,6 +2,10 @@ package estructuras;
 
 import interfaces.IGrafo;
 import interfaces.ILista;
+
+import javax.xml.crypto.Data;
+
+import dominio.Ciudad;
 import dominio.DataCenter;
 import dominio.Punto;
 import estructuras.ListaSEIni;
@@ -64,13 +68,10 @@ public class Grafo implements IGrafo{
         }
     }
 
-	// modifique boolean por int, para que devielva directamente la posicion que tiene libre
 	public int tieneLugarDisponible() {
-		for (int i = 0; i < tope; i++) {
-            if (!this.nodosUsados[i]) {
+		for (int i = 0; i < tope; i++) 
+            if (!this.nodosUsados[i]) 
                 return i;
-            }
-        }
         return -1;
 	}
 	
@@ -78,12 +79,6 @@ public class Grafo implements IGrafo{
 		this.cantVertices++;
 		int pos = this.vertices.insertarEnHash(p);
         this.nodosUsados[pos] = true;	
-        
-      /*  for (int i = 0; i < vertices.getSizeTable(); i++) {
-        	if (vertices.getTable()[i] != null)
-        		System.out.println(vertices.getTable()[i].getNombre());
-		}*/
-        
 	}
 
 	public boolean existeArista(Punto ini, Punto fin) {
@@ -165,80 +160,69 @@ public class Grafo implements IGrafo{
 		return this.cantVertices == 0;
 	}
 
+	public String buildMapString(){
+    	String mapString = "";
+    	for (int i=0; i < vertices.getSizeTable(); i++){
+    		Punto p = vertices.getTable()[i];
+    		if ( p instanceof Ciudad || p instanceof DataCenter){
+	    		if (p instanceof Ciudad)	
+	    			mapString += "&markers=color:yellow";
+	    		else    			
+	    			mapString += "&markers=color:" + ((DataCenter)p).getEmpresa().getColor();
+	    		
+	    		mapString += "%7Clabel:" + p.getNombre() + 
+	    					 "%7C" + p.getCoordX() + "," + p.getCoordY() ;
+    		}
+    	}
+    	return mapString;
+    }
+	
 	public int devolverDistancia(int x, int y) {
-		 if (this.matrizAdyacencia[x][y] != null) {
-	            return this.matrizAdyacencia[x][y].getDistancia();
-	        }
-	        return 0;
+		if (this.matrizAdyacencia[x][y] != null) 
+            return this.matrizAdyacencia[x][y].getDistancia();
+        return 0;
 	}
 		
 	// Pre: El grafo no está vacío y es no direccionado
 	// Pos: Objeto ILista con conjunto de Arcos unicos que tienen origen y destino para trazar tramos
 	public ILista actualizarRedMinima(){
-		
-		//Inicializacion
+		//Inicializacion:
+		// No creamos matriz auxiliar porque no va a sustituir a la original, y no la necesitamos como tal.
+		// en vez de eso devolvemos una lista de arcos
 		informeRedMinima.vaciarLista();
 		boolean[] visitados = new boolean[tope]; 
-		visitados[0] = true; //por ejemplo
-		Arco[][] aux = new Arco[tope][tope]; // nueva matriz
-		
-		for (int i = 0; i < aux.length; i++) {
-			for (int j = 0; j < aux.length; j++) {
-				aux[i][j] = new Arco();
-			}
-		}
-		
-		// De eugenia
-//		for (int k = 0; k < cantV-1; k++) {
-//			for (int i = 0; i < tope; i++) {
-//				if(vertices[i]!=null && visitado[i]){
-//					for(int j=i+1;j<tope;j++){
-//						//si es candidato une visitado con no visitado
-//						// si es mejor que mi anterior candidato lo sustituyo por mi mejor candidato
-//						
-//					}
-//				}
-//				
-//			}
-//			
-//			//agrego arista bidireccional a partir del valor minimo y las coordenadas
-//			//aux[imin][jmin]=aux[jmin][imin] = new Arco(min);
-//			//luego pongo como visitado a j
-//			//reseteo al valor minimo (MAX_VALUE)
-//		}
-//		matAdy = aux;
+		visitados[0] = true; 
 		
 		//Proceso
 		//Inicializar valor maximo (MAX_VALUE), y coordenadas de arista candidata
-		int costo = Integer.MAX_VALUE;
-		int iCandidato = -1;
-		int jCandidato = -1;
-		
 		for (int k = 0; k < tope-1 ; k++) {
-			for (int i = 0; i < aux.length; i++) {
-				//VISITADO
-				for (int j = 0; j < aux.length; j++) 
-					// si es candidato (une visitado con no visitado)
-					if (matrizAdyacencia[i][j].getExiste())
-						// y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
-						if (costo > matrizAdyacencia[i][j].getDistancia() && 
-								!visitados[j]){
-							costo = matrizAdyacencia[i][j].getDistancia();
-							iCandidato = i;
-							jCandidato = j;
+			int costo = Integer.MAX_VALUE; // cambie esto
+			int iCandidato = -1;
+			int jCandidato = -1;
+			for (int i = 0; i < tope; i++) {
+				if (vertices.getTable()[i] != null && visitados[i]){
+					for (int j = 0; j < tope; j++) {
+						if (matrizAdyacencia[i][j].getExiste()){ // si es candidato (une visitado con no visitado)
+							if (!visitados[j]){
+								int costoAux = matrizAdyacencia[i][j].getDistancia();
+								if (costo > costoAux ){ // y si es mejor que mi anterior candidato, sustituyo mi mejor cand.
+									costo = costoAux;
+									iCandidato = i;
+									jCandidato = j;
+								}
+							}
 						}
+					}
+				}
 			}
+
 			// agrego arista bidireccional a partir del valor minimo y las coordenadas
 			// y pongo como visitado a j
-			aux[iCandidato][jCandidato] = matrizAdyacencia[iCandidato][jCandidato] ;
-			aux[jCandidato][iCandidato] = matrizAdyacencia[jCandidato][iCandidato];
-			visitados[jCandidato] = true;
-			// preguntar si estará bien hacer esto
-			informeRedMinima.insertarInicio(aux[iCandidato][jCandidato]);
-			
-		}
-		matrizAdyacencia = aux;
-		
+			if (jCandidato != -1){
+				visitados[jCandidato] = true;
+				informeRedMinima.insertarInicio(matrizAdyacencia[iCandidato][jCandidato]);
+			}
+		}		
 		return informeRedMinima;
 	}
 	
