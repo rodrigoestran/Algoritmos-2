@@ -261,7 +261,7 @@ public class General {
 	 /////////// LISTADO EMPRESAS ///////////////
 	    //s.listadoEmpresas();
 	 
-	 ///////// MAPA //////////////////////////
+	 ///////// MAPA ////////////////////////////
 	 
 	 @Test
      public void mapaEstadoOK(){
