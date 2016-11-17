@@ -191,7 +191,7 @@ public class Dijkstra {
      			if (this.distancias[p] + pesoaux < this.distancias[verticeAux]) {
      				this.previos[verticeAux] = p;
      				this.distancias[verticeAux] = this.distancias[p] + pesoaux;
-     				if (this.distancias[verticeAux] < pesoMenor && !this.visitados[verticeAux]){
+     				if (this.distancias[verticeAux] < pesoMenor){ //&& !this.visitados[verticeAux]){
      					pesoMenor = this.distancias[verticeAux];
      					verticeMenor = verticeAux;
      				}

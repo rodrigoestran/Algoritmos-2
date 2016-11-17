@@ -130,7 +130,7 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoEmpresas() {
 		System.out.println(empresas.devolverInforme());
-		return new Retorno(Resultado.NO_IMPLEMENTADA);
+		return new Retorno(Resultado.OK);
 	}
 
 	
