@@ -122,6 +122,8 @@ public class Dijkstra {
             this.visitados[i] = false;
             this.previos[i] = -1;
         }
+        
+     
 
         this.distancias[origen] = 0; //distancia 0 entre orig y orig.
         this.visitados[origen] = true; //el origen queda como vistado
@@ -140,18 +142,34 @@ public class Dijkstra {
 	    int vertMenorDist = obtenerVerticeMenorDistancia(l, p);
 	    // si aun sigue existiendo un vertice no visitado, sino ahi es cuando da -1
 	    if (vertMenorDist != -1){
-	        p = this.previos[vertMenorDist]; // esto es redundante. Cuando llega aca ya estaba seteado
-	        int peso = grafo.devolverDistancia(vertMenorDist, p);
+	        //p = this.previos[vertMenorDist]; // esto es redundante. Cuando llega aca ya estaba seteado
+	        //int peso = grafo.devolverDistancia(vertMenorDist, p);
 	
 	        //Modifico listas con el punto que seleccioné
 	        this.visitados[vertMenorDist] = true;
-	        this.previos[vertMenorDist] = p;
-	        this.distancias[vertMenorDist] = this.distancias[p] + peso; // redundante?
+	        //this.previos[vertMenorDist] = p;
+	        //this.distancias[vertMenorDist] = this.distancias[p] + peso; // redundante?
 	
-	        punto = hash.puntoPorPosicion(vertMenorDist);
+	        //punto = hash.puntoPorPosicion(vertMenorDist);
 	        dijkstraREC(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
 	    }
-
+	    else
+	    {
+	    	int indice = -1;
+	    	this.visitados[p] = true;
+	    	for(int i = 0; i<visitados.length; i++)
+	    	{
+	    		if(!visitados[i] && hash.getTable()[i]!= null && !this.obtenerAdyacentes(i).esVacia())
+	    		{
+	    			indice = i;
+	    			break;
+	    		}
+	    	}
+	    	if(indice != -1)
+	    	{
+	    		dijkstraREC(indice, esfuerzoCPUrequeridoEnHoras);
+	    	}  	
+	    }
 	}
 
 	private int obtenerVerticeMenorDistancia(ILista l, int p) {
@@ -165,7 +183,7 @@ public class Dijkstra {
      	while (aux != null) {
      		verticeAux = (Integer) aux.getDato();
      		// si este vertice actual no fue ya visitado
-     		if (!this.visitados[verticeAux]) {
+     		//if (!this.visitados[verticeAux]) {
      			// guardo la distancia entre el vertice actual y el punto p
      			pesoaux = this.grafo.devolverDistancia(verticeAux, p);
      			// si la distancia alcanzada hasta p más la distancia entre p y el vertice actual es 
@@ -173,13 +191,13 @@ public class Dijkstra {
      			if (this.distancias[p] + pesoaux < this.distancias[verticeAux]) {
      				this.previos[verticeAux] = p;
      				this.distancias[verticeAux] = this.distancias[p] + pesoaux;
-     				if (this.distancias[verticeAux] < pesoMenor){
+     				if (this.distancias[verticeAux] < pesoMenor && !this.visitados[verticeAux]){
      					pesoMenor = this.distancias[verticeAux];
      					verticeMenor = verticeAux;
      				}
      				
      			}           
-     		} 
+     		//} 
      		aux = aux.getSig();
 	     }
 	     return verticeMenor;
@@ -198,7 +216,7 @@ public class Dijkstra {
 		DataCenter dcTemp = null;
 		for (int i=0; i< this.distancias.length; i++){
 			boolean hayCapable = false;
-			for (int j = 0; j < cantDeCapable; j++){
+			for (int j = 0; j <= cantDeCapable-1; j++){
 				if (i == listaDCcapable[j]) {
 					hayCapable = true;
 					break;
@@ -229,14 +247,14 @@ public class Dijkstra {
 		for (int i = 0; i < distancias.length; i ++){
 			listaDCcapable[i] = -1;
 		}
-		int contador = -1;
+		int contador = 0;
 		for (int i = 0; i< hash.getSizeTable(); i++){
 			Punto puntoEnHash = hash.getTable()[i];
 			if (puntoEnHash instanceof DataCenter){
 				DataCenter dcEnHash = (DataCenter) puntoEnHash;
-				if (dcEnHash.getCapacidadCPUenHoras() > capMin) {
-					contador++;
+				if (dcEnHash.getCapacidadCPUenHoras() >= capMin) {
 					listaDCcapable[contador] = i;
+					contador++;
 				}
 			}
 		}
