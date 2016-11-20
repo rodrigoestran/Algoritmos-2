@@ -11,33 +11,37 @@ package dominio;
  */
 public abstract class Punto {
 	private Double coordX;
-    private Double coordY;
+	private Double coordY;
 
-    public Double getCoordX() {
-        return coordX;
-    }
+	// GETTERS AND SETTERS//
 
-    public void setCoordX(Double coordX) {
-        this.coordX = coordX;
-    }
+	public Double getCoordX() {
+		return coordX;
+	}
 
-    public Double getCoordY() {
-        return coordY;
-    }
+	public void setCoordX(Double coordX) {
+		this.coordX = coordX;
+	}
 
-    public void setCoordY(Double coordY) {
-        this.coordY = coordY;
-    }
+	public Double getCoordY() {
+		return coordY;
+	}
 
-    public Punto(Double coordX, Double coordY) {
-        this.coordX = coordX;
-        this.coordY = coordY;
-    }
-    
-    @Override
-    public String toString() {
-        return coordX + ";" + coordY;
-    }
-    
-    public abstract String getNombre();
+	public void setCoordY(Double coordY) {
+		this.coordY = coordY;
+	}
+
+	// CONSTRUCTOR
+
+	public Punto(Double coordX, Double coordY) {
+		this.coordX = coordX;
+		this.coordY = coordY;
+	}
+
+	@Override
+	public String toString() {
+		return coordX + ";" + coordY;
+	}
+
+	public abstract String getNombre();
 }

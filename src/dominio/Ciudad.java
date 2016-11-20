@@ -11,10 +11,10 @@ import estructuras.ListaSEIni;
  *
  * @author alumnoFI
  */
-public class Ciudad extends Punto{
-    
+public class Ciudad extends Punto {
+
 	private String nombre;
-	
+
 	// Constructor //
 	public Ciudad(Double coordX, Double coordY, String nombre) {
 		super(coordX, coordY);
@@ -30,6 +30,4 @@ public class Ciudad extends Punto{
 		this.nombre = nombre;
 	}
 
-	
-	
 }

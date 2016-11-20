@@ -16,6 +16,8 @@ public class Nodo {
 	 private Empresa dato;
 	    private Nodo der ;
 	    private Nodo izq ;
+	    
+	    //GETTERS AND SETTERS//
 
 	    public Empresa getDato() {
 	        return dato;
@@ -40,41 +42,11 @@ public class Nodo {
 	    public void setIzq(Nodo izq) {
 	        this.izq = izq;
 	    }
+	    
 
+	    //CONSTRUCTOR//
 	    public Nodo(Empresa dato) {
 	        this.dato = dato;
-	    }
-
-	    boolean remove(String valor, Nodo aux) {
-	        if (this.getDato().getNombre().equals(valor)) {
-	                  if (izq != null)
-	                        return izq.remove(valor, this);
-	                  else
-	                        return false;
-	            } else if (this.getDato().getNombre().compareTo(valor) > 0) {
-	                  if (der != null)
-	                        return der.remove(valor, this);
-	                  else
-	                        return false;
-	            } else {
-	                  if (izq != null && der != null) {
-	                        this.dato = der.minValue();
-	                        der.remove(this.getDato().getNombre(), this);
-	                  } else if (aux.getIzq().equals(this)) {
-	                        aux.setIzq((izq != null) ? izq : der);
-	                  } else if (aux.getDer().equals(this)) {
-	                        aux.setDer((izq != null) ? izq : der);
-	                  }
-	                  return true;
-	    }
-
-	    }
-	    
-	     public Empresa minValue() {
-	            if (izq == null)
-	                  return dato;
-	            else
-	                  return izq.minValue();
-	      }
+	    }  
     
 }

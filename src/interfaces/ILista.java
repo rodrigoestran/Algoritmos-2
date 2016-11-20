@@ -11,23 +11,16 @@ import estructuras.NodoLista;
  *
  * @author alumnoFI
  */
-public interface ILista extends Iterable<Object>{
-
+public interface ILista{
 
 	void insertarInicio(Object elem);
 		
-	void borrarInicio();
-	
 	boolean esVacia();
 	
 	void vaciarLista();	
 	
-	int largo();
-	
 	NodoLista getInicio();
 	
-	boolean existe(Object elem);
-
 	String informe();
     
 }

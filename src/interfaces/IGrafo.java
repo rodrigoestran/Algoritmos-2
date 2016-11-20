@@ -13,10 +13,7 @@ import dominio.Punto;
  */
 public interface IGrafo {
 
-	public void crearGrafo(int cantMax);
-	
-	public boolean esConexo();
-	
+		
 	public void agregarVertice(Punto p);
 
 	public void agregarArista(int peso, Punto inicio, Punto fin);
@@ -29,8 +26,5 @@ public interface IGrafo {
  
 	public boolean sonAdyacentes(int a, int b);
 
-	public boolean estaVertice(int v);
-
-	public boolean esVacio();
     
 }
