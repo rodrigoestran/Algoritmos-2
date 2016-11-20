@@ -2,9 +2,6 @@ package estructuras;
 
 import interfaces.IGrafo;
 import interfaces.ILista;
-
-import javax.xml.crypto.Data;
-
 import dominio.Ciudad;
 import dominio.DataCenter;
 import dominio.Punto;
@@ -47,10 +44,7 @@ public class Grafo implements IGrafo{
 		this.tope = cantNodos;
 	}
 
-	public void setInformeRedMinima(ILista informeRedMinima) {
-		this.informeRedMinima = informeRedMinima;
-	}
-
+	@Override
 	public Hash getVertices() {
 		return vertices;
 	}
@@ -59,15 +53,7 @@ public class Grafo implements IGrafo{
 		this.vertices = vertices;
 	}
 
-	public void busquedaEnProdundidad(int v, boolean[] visitados) {
-        visitados[v] = true;
-        for (int i = 0; i < tope; i++) {
-            if (matrizAdyacencia[v][i].getExiste() && !visitados[i]) {
-            	busquedaEnProdundidad(i, visitados);
-            }
-        }
-    }
-
+	@Override
 	public int tieneLugarDisponible() {
 		for (int i = 0; i < tope; i++) 
             if (!this.nodosUsados[i]) 
@@ -75,31 +61,30 @@ public class Grafo implements IGrafo{
         return -1;
 	}
 	
-	public void agregarVertice(Punto p) {
+	@Override
+	public void agregarVertice(Object p) {
 		this.cantVertices++;
-		int pos = this.vertices.insertarEnHash(p);
+		int pos = this.vertices.insertarEnHash((Punto)p);
         this.nodosUsados[pos] = true;	
 	}
 
-	public boolean existeArista(Punto ini, Punto fin) {
-		int indIni = obtenerPosicion(ini);
-		int indFin = obtenerPosicion(fin);
+	@Override
+	public boolean existeArista(Object ini, Object fin) {
+		int indIni = obtenerPosicion((Punto)ini);
+		int indFin = obtenerPosicion((Punto)fin);
 		if (matrizAdyacencia[indIni][indFin].getInicio() == null) return false;
 		return true;
 	}
 
-	public void agregarArista(int peso, Punto inicio, Punto fin) {
-		Arco nuevo = new Arco(peso, inicio, fin);
-		int indIni = obtenerPosicion(inicio);
-		int indFin = obtenerPosicion(fin);
+	@Override
+	public void agregarArista(int peso, Object inicio, Object fin) {
+		Punto pInicio = (Punto)inicio;
+		Punto pFin = (Punto)fin;
+		Arco nuevo = new Arco(peso, pInicio, pFin);
+		int indIni = obtenerPosicion(pInicio);
+		int indFin = obtenerPosicion(pFin);
 		this.matrizAdyacencia[indIni][indFin] = nuevo;
         this.matrizAdyacencia[indFin][indIni] = nuevo;
-	}
-
-	@Override
-	public void crearGrafo(int cantMax) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	private int obtenerPosicion(Punto p){
@@ -107,30 +92,23 @@ public class Grafo implements IGrafo{
 	}
 
 	@Override
-	public boolean esConexo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void eliminarVertice(int v) {
 		this.nodosUsados[v] = false;
         this.cantVertices--;
-
         for (int i = 1; i <= this.tope; i++) {
             this.matrizAdyacencia[i][v] = new Arco();
             this.matrizAdyacencia[v][i] = new Arco();
         }
-				
 	}
 
 	@Override
-	public void eliminarArista(Punto ini, Punto fin) {
-		int origen = obtenerPosicion(ini);
-		int destino = obtenerPosicion(fin);
+	public void eliminarArista(Object ini, Object fin) {
+		Punto pInicio = (Punto)ini;
+		Punto pFin = (Punto)fin;
+		int origen = obtenerPosicion(pInicio);
+		int destino = obtenerPosicion(pFin);
 		this.matrizAdyacencia[origen][destino] = new Arco();
 		this.matrizAdyacencia[destino][origen] = new Arco();
-				
 	}
 
 	@Override
@@ -177,14 +155,16 @@ public class Grafo implements IGrafo{
     	return mapString;
     }
 	
+	@Override
 	public int devolverDistancia(int x, int y) {
 		if (this.matrizAdyacencia[x][y] != null) 
             return this.matrizAdyacencia[x][y].getDistancia();
         return 0;
 	}
-		
+	
 	// Pre: El grafo no está vacío y es no direccionado
 	// Pos: Objeto ILista con conjunto de Arcos unicos que tienen origen y destino para trazar tramos
+	@Override
 	public ILista actualizarRedMinima(){
 		//Inicializacion:
 		// No creamos matriz auxiliar porque no va a sustituir a la original, y no la necesitamos como tal.
@@ -192,7 +172,6 @@ public class Grafo implements IGrafo{
 		informeRedMinima.vaciarLista();
 		boolean[] visitados = new boolean[tope]; 
 		visitados[0] = true; 
-		
 		//Proceso
 		//Inicializar valor maximo (MAX_VALUE), y coordenadas de arista candidata
 		for (int k = 0; k < tope-1 ; k++) {
@@ -225,29 +204,11 @@ public class Grafo implements IGrafo{
 		}		
 		return informeRedMinima;
 	}
-	
-	
-	public DataCenter buscarDC(String nombre){
-		this.vertices.buscar(nombre);
-		return null;
-	}
 
 	public boolean estaVertice(Double coordX, Double coordY) {
-		return vertices.perteneceAHash(coordX, coordY);
+		return vertices.posicionPorCoord(coordX, coordY) != -1;
 	}
 
-	public Punto buscarPunto(Double x, Double y) {
-		Punto p = null;
-		int pos = this.vertices.posicionPorCoord(x, y);
-		if (pos != -1) {
-			p = this.vertices.puntoPorPosicion(pos);
-		}
-		return p;
-	}
-
-	public boolean existe(Double coordX, Double coordY) {
-		return vertices.perteneceAHash(coordX, coordY);
-	}
 
 	public Punto obtenerPunto(Double coordX, Double coordY) {
 		int posicion = vertices.posicionPorCoord(coordX, coordY); 

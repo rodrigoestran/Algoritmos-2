@@ -15,14 +15,12 @@ public class ListaSEIni implements ILista {
 	@Override
 	public void insertarInicio(Object elem) {
 		inicio = new NodoLista(elem, inicio);
-		
 	}
 
 	@Override
 	public void borrarInicio() {
-		if (!this.esVacia()){
+		if (!this.esVacia())
             this.inicio=this.inicio.getSig();
-        }
 	}
 
 	@Override
@@ -50,12 +48,6 @@ public class ListaSEIni implements ILista {
             }
         }
         return cont;
-	}
-
-	@Override
-	public boolean existe(Object elem) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

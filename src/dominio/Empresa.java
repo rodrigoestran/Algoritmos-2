@@ -66,10 +66,8 @@ public class Empresa {
 	// comportamiento //
 	
 	public boolean validar(){
-		
 		EmailValidator validator = new EmailValidator();
 		return validator.validate(this.email);
-		
 	}
 	
 	@Override
@@ -84,9 +82,8 @@ public class Empresa {
 	}
 
 	public int compareTo(Nodo n) {
-        Empresa nuevo = n.getDato();
+        Empresa nuevo = (Empresa)n.getDato();
         return this.nombre.compareTo(nuevo.getNombre());
 	}
-	
 	
 }

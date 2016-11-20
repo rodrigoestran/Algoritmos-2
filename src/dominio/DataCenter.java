@@ -5,7 +5,6 @@
  */
 package dominio;
 
-import estructuras.Nodo;
 
 /**
  *

@@ -14,8 +14,6 @@ import estructuras.Nodo;
  */
 public interface IABB {
 	
-		int altura();
-
 	    Nodo borrarMinimo(Nodo nodo);
 
 	    int cantHojas(Nodo nodo);
@@ -34,10 +32,6 @@ public interface IABB {
 
 	    void insertarElemento(Empresa e, Nodo nodo);
 
-	    void mostrarInOrder();
-
-	    void mostrarInOrder(Nodo a);
-
 	    void mostrarPosOrder();
 
 	    void mostrarPosOrder(Nodo a);
@@ -49,7 +43,14 @@ public interface IABB {
 	    Nodo obtenerElemento(String s, Nodo nodo);
 
 	    int obtenerPeso(Nodo nodo);
+	    
 	    String devolverInforme();
+	    
 	    void devolverInforme(Nodo a) ;
-    
+	    
+	    public Nodo Buscar(String s);
+	    
+	    public Nodo Buscar(String s, Nodo n);
+	    
+	    public Empresa pertenece(String x);
 }
