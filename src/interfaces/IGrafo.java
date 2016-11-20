@@ -5,32 +5,37 @@
  */
 package interfaces;
 
-import dominio.Punto;
+import estructuras.Hash;
 
 /**
  *
  * @author alumnoFI
  */
 public interface IGrafo {
-
-	public void crearGrafo(int cantMax);
 	
-	public boolean esConexo();
+	public void agregarVertice(Object p);
 	
-	public void agregarVertice(Punto p);
+	public Hash getVertices();
 
-	public void agregarArista(int peso, Punto inicio, Punto fin);
+	public void agregarArista(int peso, Object inicio, Object fin);
 
 	public void eliminarVertice(int v);
 
-	public void eliminarArista(Punto ini, Punto fin);
+	public void eliminarArista(Object ini, Object fin);
+	
+	public boolean existeArista(Object ini, Object fin);
 
 	public ILista obtenerVerticesAdyacentes(int v);
  
 	public boolean sonAdyacentes(int a, int b);
-
-	public boolean estaVertice(int v);
-
-	public boolean esVacio();
     
+	public boolean estaVertice(int v);
+	
+	public boolean esVacio();
+	
+	public int devolverDistancia(int x, int y);
+	
+	public ILista actualizarRedMinima();
+	
+	public int tieneLugarDisponible();
 }

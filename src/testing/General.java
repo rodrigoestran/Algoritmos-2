@@ -274,7 +274,7 @@ public class General {
 		 assertEquals(Retorno.Resultado.OK, r.resultado);
 	 }
 	 
-	 ///////// MAPA //////////////////////////
+	 ///////// MAPA ////////////////////////////
 	 
 	 @Test
      public void mapaEstadoOK(){

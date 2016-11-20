@@ -13,21 +13,18 @@ import estructuras.NodoLista;
  */
 public interface ILista extends Iterable<Object>{
 
-
-	void insertarInicio(Object elem);
+	public void insertarInicio(Object elem);
 		
-	void borrarInicio();
+	public void borrarInicio();
 	
-	boolean esVacia();
+	public boolean esVacia();
 	
-	void vaciarLista();	
+	public void vaciarLista();	
 	
-	int largo();
+	public int largo();
 	
-	NodoLista getInicio();
+	public NodoLista getInicio();
 	
-	boolean existe(Object elem);
-
-	String informe();
+	public String informe();
     
 }

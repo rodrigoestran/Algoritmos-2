@@ -5,7 +5,6 @@
  */
 package estructuras;
 
-import dominio.DataCenter;
 import dominio.Empresa;
 import interfaces.IABB;
 
@@ -63,7 +62,6 @@ public class ABB implements IABB{
             this.informe+=a.getDato().toString() +  " | ";
             devolverInforme(a.getDer());
         }
-       
     }
 
     @Override
@@ -222,11 +220,6 @@ public class ABB implements IABB{
     }
 
     @Override
-    public int altura() {
-        // TO-DO
-        return 0;
-    }
-    
     public Nodo Buscar(String s) {
 		if(this.raiz != null){
 			return Buscar(s, this.raiz);
@@ -234,7 +227,7 @@ public class ABB implements IABB{
 		return null;
 	}
 	
-	
+	@Override
 	public Nodo Buscar(String s, Nodo n){
         if(n == null){
             return null;
@@ -250,106 +243,96 @@ public class ABB implements IABB{
         }
     }
     
-    public void eliminar(String s ) {
-        raiz = eliminar(s, raiz );
-    }
-    public void eliminar(Empresa e) {
-        raiz = remove(e, raiz );
-    }
+//    public void eliminar(String s) {
+//        raiz = eliminar(s, raiz );
+//    }
+//    public void eliminar(Empresa e) {
+//        raiz = remove(e, raiz );
+//    }
+//    
+//    private Nodo eliminar( String s, Nodo a ) {
+//        if( a == null ) {
+//            return a; 
+//        }
+//
+//        if(s.compareTo(a.getDato().getNombre())<0 ) {
+//            a.setIzq(eliminar(s, a.getIzq()));
+//        } else if( s.compareTo(a.getDato().getNombre()) > 0 ) {
+//            a.setDer(eliminar(s, a.getDer() ));
+//        } else { 
+//            if( a.getIzq() != null && a.getDer() != null ) {
+//                a = Minimo(a.getDer());
+//                a.setDer(borrarMinimo(a.getDer()));
+//            }
+//            else {
+//                a = ( a.getIzq() != null ) ? a.getIzq() : a.getDer();
+//            }
+//        }
+//        return a;
+//    }   
     
-    private Nodo eliminar( String s, Nodo a ) {
-        if( a == null ) {
-            return a; 
-        }
+    
+//    public boolean remove(String value) {
+//        if (raiz == null)
+//              return false;
+//        else {
+//              if (raiz.getDato().getNombre().equals(value)) {
+//                    Nodo aux = this.Minimo(raiz);
+//                    aux.setIzq(raiz);
+//                    boolean result = raiz.remove(value, aux);
+//                    raiz = raiz.getIzq();
+//                    return result;
+//              } else {
+//                    return raiz.remove(value, null);
+//              }
+//        }
+//  }
 
-        if(s.compareTo(a.getDato().getNombre())<0 ) {
-            a.setIzq(eliminar(s, a.getIzq()));
-        } else if( s.compareTo(a.getDato().getNombre()) > 0 ) {
-            a.setDer(eliminar(s, a.getDer() ));
-        } else { 
-            if( a.getIzq() != null && a.getDer() != null ) {
-                a = Minimo(a.getDer());
-                a.setDer(borrarMinimo(a.getDer()));
-            }
-            else {
-                a = ( a.getIzq() != null ) ? a.getIzq() : a.getDer();
-            }
-        }
-        return a;
-    }   
-    
-    
-    public boolean remove(String value) {
-        if (raiz == null)
-              return false;
-        else {
-              if (raiz.getDato().getNombre().equals(value)) {
-                    Nodo aux = this.Minimo(raiz);
-                    aux.setIzq(raiz);
-                    boolean result = raiz.remove(value, aux);
-                    raiz = raiz.getIzq();
-                    return result;
-              } else {
-                    return raiz.remove(value, null);
-              }
-        }
-  }
-
-	private Nodo remove( Empresa e, Nodo n ){
-	    if( n == null ){
-	        return n;
-	    }
-	    int compareResult = e.compareTo(n);
-	    if( compareResult < 0 ){
-	        n.setIzq(remove( e, n.getIzq()) );
-	    } else if( compareResult > 0 ){
-	        n.setDer(remove( e, n.getDer()) );
-	    }else if( n.getIzq() != null && n.getDer() != null ){
-	        n.setDato(Minimo(n.getDer()).getDato());
-	        n.setDer(remove( n.getDato(), n.getDer()) );
-	    }else{
-	        n = ( n.getIzq() != null ) ? n.getIzq() : n.getDer();
-	    }
-	    return n;
-	}
+//	private Nodo remove( Empresa e, Nodo n ){
+//	    if( n == null ){
+//	        return n;
+//	    }
+//	    int compareResult = e.compareTo(n);
+//	    if( compareResult < 0 ){
+//	        n.setIzq(remove( e, n.getIzq()) );
+//	    } else if( compareResult > 0 ){
+//	        n.setDer(remove( e, n.getDer()) );
+//	    }else if( n.getIzq() != null && n.getDer() != null ){
+//	        n.setDato(Minimo(n.getDer()).getDato());
+//	        n.setDer(remove( n.getDato(), n.getDer()) );
+//	    }else{
+//	        n = ( n.getIzq() != null ) ? n.getIzq() : n.getDer();
+//	    }
+//	    return n;
+//	}
 	
-	private Nodo Minimo( Nodo nodo )
-	{
-	    if(nodo != null )
-	        while( nodo.getIzq() != null )
-	            nodo = nodo.getIzq();
-	    return nodo;
-	}
-	
-	private Nodo Maximo( Nodo nodo )
-	{
-	    if(nodo != null )
-	        while( nodo.getDer() != null )
-	            nodo = nodo.getDer();
-	    return nodo;
-	}
-	
-	@Override
-	public void mostrarInOrder() {
-	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-	
-	@Override
-	public void mostrarInOrder(Nodo a) {
-	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-	
+//	private Nodo Minimo( Nodo nodo )
+//	{
+//	    if(nodo != null )
+//	        while( nodo.getIzq() != null )
+//	            nodo = nodo.getIzq();
+//	    return nodo;
+//	}
+//	
+//	private Nodo Maximo( Nodo nodo )
+//	{
+//	    if(nodo != null )
+//	        while( nodo.getDer() != null )
+//	            nodo = nodo.getDer();
+//	    return nodo;
+//	}
+//	
 	public String getInforme() {
 	    this.devolverInforme();
 	    return this.informe;
 	}
 	
+	@Override
 	public Empresa pertenece(String x)
 	{
 		return perteneceRec(x, raiz);
 	}
 
-	// Arreglar todo esto
 	private Empresa perteneceRec(String x, Nodo nodo) {
 		if(nodo == null)
 			return null;

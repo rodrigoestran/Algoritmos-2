@@ -40,34 +40,6 @@ public class Hash {
 
         return num % sizeTable;
     }
-    
-	public boolean perteneceAHash(double x, double y) {
-		int posicion = hashCode(x, y);
-        boolean aux = true;
-        int contador = 0;
-        while (aux) {
-            if (contador < table.length) {
-            	contador += 1;
-                if (table[posicion] != null) {
-                    if (!(table[posicion].getCoordX().equals(0.0) && table[posicion].getCoordY().equals(0.0))) {
-                        if (table[posicion].getCoordX() == x && table[posicion].getCoordY() == y) 
-                            return true;
-                        else {
-	                    	posicion += 1;
-	                        if (posicion == table.length) posicion = 0;
-                        }
-                    } 
-                    else {
-                    	posicion += 1;
-                        if (posicion == table.length) posicion = 0;
-                    }
-                } 
-                else aux = false;
-            } 
-            else aux = false;
-        }
-        return false;
-	}
 
 	public int insertarEnHash(Punto v) {
 		int posicion = hashCode(v.getCoordX(), v.getCoordY());
@@ -88,7 +60,7 @@ public class Hash {
         table[posicion] = v;
         return posicion;
 	}
-
+	
 	public int posicionPorCoord(Double x, Double y) {
 		int posicion = hashCode(x, y);
 		boolean aux = true;
@@ -114,7 +86,6 @@ public class Hash {
 		return -1;
 	}
 	
-	//no estoy seguro del if acá.
 	public Punto puntoPorPosicion(int posicion) {
 		if (table[posicion] != null && !(table[posicion].getCoordX() == 0.0 
 			&& table[posicion].getCoordY() == 0.0)) {
@@ -125,10 +96,6 @@ public class Hash {
 
 	public void eliminarPunto(int posicion) {
 		this.table[posicion] = null;
-	}
-
-	public void buscar(String nombre) {
-		// TODO Auto-generated method stub
 	}
 
 }

@@ -4,7 +4,7 @@ import dominio.Punto;
 
 public class Arco {
 	
-	private Integer distancia; 
+	private int distancia; 
 	private Punto inicio;
 	private Punto fin;
 	private boolean existe;

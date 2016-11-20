@@ -3,27 +3,29 @@ package estructuras;
 import dominio.DataCenter;
 import dominio.Empresa;
 import dominio.Punto;
+import interfaces.IGrafo;
 import interfaces.ILista;
 
 public class Dijkstra {
 	
-	private Grafo grafo;
+	private IGrafo grafo;
 	//array para guardar distancias visitadas
     private int[] distancias;
     //array para guardar puntos visitados
     private int[] previos;
     //array para guardar estado
     private  boolean[] visitados;
-    
+    // Lista que se va actualizando con los DC que pueden procesar la info requerida
     private int[] listaDCcapable;
-    
-    // Para ir recordando los mejores. Creo que no deberia necesitarse
     private Hash hash;
-    private DataCenter dataCenter;
-    private Punto punto;
-    private int DESTINO;
-    private int origen;
     private int costoActual;
+    
+    // Constructor //
+    public Dijkstra(IGrafo mapa, Hash ubicaciones){
+    	hash = ubicaciones;
+    	grafo = mapa;
+    }
+    
     // Getters y setters //
     public int[] getDistancia() {
         return distancias;
@@ -48,28 +50,12 @@ public class Dijkstra {
     public void setVisitado(boolean[] aVisitado) {
         visitados = aVisitado;
     }
-    
-    public int getDESTINO() {
-        return DESTINO;
-    }
-   
-    public void setDESTINO(int d) {
-        DESTINO = d;
-    }
-    
-    public int getORIGEN() {
-        return origen;
-    }
-
-    public void setORIGEN(int o) {
-        origen = o;
-    }
   
-    public Grafo getGrafo() {
+    public IGrafo getGrafo() {
         return grafo;
     }
    
-    public void setGrafo(Grafo g) {
+    public void setGrafo(IGrafo g) {
         grafo = g;
     }
 
@@ -81,22 +67,6 @@ public class Dijkstra {
         hash = h;
     }
     
-    public  DataCenter getDataCenter() {
-        return dataCenter;
-    }
-    
-    public void setDataCenter(DataCenter dc) {
-        dataCenter = dc;
-    }
-    
-    public Punto getPunto() {
-        return punto;
-    }
-   
-    public void setPunto(Punto aPunto) {
-        punto = aPunto;
-    }
-    
 	public int getCostoActual() {
 		return costoActual;
 	}
@@ -105,15 +75,11 @@ public class Dijkstra {
 		this.costoActual = costoActual;
 	}
 
-	public void dijkstra(Grafo mapa, Hash ubicaciones, int origen, int esfuerzoCPUrequeridoEnHoras) {
+	public void dijkstra(int origen, int esfuerzoCPUHora) {
 		// Inicializo
-	    this.grafo = mapa;
-        this.distancias = new int[ubicaciones.getSizeTable()]; // la distancia mas corta partiendo del origen
-        this.previos = new int[ubicaciones.getSizeTable()]; // el nodo previo en el camino.
-        this.visitados = new boolean[ubicaciones.getSizeTable()]; //nodos visitados.
-        this.origen = origen;
-        this.hash = ubicaciones;
-        setDataCenter(null);
+        this.distancias = new int[hash.getSizeTable()]; // la distancia mas corta partiendo del origen
+        this.previos = new int[hash.getSizeTable()]; // el nodo previo en el camino.
+        this.visitados = new boolean[hash.getSizeTable()]; //nodos visitados.
 
         // pongo todas las distancias en max value
         // seteo visitados = false.
@@ -122,19 +88,16 @@ public class Dijkstra {
             this.visitados[i] = false;
             this.previos[i] = -1;
         }
-        
-     
 
         this.distancias[origen] = 0; //distancia 0 entre orig y orig.
         this.visitados[origen] = true; //el origen queda como vistado
         
         //llamo al recursivo que devuelve un dc. Viendo lo que hicieron en clase esto es diferente, 
         //en clase devuelven un int que es la distancia a la posicion destino
-        dijkstraREC(origen, esfuerzoCPUrequeridoEnHoras);
-	
+        dijkstraREC(origen, esfuerzoCPUHora);
 	}
 	
-	public void dijkstraREC(int p, int esfuerzoCPUrequeridoEnHoras) {
+	private void dijkstraREC(int p, int esfuerzoReqHs) {
 	    // Busco vertices adyacentes del origen
 	    ILista l = obtenerAdyacentes(p);
 	
@@ -151,7 +114,7 @@ public class Dijkstra {
 	        //this.distancias[vertMenorDist] = this.distancias[p] + peso; // redundante?
 	
 	        //punto = hash.puntoPorPosicion(vertMenorDist);
-	        dijkstraREC(vertMenorDist, esfuerzoCPUrequeridoEnHoras);
+	        dijkstraREC(vertMenorDist, esfuerzoReqHs);
 	    }
 	    else
 	    {
@@ -167,7 +130,7 @@ public class Dijkstra {
 	    	}
 	    	if(indice != -1)
 	    	{
-	    		dijkstraREC(indice, esfuerzoCPUrequeridoEnHoras);
+	    		dijkstraREC(indice, esfuerzoReqHs);
 	    	}  	
 	    }
 	}
@@ -210,8 +173,8 @@ public class Dijkstra {
 	// Hace la busqueda dentro de la lista de distancias. Considera las distancias sumadas al costoCPUhoras, si es de otra empresa,
 	// y se queda con el que tiene menor costo overal, pero solo dentro de los que pertenecen a una lista precreada solo con los DC
 	// que tienen la capacidad de procesamiento necesaria.
-	public DataCenter obtenerDCcapableConMenorDistancia(Empresa eOrigen, int esfRequeridoEnHs){
-		int cantDeCapable = obtenerDCsCapable(esfRequeridoEnHs);
+	public DataCenter obtenerDCcapableConMenorDistancia(Empresa eOrigen, int esfRequeridoHs){
+		int cantDeCapable = obtenerDCsCapable(esfRequeridoHs);
 		int distMin = Integer.MAX_VALUE;
 		DataCenter dcTemp = null;
 		for (int i=0; i< this.distancias.length; i++){
@@ -227,20 +190,19 @@ public class Dijkstra {
 			// Significa que no es el mismo origen, que cuesta 0 en distancia
 			if (costo != 0){
 				DataCenter candidato = (DataCenter)this.hash.getTable()[i];
-				if ( !candidato.getEmpresa().equals(eOrigen) ) costo += esfRequeridoEnHs*candidato.getCostoCPUporHora();
+				if ( !candidato.getEmpresa().equals(eOrigen) ) costo += esfRequeridoHs*candidato.getCostoCPUporHora();
 				if( costo < distMin ) {
 					distMin = costo;
 					dcTemp = candidato;
 				}
 			}
 		}
-		this.dataCenter = dcTemp;
 		this.costoActual = distMin;
 		return dcTemp;
 	}
 	
 	// guarda la lista como atributo, y devuelve el tamaño de este array
-	public int obtenerDCsCapable(int capMin){
+	private int obtenerDCsCapable(int capMin){
 		//de todo el grafo, busco los DC con capacidad mayor a la que necesito y las guardo sus indices en una lista
 		listaDCcapable = new int[this.distancias.length];
 		// inicializo todas las posiciones en -1 para que no se confunda
