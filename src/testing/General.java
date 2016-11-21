@@ -278,7 +278,7 @@ public class General {
 	 
 	 @Test
      public void mapaEstadoOK(){
-		 registrarTramoOK();
+		 registrarTramoOK2();
 		 s.mapaEstado();
 	 }
 	

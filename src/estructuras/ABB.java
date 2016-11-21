@@ -74,7 +74,7 @@ public class ABB implements IABB {
 		return perteneceRec(x, raiz);
 	}
 
-	// Arreglar todo esto
+	
 	private Empresa perteneceRec(String x, Nodo nodo) {
 		if (nodo == null)
 			return null;
