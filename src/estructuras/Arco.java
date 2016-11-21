@@ -3,12 +3,13 @@ package estructuras;
 import dominio.Punto;
 
 public class Arco {
-	
-	private int distancia; 
+
+	private Integer distancia;
 	private Punto inicio;
 	private Punto fin;
 	private boolean existe;
-	
+
+	// GETTERS AND SETTERS
 	public Integer getDistancia() {
 		return this.distancia;
 	}
@@ -16,7 +17,7 @@ public class Arco {
 	public void setDistancia(Integer distancia) {
 		this.distancia = distancia;
 	}
-	
+
 	public boolean getExiste() {
 		return existe;
 	}
@@ -24,16 +25,9 @@ public class Arco {
 	public void setExiste(boolean existe) {
 		this.existe = existe;
 	}
-	
-	public Arco(){
+
+	public Arco() {
 		this.existe = false;
-	}
-	
-	public Arco(Integer dist, Punto inicio, Punto fin){
-		this.distancia = dist;
-		this.inicio = inicio;
-		this.fin = fin;
-		this.existe = true;
 	}
 
 	public Punto getInicio() {
@@ -52,11 +46,18 @@ public class Arco {
 		this.fin = fin;
 	}
 
+	// CONSTRUCTOR
+
+	public Arco(Integer dist, Punto inicio, Punto fin) {
+		this.distancia = dist;
+		this.inicio = inicio;
+		this.fin = fin;
+		this.existe = true;
+	}
+
 	@Override
 	public String toString() {
-		return  this.inicio.getNombre() + ";" + this.fin.getNombre();
+		return this.inicio.getNombre() + ";" + this.fin.getNombre();
 	}
-	
-
 
 }

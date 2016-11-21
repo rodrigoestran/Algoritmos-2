@@ -38,7 +38,7 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
-	// PRE: lista de empresas ya fue inicializada.
+	// PRE: lista de empresas ya fue inicializada. Email debe ser unico.
 	// POS: Se agregó una nueva instancia de empresa en la lista de empresas
 	public Retorno registrarEmpresa(String nombre, String direccion,
 			String pais, String email_contacto, String color) {
@@ -56,7 +56,7 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
-	// PRE: ??
+	// PRE: Nombre de la ciudad debe ser unico.
 	// POS: Se ingresa una ciudad como punto del mapa
 	public Retorno registrarCiudad(String nombre, Double coordX, Double coordY) {
 		if (ssp.getMapa().tieneLugarDisponible() != -1){
@@ -69,7 +69,7 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
-	// PRE: ??
+	// PRE: Nombre del DC debe ser unico.
 	// POS: Se ingresa un Data Center como punto del mapa
 	public Retorno registrarDC(String nombre, Double coordX, Double coordY,
 			String empresa, int capacidadCPUenHoras, int costoCPUporHora) {
@@ -90,7 +90,7 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
-	// PRE: ???
+	// PRE: 
 	// POS: Agrega un Arco que conecta inicio a fin en el mapa
 	public Retorno registrarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf, int peso) {
@@ -99,35 +99,48 @@ public class Sistema implements ISistema {
 	}
 
 	@Override
-	// PRE: ???
+	// PRE: 
 	// POS: Vacía un Arco desde inicio a fin, de forma de eliminar su conexión
 	public Retorno eliminarTramo(Double coordXi, Double coordYi,
 			Double coordXf, Double coordYf) {
 		return ssp.eliminarTramo(coordXi, coordYi, coordXf, coordYf);
 	}
-
+	
+	
+	//PRE:
+	//POS: Elimina el punto del mapa.
 	@Override
 	public Retorno eliminarPunto(Double coordX, Double coordY) {
 		return ssp.eliminarPunto(coordX, coordY);
 	}
-
+	
+	
+	//PRE: El sistema tiene puntos: data centers y ciudades.
+	//POS: Retorna un googlr map con las ciudades y los data centers.
 	@Override
 	public Retorno mapaEstado() {
 		ssp.crearMapa();
 		return new Retorno(Resultado.OK);
 	}
-
+	
+	//PRE: las coordenadas de origen corresponden a un DC, y no a una ciudad.
+	//POS: Retorna el DC seleccionado para realizar el proceamiento (si hay alguno), y el costo total del procesamiento.
 	@Override
 	public Retorno procesarInformacion(Double coordX, Double coordY,
 			int esfuerzoCPUrequeridoEnHoras) {
 		return this.ssp.procesarInformación(coordX, coordY, esfuerzoCPUrequeridoEnHoras);
 	}
 
+	//PRE:
+	//POS:Retorna un listado de los tramos que conforman la red mínima necesaria para mantener 
+	//la conexión entre todas las ciudades y los data centers.
 	@Override
 	public Retorno listadoRedMinima() {
 		return new Retorno(Resultado.OK, ssp.listarRedMinima(), 0);
 	}
-
+	
+	//PRE:
+	//POS:Retorna un listado de todas las empresas ordenadas por nombre de forma ascendente.
 	@Override
 	public Retorno listadoEmpresas() {
 		String info = empresas.devolverInforme();
