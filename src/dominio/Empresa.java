@@ -73,11 +73,8 @@ public class Empresa {
 
 	// comportamiento //
 	public boolean validar() {
-
 		EmailValidator validator = new EmailValidator();
 		return validator.validate(this.email);
-
-
 	}
 
 	@Override

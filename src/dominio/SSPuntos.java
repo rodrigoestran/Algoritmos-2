@@ -97,7 +97,7 @@ public class SSPuntos {
         return ret;
     }
     
-    // PRE?: Las coordenadas de origen existen. Las coordenadas de origen corresponden a un DC y no una Ciudad
+    // PRE: Las coordenadas de origen existen. Las coordenadas de origen corresponden a un DC y no una Ciudad
     public Retorno procesarInformación(Double coordX, Double coordY, int esfuerzoCPUrequeridoEnHoras) {
     	Retorno ret = new Retorno(Resultado.ERROR_1);
         DataCenter dcOrigen = null;

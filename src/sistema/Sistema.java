@@ -42,7 +42,6 @@ public class Sistema implements ISistema {
 	// POS: Se agregó una nueva instancia de empresa en la lista de empresas
 	public Retorno registrarEmpresa(String nombre, String direccion,
 			String pais, String email_contacto, String color) {
-		Retorno r = new Retorno();
 		Empresa newEmp = new Empresa(nombre, direccion, email_contacto, color, pais);
 		if (buscarEmpresa(nombre) == null){
 			if (newEmp.validar()) {

@@ -34,6 +34,9 @@ public class Hash {
 	}
 
 
+	/*
+	 * Comportamiento
+	 */
 	public int hashCode(double coordX, double coordY) {
 		String tostring = String.valueOf(coordX) + String.valueOf(coordY);
 		int num = 0;
