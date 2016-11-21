@@ -147,11 +147,23 @@ public class Grafo implements IGrafo{
 	    			mapString += "&markers=color:yellow";
 	    		else    			
 	    			mapString += "&markers=color:" + ((DataCenter)p).getEmpresa().getColor();
-	    		
-	    		mapString += "%7Clabel:" + p.getNombre() + 
+	    		String nom = p.getNombre().replace(" ", "%20");
+	    		mapString += "%7Clabel:" + nom + 
 	    					 "%7C" + p.getCoordX() + "," + p.getCoordY() ;
+    		} 
+    	}
+    	// para hacer path
+    	for (int row = 0; row< matrizAdyacencia.length; row++){
+    		for (int col = row; col<matrizAdyacencia.length; col++){
+    			Arco a = matrizAdyacencia[row][col];
+    			if (a.getExiste()){
+    				mapString += "&path=color:0x0000ff%7Cweight:3%7C"+ a.getInicio().getCoordX() + "," +
+    						a.getInicio().getCoordY() + "%7C" + a.getFin().getCoordX() + "," +
+    						a.getFin().getCoordY();
+    			}
     		}
     	}
+    	System.out.println(mapString);
     	return mapString;
     }
 	

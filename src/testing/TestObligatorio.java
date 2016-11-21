@@ -268,7 +268,7 @@ public class TestObligatorio {
 			Sistema s = new Sistema();
 			s.inicializarSistema(10);
 			registrarEmpresas(s);
-			assertEquals(Retorno.Resultado.OK, s.registrarCiudad("SantiagodeChile", -33.4724727,-70.9100258).resultado);
+			assertEquals(Retorno.Resultado.OK, s.registrarCiudad("Santiago deChile", -33.4724727,-70.9100258).resultado);
 			assertEquals(Retorno.Resultado.OK, s.registrarCiudad("Cordoba", -31.3993438,-64.3344307).resultado);
 			assertEquals(Retorno.Resultado.OK, s.registrarDC("Montevideo", -34.8198625,-56.3702923, "Antel", 10, 10).resultado);
 			assertEquals(Retorno.Resultado.OK, s.registrarDC("SanPablo", -23.6821604,-46.8754984, "Amazon", 100, 5).resultado);
