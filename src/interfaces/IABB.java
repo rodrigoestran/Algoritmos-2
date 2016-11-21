@@ -14,43 +14,15 @@ import estructuras.Nodo;
  */
 public interface IABB {
 	
-	    Nodo borrarMinimo(Nodo nodo);
-
-	    int cantHojas(Nodo nodo);
-
-	    int cantNodos(Nodo nodo);
-
-	    boolean esArbolVacio();
-
-	    boolean existe(String s, Nodo a);
-
-	    boolean existeElemento(String s);
+	    boolean esArbolVacio();  
 
 	    Nodo getRaiz();
 
-	    void insertar(Empresa e);
-
-	    void insertarElemento(Empresa e, Nodo nodo);
-
-	    void mostrarPosOrder();
-
-	    void mostrarPosOrder(Nodo a);
-
-	    void mostrarPreOrder();
-
-	    void mostrarPreOrder(Nodo a);
-
-	    Nodo obtenerElemento(String s, Nodo nodo);
-
-	    int obtenerPeso(Nodo nodo);
+	    void insertar(Empresa e); 
 	    
 	    String devolverInforme();
 	    
 	    void devolverInforme(Nodo a) ;
-	    
-	    public Nodo Buscar(String s);
-	    
-	    public Nodo Buscar(String s, Nodo n);
 	    
 	    public Empresa pertenece(String x);
 }

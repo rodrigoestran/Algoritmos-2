@@ -5,7 +5,6 @@
  */
 package dominio;
 
-
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -21,6 +20,7 @@ import sistema.Retorno.Resultado;
  *
  * @author alumnoFI
  */
+
 public class SSPuntos {
 	
     private IGrafo mapa;
@@ -46,7 +46,7 @@ public class SSPuntos {
 
     // el punto especifico se lo da el DC o Ciudad que correspondan desde Sistema
     public boolean agregarPunto(Punto p) {
-        if (!((Grafo)mapa).estaVertice(p.getCoordX(), p.getCoordY())) {
+        if (mapa.getVertices().posicionPorCoord(p.getCoordX(), p.getCoordY())==-1) {
             this.mapa.agregarVertice(p);
             return true;
         }
@@ -153,7 +153,5 @@ public class SSPuntos {
     
     public ILista obtenerRedMinima(){
     	return mapa.actualizarRedMinima();
-    }
-
-    
+    }    
 }

@@ -1,34 +1,36 @@
 package estructuras;
 
 public class NodoLista {
-	
 
-    private Object dato;
-    private NodoLista sig;
+	private Object dato;
+	private NodoLista sig;
 
-    public NodoLista(Object d) {
-        this.dato = d;
-    }
+	// CONTRUCTOR//
+	public NodoLista(Object d) {
+		this.dato = d;
+	}
 
-    public NodoLista(Object d, NodoLista s) {
-        this.dato = d;
-        this.sig = s;
-    }
+	public NodoLista(Object d, NodoLista s) {
+		this.dato = d;
+		this.sig = s;
+	}
 
-    public Object getDato() {
-        return this.dato;
-    }
+	// GETTERS AND SETTERS//
 
-    public void setDato(Object d) {
-        this.dato = d;
-    }
+	public Object getDato() {
+		return this.dato;
+	}
 
-    public NodoLista getSig() {
-        return this.sig;
-    }
+	public void setDato(Object d) {
+		this.dato = d;
+	}
 
-    public void setSig(NodoLista s) {
-        this.sig = s;
-    }
+	public NodoLista getSig() {
+		return this.sig;
+	}
+
+	public void setSig(NodoLista s) {
+		this.sig = s;
+	}
 
 }
