@@ -6,6 +6,7 @@
 package interfaces;
 
 import dominio.Punto;
+import estructuras.Arco;
 import estructuras.Hash;
 
 /**
@@ -36,4 +37,5 @@ public interface IGrafo {
 
 	int tieneLugarDisponible();
 
+	public Arco[][] getMatrizAdyacencia();
 }

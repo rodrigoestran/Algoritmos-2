@@ -22,6 +22,6 @@ public interface ILista{
 	
 	NodoLista getInicio();
 	
-	String informe();
+	String[] informe();
     
 }

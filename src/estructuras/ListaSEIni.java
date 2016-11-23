@@ -1,7 +1,5 @@
 package estructuras;
 
-import java.util.Iterator;
-
 import interfaces.ILista;
 
 public class ListaSEIni implements ILista {
@@ -36,15 +34,17 @@ public class ListaSEIni implements ILista {
 
 	}
 	@Override
-	public String informe() {
+	public String[] informe() {
 		NodoLista aux = inicio;
+		int costo = ((Arco)aux.getDato()).getDistancia();
 		String informe = aux.getDato().toString();
 		aux = aux.getSig();
 		while (aux != null) {
 			informe += "|" + aux.getDato().toString();
+			costo += ((Arco)aux.getDato()).getDistancia();
 			aux = aux.getSig();
 		}
-		return informe;
+		return new String[]{informe, costo + ""};
 	}
 
 }

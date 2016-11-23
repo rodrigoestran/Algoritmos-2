@@ -132,7 +132,7 @@ public class SSPuntos {
     public String modifDCyArmarRetorno(DataCenter dc, int costo, int esfuerzo){
     	dc.setCapacidadCPUenHoras(dc.getCapacidadCPUenHoras() - esfuerzo);
 		dc.setEsfuerzoEnUso(dc.getEsfuerzoEnUso() + esfuerzo);
-    	return dc.getNombre()+ "|" + costo;
+    	return dc.getNombre()+ ";" + costo;
     }
     
     
@@ -146,7 +146,7 @@ public class SSPuntos {
 		}
     }
     
-    public String listarRedMinima(){
+    public String[] listarRedMinima(){
     	ILista red = obtenerRedMinima();
     	return red.informe();
     }

@@ -97,8 +97,59 @@ public class Dijkstra {
 	public void setCostoActual(int costoActual) {
 		this.costoActual = costoActual;
 	}
+	
+	public void dijkstra(int origen, int esfuerzoCPUHora)
+	{
+		//Inicializo 
+		this.distancias = new int[hash.getSizeTable()]; // la distancia mas corta partiendo del origen
+        this.previos = new int[hash.getSizeTable()]; // el nodo previo en el camino.
+        this.visitados = new boolean[hash.getSizeTable()]; //nodos visitados.
+        
+        // seteo visitados = false.	
+		visitados[origen] = true;
+		for (int i = 0; i < distancias.length; previos[i++] = -1); 
+		// Primera vuelta: pongo todas las distancias en max value u peso a origen, si es adyacente al inicio
+		// y previo como origen, si es adyacente tb
+		for (int i = 0; i < distancias.length; i++) {
+			if(grafo.getMatrizAdyacencia()[origen][i].getExiste())
+			{
+				previos[i] = origen;
+				distancias[i] = grafo.getMatrizAdyacencia()[origen][i].getDistancia(); 
+			}
+			else distancias[i] = Integer.MAX_VALUE;
+		}
+		distancias[origen] = 0;
+		
+		//itero para el resto
+		for (int k = 0; k < distancias.length-2; k++) {
+			// Encuentro al mejor candidato dentro de los indices que ya tienen una distancia seteada
+			int cand = -1;
+			int menor = Integer.MAX_VALUE;
+			for (int i = 0; i < distancias.length; i++) {
+				if(!visitados[i] && distancias[i] < menor)
+				{
+					menor = distancias[i];
+					cand = i;
+				}
+			}
+			// si hay candidato, me fijo sus adyacentes
+			if (cand != -1) {
+				visitados[cand] = true;
+				// Analizo adyacentes y reviso si voy de una mejor forma a través de cand
+				for (int aux = 0; aux < distancias.length; aux++) {
+					if(!visitados[aux] && grafo.getMatrizAdyacencia()[cand][aux].getExiste()){
+						int distATravesDeCand = distancias[cand] + grafo.getMatrizAdyacencia()[cand][aux].getDistancia();
+						if(distATravesDeCand < distancias[aux]){
+							previos[aux] = cand;
+							distancias[aux] = distATravesDeCand;
+						}
+					}
+				}
+			}
+		}
+	}
 
-	public void dijkstra(int origen, int esfuerzoCPUHora) {
+	public void dijkstra2(int origen, int esfuerzoCPUHora) {
 		// Inicializo
         this.distancias = new int[hash.getSizeTable()]; // la distancia mas corta partiendo del origen
         this.previos = new int[hash.getSizeTable()]; // el nodo previo en el camino.
@@ -114,10 +165,10 @@ public class Dijkstra {
 
         this.distancias[origen] = 0; //distancia 0 entre orig y orig.
         this.visitados[origen] = true; //el origen queda como vistado             
-        dijkstraREC(origen, esfuerzoCPUHora);
+        dijkstra2REC(origen, esfuerzoCPUHora);
 	}
 	
-	private void dijkstraREC(int p, int esfuerzoReqHs) {
+	private void dijkstra2REC(int p, int esfuerzoReqHs) {
 	    // Busco vertices adyacentes del origen
 	    ILista l = obtenerAdyacentes(p);	
 	    // saco el vertice que está a menor distancia
@@ -126,7 +177,7 @@ public class Dijkstra {
 	    if (vertMenorDist != -1){
 	        //Modifico listas con el punto que seleccioné
 	        this.visitados[vertMenorDist] = true;
-	        dijkstraREC(vertMenorDist, esfuerzoReqHs);
+	        dijkstra2REC(vertMenorDist, esfuerzoReqHs);
 	    }
 	    else
 	    {
@@ -142,7 +193,7 @@ public class Dijkstra {
 	    	}
 	    	if(indice != -1)
 	    	{
-	    		dijkstraREC(indice, esfuerzoReqHs);
+	    		dijkstra2REC(indice, esfuerzoReqHs);
 	    	}  	
 	    }
 	}
@@ -158,7 +209,7 @@ public class Dijkstra {
 		while (aux != null) {
 			verticeAux = (Integer) aux.getDato();
 			pesoaux = this.grafo.devolverDistancia(verticeAux, p);
-			if (this.distancias[p] + pesoaux < this.distancias[verticeAux]) {
+			if (this.distancias[p] + pesoaux < this.distancias[verticeAux]) { 
 				this.previos[verticeAux] = p;
 				this.distancias[verticeAux] = this.distancias[p] + pesoaux;
 				if (this.distancias[verticeAux] < pesoMenor) {
@@ -181,6 +232,7 @@ public class Dijkstra {
 	// que pertenecen a una lista precreada solo con los DC
 	// que tienen la capacidad de procesamiento necesaria.
 	public DataCenter obtenerDCcapableConMenorDistancia(Empresa eOrigen, int esfRequeridoHs){
+		int costo = Integer.MAX_VALUE;
 		int cantDeCapable = obtenerDCsCapable(esfRequeridoHs);
 		int distMin = Integer.MAX_VALUE;
 		DataCenter dcTemp = null;
@@ -194,7 +246,7 @@ public class Dijkstra {
 			}
 			if (!hayCapable)
 				continue;
-			int costo = distancias[i];
+			costo = distancias[i];
 			// Significa que no es el mismo origen, que cuesta 0 en distancia
 			if (costo != 0){
 				DataCenter candidato = (DataCenter)this.hash.getTable()[i];

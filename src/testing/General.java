@@ -230,10 +230,10 @@ public class General {
      public void procesarInformacionOK() {
          registrarTramoOK();
          Retorno ret = s.procesarInformacion(47.0, -122.0, 40);
-         System.out.println(ret.valorString);
+         assertEquals("A;0", ret.valorString);
          assertEquals(Retorno.Resultado.OK, ret.resultado);
          ret = s.procesarInformacion(47.0, -122.0, 80);
-         System.out.println(ret.valorString);
+         assertEquals("B;8", ret.valorString);
          assertEquals(Retorno.Resultado.OK, ret.resultado);
      }
 	 
@@ -244,7 +244,7 @@ public class General {
          registrarTramoOK();
          Retorno ret = s.procesarInformacion(467.0, 232.65, 100);
          assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
-         System.out.println(ret.valorString);
+         assertEquals("No existen las coordenadas", ret.valorString);
      }
 	
 	 @Test
@@ -253,7 +253,7 @@ public class General {
          registrarTramoOK();
          Retorno ret = s.procesarInformacion(47.0, -122.0, 140);
          assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
-         System.out.println(ret.valorString); // null
+         assertEquals(null, ret.valorString);
      }
 	 
 	 
@@ -263,7 +263,20 @@ public class General {
 		 registrarTramoOK2();
 		 Retorno r = s.listadoRedMinima();
 		 assertEquals(Retorno.Resultado.OK, r.resultado);
-		 System.out.println(r.valorString);
+		 assertTrue(r.valorString.contains("D;Seattle") || r.valorString.contains("Seattle;D"));
+		 assertTrue(r.valorString.contains("E;G") || r.valorString.contains("G;E"));
+		 assertTrue(r.valorString.contains("A;E") || r.valorString.contains("E;A"));
+		 assertTrue(r.valorString.contains("C;F") || r.valorString.contains("F;C"));
+		 assertTrue(r.valorString.contains("F;Seattle") || r.valorString.contains("Seattle;F"));
+		 assertTrue(r.valorString.contains("A;Seattle") || r.valorString.contains("Seattle;A"));
+		 assertTrue(r.valorString.contains("Buenos_Aires;Seattle") || r.valorString.contains("Seattle;Buenos_Aires"));
+		 assertTrue(r.valorString.contains("Chicago;Seattle") || r.valorString.contains("Seattle;Chicago"));
+		 assertTrue(r.valorString.contains("Chicago;B") || r.valorString.contains("B;Chicago"));
+		 assertTrue(r.valorString.contains("Acapulco;B") || r.valorString.contains("B;Acapulco"));
+		 assertTrue(r.valorString.contains("I;H") || r.valorString.contains("H;I"));
+		 assertTrue(r.valorString.contains("Acapulco;H") || r.valorString.contains("H;Acapulco"));
+		 assertTrue(r.valorString.contains("Acapulco;San_Francisco") || r.valorString.contains("San_Francisco;Acapulco"));
+
 	 }
 	 
 	 /////////// LISTADO EMPRESAS ///////////////
@@ -350,23 +363,13 @@ public class General {
     
     	
     }
-	
-	
 
-	
-
-	
-	
-	
-//47.0, -122.0
 	 @Test
     public void procesarInformacionOK2() {
-       registrarTramoOK2();
-        Retorno ret = s.procesarInformacion(47.0, -122.0, 3000);//s.procesarInformacion(-15.90, -55.16, 1100);//DESDE B TIENE QUE DEVOLVER A|10
-        System.out.println(ret.valorString);
-        assertEquals(Retorno.Resultado.OK, ret.resultado);
-      
-        
+	 	registrarTramoOK2();
+	    Retorno ret = s.procesarInformacion(47.0, -122.0, 3000);
+	    assertEquals(Retorno.Resultado.OK, ret.resultado);
+	    assertEquals("H;6010", ret.valorString);
     }
 	 
 

@@ -41,6 +41,14 @@ public class Grafo implements IGrafo {
 		this.cantVertices = size;
 	}
 
+	public Arco[][] getMatrizAdyacencia() {
+		return matrizAdyacencia;
+	}
+
+	public void setMatrizAdyacencia(Arco[][] matrizAdyacencia) {
+		this.matrizAdyacencia = matrizAdyacencia;
+	}
+
 	public int getCantNodos() {
 		return tope;
 	}
@@ -164,7 +172,6 @@ public class Grafo implements IGrafo {
     			}
     		}
     	}
-    	System.out.println(mapString);
     	return mapString;
     }
 	

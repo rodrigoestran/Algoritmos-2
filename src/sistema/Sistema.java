@@ -135,7 +135,7 @@ public class Sistema implements ISistema {
 	//la conexión entre todas las ciudades y los data centers.
 	@Override
 	public Retorno listadoRedMinima() {
-		return new Retorno(Resultado.OK, ssp.listarRedMinima(), 0);
+		return new Retorno(Resultado.OK, ssp.listarRedMinima()[0], Integer.valueOf(ssp.listarRedMinima()[1]));
 	}
 	
 	//PRE:
@@ -143,7 +143,6 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoEmpresas() {
 		String info = empresas.devolverInforme();
-		System.out.println(info);
 		Retorno r = new Retorno(Resultado.OK);
 		r.valorString = info;
 		return r;
